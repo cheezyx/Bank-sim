@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const customers = require('../models/customers_model');
+const cards = require('../models/cards_model');
 
 router.get('/',
     function (request, response) {
-        customers.getAll(function (err, dbResult) {
+        cards.getAll(function (err, dbResult) {
             if (err) {
                 response.json(err);
             } else {
@@ -13,13 +13,14 @@ router.get('/',
             }
         })
     });
-router.get('/:first_name',
+
+router.get('/:id',
     function (request, response) {
-        customers.getByUsername(request.params.username, function (err, dbResult) {
+        cards.getById(request.params.id, function (err, dbResult) {
             if (err) {
                 response.json(err);
             } else {
-                response.json(dbResult[0]);
+                response.json(dbResult);
             }
         })
     });
@@ -27,7 +28,7 @@ router.get('/:first_name',
 
 router.post('/', 
 function(request, response) {
-  customers.add(request.body, function(err, dbResult) {
+  cards.add(request.body, function(err, dbResult) {
     if (err) {
       response.json(err);
     } else {
@@ -39,7 +40,7 @@ function(request, response) {
 
 router.delete('/:id', 
 function(request, response) {
-  customers.delete(request.params.id, function(err, dbResult) {
+  cards.delete(request.params.id, function(err, dbResult) {
     if (err) {
       response.json(err);
     } else {
@@ -51,7 +52,7 @@ function(request, response) {
 
 router.put('/:id', 
 function(request, response) {
-  customers.update(request.params.id, request.body, function(err, dbResult) {
+  cards.update(request.params.id, request.body, function(err, dbResult) {
     if (err) {
       response.json(err);
     } else {
@@ -59,6 +60,5 @@ function(request, response) {
     }
   });
 });
-
 
 module.exports = router;
