@@ -13,14 +13,13 @@ router.get('/',
             }
         })
     });
-
-router.get('/:id',
+router.get('/:first_name',
     function (request, response) {
-        customers.getById(request.params.id, function (err, dbResult) {
+        customers.getByUsername(request.params.username, function (err, dbResult) {
             if (err) {
                 response.json(err);
             } else {
-                response.json(dbResult);
+                response.json(dbResult[0]);
             }
         })
     });
@@ -60,5 +59,6 @@ function(request, response) {
     }
   });
 });
+
 
 module.exports = router;
