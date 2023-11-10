@@ -11,8 +11,8 @@ const accounts={
   },
   add: function(accounts, callback) {
     bcrypt.hash(accounts.password, saltRounds, function(err, hash) {
-      return db.query('insert into accounts (customer_id, balance, account_type, credit_limit) values(?,?,?,?)',
-      [accounts.customer_id, accounts.balance, accounts.account_type, hash], callback);
+      return db.query('insert into accounts (account_id, balance, account_type, credit_limit) values(?,?,?,?)',
+      [accounts.account_id, accounts.balance, accounts.account_type, hash], callback);
     });
   },
   delete: function(id, callback) {
