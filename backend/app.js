@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 var indexRouter = require('./routes/index');
 var customersRouter = require('./routes/customers');
 var cardsRouter = require('./routes/cards');
-
+var accountsRouter = require('./routes/accounts');
 
 var app = express();
 
@@ -20,6 +20,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/customers', customersRouter);
 app.use('/cards', cardsRouter);
-
+app.use('/accounts', accountsRouter);
 
 module.exports = app;
