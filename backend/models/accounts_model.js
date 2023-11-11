@@ -10,10 +10,8 @@ const accounts={
     return db.query('select * from accounts where account_id=?', [id], callback);
   },
   add: function(accounts, callback) {
-    bcrypt.hash(accounts.password, saltRounds, function(err, hash) {
-      return db.query('insert into accounts (customer_id, balance, account_type, credit_limit) values(?,?,?,?)',
-      [accounts.customer_id, accounts.balance, accounts.account_type, hash], callback);
-    });
+      return db.query('BEGIN; INSERT INTO accounts(balance, account_type) VALUES(?, ?); INSERT INTO account_privileges(customer_id, account_id, access_level) VALUES(?, (SELECT account_id FROM accounts ORDER BY account_id DESC LIMIT 1), ?); COMMIT;',
+      [accounts.balance, accounts.account_type, accounts.customer_id, accounts.access_level], callback);
   },
   delete: function(id, callback) {
     return db.query('delete from accounts where account_id=?', [id], callback);
