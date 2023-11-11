@@ -27,8 +27,7 @@ router.post('/', function(request, response) {
         if (err) {
             response.json(err);
         } else {
-            response.json(request.body); // You might want to return the created object here
-        }
+            response.json(request.body); 
     });
 });
 
