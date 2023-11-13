@@ -1,8 +1,6 @@
 const db = require('../database');
-const bcrypt = require('bcryptjs');
 
-const saltRounds=10;
-const accounts={
+const accounts = {
   getAll: function(callback) {
     return db.query('select * from accounts', callback);
   },
@@ -10,21 +8,20 @@ const accounts={
     return db.query('select * from accounts where account_id=?', [id], callback);
   },
   add: function(accounts, callback) {
-    bcrypt.hash(accounts.password, saltRounds, function(err, hash) {
-      return db.query('insert into accounts (customer_id, balance, account_type, credit_limit) values(?,?,?,?)',
-      [accounts.customer_id, accounts.balance, accounts.account_type, hash], callback);
-    });
+    return db.query('insert into accounts (balance, account_type, credit_limit) values(?,?,?)',
+      [accounts.balance, accounts.account_type, accounts.credit_limit],
+      callback
+    );
   },
   delete: function(id, callback) {
     return db.query('delete from accounts where account_id=?', [id], callback);
   },
   update: function(id, accounts, callback) {
-    bcrypt.hash(accounts.password, saltRounds, function(err, hash) {
-      return db.query('update accounts set accountsname=?, password=? where account_id=?',
-      [accounts.accountsname, hash, id], callback);
-    });
+    return db.query(
+      'update accounts set balance=?, account_type=?, credit_limit=? where account_id=?',
+      [accounts.balance, accounts.account_type, accounts.credit_limit, id],
+      callback
+    );
   }
-
-}
-          
+};
 module.exports = accounts;
