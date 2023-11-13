@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const transactions = require('../models/transactions_model');
 
-router.get('/', function (request, response) {
+router.get('/',
+     function (request, response) {
     transactions.getAll(function (err, dbResult) {
         if (err) {
             response.json(err);
