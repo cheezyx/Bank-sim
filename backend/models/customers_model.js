@@ -4,6 +4,9 @@ const customers = {
   getAll: function (callback) {
     return db.query('select * from customers', callback);
   },
+  getById: function (id, callback) {
+    return db.query('select * from customers where customer_id=?', [id], callback);
+  },
   getByFirst_name: function (first_name, callback) {
     return db.query('select * from customers where first_name=?', [first_name], callback);
   },
@@ -26,4 +29,4 @@ const customers = {
 }
 
 
-module.exports = customers;
+module.exports = customers;  

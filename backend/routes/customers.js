@@ -13,15 +13,23 @@ router.get('/',
             }
         })
     });
-router.get('/:first_name',
-    function (request, response) {
-        customers.getByUsername(request.params.username, function (err, dbResult) {
-            if (err) {
-                response.json(err);
-            } else {
-                response.json(dbResult[0]);
-            }
-        })
+    router.get('/:id', function(request, response) {
+      customers.getById(request.params.id, function(err, dbResult) {
+        if (err) {
+          response.json(err);
+        } else {
+          response.json(dbResult);
+        }
+      });
+    });
+    router.get('/firstname/:first_name', function(request, response) {
+      customers.getByFirst_name(request.params.first_name, function(err, dbResult) {
+        if (err) {
+          response.json(err);
+        } else {
+          response.json(dbResult);
+        }
+      });
     });
 
 
