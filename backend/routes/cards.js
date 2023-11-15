@@ -26,16 +26,18 @@ router.get('/:id',
     });
 
 
-router.post('/', 
-function(request, response) {
-  cards.add(request.body, function(err, dbResult) {
-    if (err) {
-      response.json(err);
-    } else {
-      response.json(request.body);
-    }
-  });
-});
+    router.post('/', function(request, response) {
+      const cardData = request.body.card;
+      const accountIds = request.body.account_ids;
+    
+      cards.addWithProcedure(cardData, accountIds, function(err, dbResult) {
+        if (err) {
+          response.json(err);
+        } else {
+          response.json(dbResult);
+        }
+      });
+    });
 
 
 router.delete('/:id', 

@@ -9,35 +9,23 @@ const cards = {
   getById: function (id, callback) {
     return db.query('select * from cards where card_id=?', [id], callback);
   },
-  add: function (card, callback) {
+  addWithProcedure: function (card, account_ids, callback) {
     bcrypt.hash(card.pin_hashed, saltRounds, function (err, hash) {
       if (err) {
         return callback(err);
       }
-      db.query('insert into cards (customer_id, card_type, pin_hashed) values(?,?,?)',
-        [card.customer_id, card.card_type, hash], function (err, result) {
-          if (err) {
-            return callback(err);
-          }
-          const cardId = result.insertId;
 
-          // Tarkistetaan onko taulukko ja jos on...
-          if (Array.isArray(card.account_ids) && card.account_ids.length > 0) {
-            // Syötetään card_privilegesiin jokainen account_id mitä löytyy (tässä tietenkin vain yksi tai kaksi)
-            card.account_ids.forEach(account_id => {
-              db.query('insert into card_privileges (card_id, account_id) values(?,?)',
-                [cardId, account_id], function (err) {
-                  if (err) {
-                    return callback(err);
-                  }
-                });
-            });
-          }
+      // Kutsu proseduuria. Oletetaan, että account_ids on taulukko.
+      const account1_id = account_ids[0];
+      const account2_id = account_ids.length > 1 ? account_ids[1] : null;
 
-          callback(null, result);
-        });
+      db.query('CALL AddCardAndLinkAccount(?, ?, ?, ?, ?)',
+        [card.customer_id, card.card_type, hash, account1_id, account2_id],
+        callback
+      );
     });
   },
+
   delete: function (id, callback) {
     return db.query('delete from cards where card_id=?', [id], callback);
   },
