@@ -34,6 +34,9 @@ const cards = {
       return db.query('update cards set customer_id=?, card_type=?, pin_hashed=? where card_id=?',
         [cards.customer_id, cards.card_type, hash, id], callback);
     });
+  },
+  checkPassword:function(card_id, callback){
+    return db.query('select pin_hashed from cards where card_id=?',[card_id],callback);
   }
 
 }
