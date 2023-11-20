@@ -1,54 +1,38 @@
 const express = require('express');
 const router = express.Router();
-const transactions = require('../models/transactions_model');
+const transactionsmodel = require('../models/transactions_model');
 
-router.get('/',
-     function (request, response) {
-    transactions.getAll(function (err, dbResult) {
+
+router.post('/transfer', function (req, res) {
+    const { from_account_id, to_account_id, amount, description, transaction_type } = req.body;
+    transactionsmodel.transferBalance(from_account_id, to_account_id, amount, description, transaction_type, function(err, result) {
         if (err) {
-            response.json(err);
+            res.status(500).json(err);
         } else {
-            response.json(dbResult);
+            res.json(result);
         }
     });
 });
 
-router.get('/:id', function (request, response) {
-    transactions.getById(request.params.id, function (err, dbResult) {
+
+router.post('/deposit', function (req, res) {
+    const { account_id, amount, description } = req.body;
+    transactionsmodel.deposit(account_id, amount, description, function(err, result) {
         if (err) {
-            response.json(err);
+            res.status(500).json(err);
         } else {
-            response.json(dbResult[0]);
+            res.json(result);
         }
     });
 });
 
-router.post('/', function(request, response) {
-    transactions.add(request.body, function(err, dbResult) {
+router.post('/withdraw', function (req, res) {
+    const { account_id, amount, description } = req.body;
+    transactionsmodel.withdraw(account_id, amount, description, function(err, result) {
         if (err) {
-            response.json(err);
+            res.status(500).json(err);
         } else {
-            response.json(request.body);
-        } 
-    });
-});
-
-router.delete('/:id', function(request, response) {
-    transactions.delete(request.params.id, function(err, dbResult) {
-        if (err) {
-            response.json(err);
-        } else {
-            response.json(dbResult);
-        }
-    });
-});
-
-router.put('/:id', function(request, response) {
-    transactions.update(request.params.id, request.body, function(err, dbResult) {
-        if (err) {
-            response.json(err);
-        } else {
-            response.json(dbResult);
+            res.json(result);
         }
     });
 });
