@@ -13,3 +13,30 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+
+void MainWindow::on_btnLogin_clicked()
+{
+    QString cardID=ui->TextCardID->text();
+    QString cardPIN=ui->TextPin->text();
+    QJsonObject jsonObj;
+    jsonObj.insert("Kortin ID",cardID);
+    jsonObj.insert("PIN",cardPIN);
+
+    QString site_url="http://localhost:3000/login";
+    QNetworkRequest request((site_url));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    postManager = new QNetworkAccessManager(this);
+    connect(postManager, SIGNAL(finished (QNetworkReply*)), this, SLOT(loginSlot(QNetworkReply*)));
+
+    reply = postManager->post(request, QJsonDocument(jsonObj).toJson());
+}
+
+void MainWindow::loginSlot(QNetworkReply *reply)
+{
+    response_data=reply->readAll();
+    qDebug()<<response_data;
+    reply->deleteLater();
+    postManager->deleteLater();
+}
+
