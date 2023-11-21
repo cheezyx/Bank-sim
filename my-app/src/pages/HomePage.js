@@ -1,19 +1,15 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import LoginPage from './pages/LoginPage';
-import HomePage from './pages/HomePage';
-// Muut import-lauseet
+import { Link } from 'react-router-dom';
 
-function App() {
+function HomePage() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/" element={<HomePage />} />
-        {/* Lisää reittejä tarvittaessa */}
-      </Routes>
-    </Router>
+    <div>
+      <h1>Tervetuloa Pankki Sovellukseen!</h1>
+      <p>Tämä on sovelluksen kotisivu.</p>
+      {/* Lisää Link-komponentti navigoidaksesi LoginPageen */}
+      <Link to="/login">Kirjaudu sisään</Link>
+    </div>
   );
 }
 
-export default App;
+export default HomePage;
