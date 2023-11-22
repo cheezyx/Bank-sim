@@ -19,8 +19,8 @@ void MainWindow::on_btnLogin_clicked()
     QString cardID=ui->TextCardID->text();
     QString cardPIN=ui->TextPin->text();
     QJsonObject jsonObj;
-    jsonObj.insert("Kortin ID",cardID);
-    jsonObj.insert("PIN",cardPIN);
+    jsonObj.insert("card_id",cardID);
+    jsonObj.insert("pin_hashed",cardPIN);
 
     QString site_url="http://localhost:3000/login";
     QNetworkRequest request((site_url));
@@ -36,6 +36,23 @@ void MainWindow::loginSlot(QNetworkReply *reply)
 {
     response_data=reply->readAll();
     qDebug()<<response_data;
+    if (response_data.length() < 2)
+        {
+            qDebug() << "Server did not respond";
+        }
+        else
+        {
+            if (response_data != "false")
+            {
+                qDebug() << "Login successful";
+                // Process the token or other data received from the server
+            }
+            else
+            {
+                qDebug() << "Incorrect PIN or user does not exist";
+                // Provide user feedback, e.g., show an error message
+            }
+        }
     reply->deleteLater();
     postManager->deleteLater();
 }
