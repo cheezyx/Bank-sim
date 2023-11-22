@@ -39,18 +39,23 @@ void MainWindow::loginSlot(QNetworkReply *reply)
     if (response_data.length() < 2)
         {
             qDebug() << "Server did not respond";
+            ui->labelInfo->setText("Serveri ei vastaa");
         }
         else
         {
             if (response_data != "false")
             {
                 qDebug() << "Login successful";
-                // Process the token or other data received from the server
+                // Antaa tokenin
+                objectautomat=new automat(this);
+                objectautomat->show();
             }
             else
             {
                 qDebug() << "Incorrect PIN or user does not exist";
-                // Provide user feedback, e.g., show an error message
+                ui->labelInfo->setText("Tunnus tai PIN väärin");
+                ui->TextCardID->clear();
+                ui->TextPin->clear();
             }
         }
     reply->deleteLater();
