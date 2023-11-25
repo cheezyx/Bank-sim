@@ -13,7 +13,14 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+<<<<<<< HEAD
   <widget class="QPushButton" name="Button1">
+=======
+  <property name="autoFillBackground">
+   <bool>true</bool>
+  </property>
+  <widget class="QPushButton" name="btn1">
+>>>>>>> origin
    <property name="geometry">
     <rect>
      <x>240</x>
@@ -31,7 +38,11 @@
     <string>1</string>
    </property>
   </widget>
+<<<<<<< HEAD
   <widget class="QPushButton" name="Button2">
+=======
+  <widget class="QPushButton" name="btn2">
+>>>>>>> origin
    <property name="geometry">
     <rect>
      <x>300</x>
@@ -49,7 +60,11 @@
     <string>2</string>
    </property>
   </widget>
+<<<<<<< HEAD
   <widget class="QPushButton" name="Button3">
+=======
+  <widget class="QPushButton" name="btn3">
+>>>>>>> origin
    <property name="geometry">
     <rect>
      <x>360</x>
@@ -67,7 +82,11 @@
     <string>3</string>
    </property>
   </widget>
+<<<<<<< HEAD
   <widget class="QPushButton" name="Button4">
+=======
+  <widget class="QPushButton" name="btn4">
+>>>>>>> origin
    <property name="geometry">
     <rect>
      <x>240</x>
@@ -85,7 +104,11 @@
     <string>4</string>
    </property>
   </widget>
+<<<<<<< HEAD
   <widget class="QPushButton" name="Button5">
+=======
+  <widget class="QPushButton" name="btn5">
+>>>>>>> origin
    <property name="geometry">
     <rect>
      <x>300</x>
@@ -103,7 +126,11 @@
     <string>5</string>
    </property>
   </widget>
+<<<<<<< HEAD
   <widget class="QPushButton" name="Button6">
+=======
+  <widget class="QPushButton" name="btn6">
+>>>>>>> origin
    <property name="geometry">
     <rect>
      <x>360</x>
@@ -121,7 +148,11 @@
     <string>6</string>
    </property>
   </widget>
+<<<<<<< HEAD
   <widget class="QPushButton" name="Button7">
+=======
+  <widget class="QPushButton" name="btn7">
+>>>>>>> origin
    <property name="geometry">
     <rect>
      <x>240</x>
@@ -139,7 +170,11 @@
     <string>7</string>
    </property>
   </widget>
+<<<<<<< HEAD
   <widget class="QPushButton" name="Button8">
+=======
+  <widget class="QPushButton" name="btn8">
+>>>>>>> origin
    <property name="geometry">
     <rect>
      <x>300</x>
@@ -157,7 +192,11 @@
     <string>8</string>
    </property>
   </widget>
+<<<<<<< HEAD
   <widget class="QPushButton" name="Button9">
+=======
+  <widget class="QPushButton" name="btn9">
+>>>>>>> origin
    <property name="geometry">
     <rect>
      <x>360</x>
@@ -175,7 +214,11 @@
     <string>9</string>
    </property>
   </widget>
+<<<<<<< HEAD
   <widget class="QPushButton" name="Button0">
+=======
+  <widget class="QPushButton" name="btn0">
+>>>>>>> origin
    <property name="geometry">
     <rect>
      <x>300</x>
@@ -193,6 +236,7 @@
     <string>0</string>
    </property>
   </widget>
+<<<<<<< HEAD
   <widget class="QPushButton" name="siirtoButton">
    <property name="geometry">
     <rect>
@@ -284,6 +328,9 @@
    </property>
   </widget>
   <widget class="QPushButton" name="logOutButton">
+=======
+  <widget class="QPushButton" name="logout">
+>>>>>>> origin
    <property name="geometry">
     <rect>
      <x>40</x>
@@ -301,7 +348,11 @@
     <string>Kirjaudu ulos</string>
    </property>
   </widget>
+<<<<<<< HEAD
   <widget class="QPushButton" name="moveForwardButton">
+=======
+  <widget class="QPushButton" name="btnenter">
+>>>>>>> origin
    <property name="geometry">
     <rect>
      <x>360</x>
@@ -314,7 +365,11 @@
     <string>-&gt;</string>
    </property>
   </widget>
+<<<<<<< HEAD
   <widget class="QPushButton" name="moveBackButton">
+=======
+  <widget class="QPushButton" name="btnback">
+>>>>>>> origin
    <property name="geometry">
     <rect>
      <x>240</x>
@@ -326,6 +381,247 @@
    <property name="text">
     <string>&lt;-</string>
    </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>20</y>
+     <width>101</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>20</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Card id:</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="IDLabelcard">
+   <property name="geometry">
+    <rect>
+     <x>130</x>
+     <y>20</y>
+     <width>131</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>20</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QStackedWidget" name="stackedWidget">
+   <property name="geometry">
+    <rect>
+     <x>480</x>
+     <y>270</y>
+     <width>211</width>
+     <height>331</height>
+    </rect>
+   </property>
+   <property name="currentIndex">
+    <number>0</number>
+   </property>
+   <widget class="QWidget" name="page">
+    <widget class="QPushButton" name="tilitapahtumat">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>260</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Tilitapahtumat</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="talletus">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>80</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Talletus</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="nosto">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>140</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Nosto</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="saldo">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>200</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Tarkista saldo</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="siirto">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>20</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Siirto</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="page_2">
+    <widget class="QPushButton" name="siirto_3">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>20</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Siirto</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="page_3">
+    <widget class="QPushButton" name="talletus_3">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>80</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Talletus</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="page_4">
+    <widget class="QPushButton" name="nosto_3">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>140</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Nosto</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="page_5">
+    <widget class="QPushButton" name="saldo_3">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>200</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Tarkista saldo</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="page_6">
+    <widget class="QPushButton" name="tilitapahtumat_3">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>260</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Tilitapahtumat</string>
+     </property>
+    </widget>
+   </widget>
   </widget>
  </widget>
  <resources/>

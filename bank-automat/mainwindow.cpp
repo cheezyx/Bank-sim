@@ -1,22 +1,26 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "automat.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    objectautomat=new automat(this);
+    connect(objectautomat, SIGNAL(logOutSignal()), this, SLOT(logoutSlot()));
 }
 
 MainWindow::~MainWindow()
 {
+    disconnect(objectautomat, SIGNAL(logOutSignal()), this, SLOT(logoutSlot()));
     delete ui;
 }
 
 
 void MainWindow::on_btnLogin_clicked()
 {
-    QString cardID=ui->TextCardID->text();
+    cardID=ui->TextCardID->text();
     QString cardPIN=ui->TextPin->text();
     QJsonObject jsonObj;
     jsonObj.insert("card_id",cardID);
@@ -35,7 +39,7 @@ void MainWindow::on_btnLogin_clicked()
 void MainWindow::loginSlot(QNetworkReply *reply)
 {
     response_data=reply->readAll();
-    qDebug()<<response_data;
+    //qDebug()<<response_data;
     if (response_data.length() < 2)
         {
             qDebug() << "Server did not respond";
@@ -47,8 +51,13 @@ void MainWindow::loginSlot(QNetworkReply *reply)
             {
                 qDebug() << "Login successful";
                 // Antaa tokenin
-                objectautomat=new automat(this);
+                token = "Bearer "+response_data;
+
+                objectautomat->setToken(token);
+                objectautomat->setCard_id(cardID);
+                objectautomat->showCardID();
                 objectautomat->show();
+                this->hide();
             }
             else
             {
@@ -60,5 +69,13 @@ void MainWindow::loginSlot(QNetworkReply *reply)
         }
     reply->deleteLater();
     postManager->deleteLater();
+}
+void MainWindow::logoutSlot()
+{
+    this->show();
+    ui->TextCardID->clear();
+    ui->TextPin->clear();
+    ui->labelInfo->setText("Kirjauduttu ulos");
+    token.clear();
 }
 
