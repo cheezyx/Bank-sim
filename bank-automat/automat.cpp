@@ -55,7 +55,6 @@ void automat::on_logout_clicked()
 void automat::on_btnback_clicked()
 {
     ui->stackedWidget->setCurrentIndex(0);
-    ui->screenlabel->clear();
 }
 
 void automat::setToken(const QByteArray &newToken)
