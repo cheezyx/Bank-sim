@@ -23,7 +23,6 @@ private slots:
     void on_btnLogin_clicked();
     void loginSlot (QNetworkReply *reply);
     void logoutSlot();
-
 private:
     Ui::MainWindow *ui;
     QNetworkAccessManager *postManager;
@@ -32,5 +31,6 @@ private:
     automat *objectautomat;
     QString cardID;
     QByteArray token;
+
 };
 #endif // MAINWINDOW_H

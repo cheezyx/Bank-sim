@@ -481,6 +481,16 @@
     </widget>
    </widget>
   </widget>
+  <widget class="QTextEdit" name="tekstiAkkuna">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>180</y>
+     <width>211</width>
+     <height>181</height>
+    </rect>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>
