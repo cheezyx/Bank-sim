@@ -42,7 +42,76 @@ void automat::on_saldo_clicked()
 }
 void automat::on_tilitapahtumat_clicked()
 {
+    QString site_url="http://localhost:3000/transactions/last_five_transactions/"+cardID;
+    QNetworkRequest request((site_url));
+    request.setRawHeader(QByteArray("Authorization"),(token));
+
+    getManager = new QNetworkAccessManager(this);
+    connect(getManager, SIGNAL(finished (QNetworkReply*)), this, SLOT(tilitapahtumatSlot(QNetworkReply*)));
+
+    reply = getManager->get(request);
     ui->stackedWidget->setCurrentIndex(5);
+
+}
+
+void automat::tilitapahtumatSlot(QNetworkReply *reply)
+{
+    response_data = reply->readAll();
+   // qDebug() << "RAW DATA: " << response_data;
+
+    QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
+
+    if (json_doc.isArray()) {
+        QJsonArray outer_array = json_doc.array();
+
+        if (outer_array.size() > 0) {
+            QString tTapahtumat;
+            QJsonArray inner_array = outer_array.at(0).toArray();
+
+            foreach (const QJsonValue &value, inner_array) {
+                QJsonObject json_obj = value.toObject();
+                int transactionId = json_obj["transaction_id"].toInt();
+                 int fromAccountId = json_obj["from_account_id"].toInt();
+                  int toAccountId = json_obj["to_account_id"].toInt();
+                   QString amount = json_obj["amount"].toString();
+                    QString dateTime = json_obj["date_time"].toString();
+                     QString description = json_obj["description"].toString();
+                      QString transactionType = json_obj["transaction_type"].toString();
+
+                      tTapahtumat += "Tapahtuman ID: " + QString::number(transactionId) +
+                                                "\rKäyttäjältä " + QString::number(fromAccountId) +
+                                                " käyttäjälle " + QString::number(toAccountId) +
+                                                "\rMäärä: " + amount +
+                                                "\rPäivämäärä: " + dateTime +
+                                                "\rSelite: " + description +
+                                                "\rTilitapahtuman tyyppi: " + transactionType + "\r";
+
+               qDebug() << "Tapahtuman ID: " << transactionId;
+                          qDebug() << "Käyttäjältä " << fromAccountId << " käyttäjälle " << toAccountId;
+                          qDebug() << "Määrä: " << amount;
+                          qDebug() << "Päivämäärä: " << dateTime;
+                          qDebug() << "Selite: " << description;
+                          qDebug() << "Tilitapahtuman tyyppi: " << transactionType;
+
+            }
+
+            qDebug() << "transaction_id: " << inner_array.at(0).toObject()["transaction_id"];
+            qDebug() << "from_account_id: " << inner_array.at(0).toObject()["from_account_id"];
+
+
+
+            qDebug() << tTapahtumat;
+            objectTilitapahtuma=new automat(this);
+            objectTilitapahtuma->näytäTapahtumat(tTapahtumat);
+            objectTilitapahtuma->show();
+        } else {
+            qDebug() << "tyhjää.";
+
+        }
+    }
+
+    reply->deleteLater();
+    getManager->deleteLater();
 }
 void automat::on_logout_clicked()
 {
@@ -61,6 +130,11 @@ void automat::setToken(const QByteArray &newToken)
 {
     token = newToken;
     qDebug()<<token;
+}
+
+void automat::näytäTapahtumat(QString value)
+{
+    ui->tekstiAkkuna->setText(value);
 }
 
 

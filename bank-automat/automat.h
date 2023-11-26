@@ -24,7 +24,7 @@ public:
     void setToken(const QByteArray &newToken);
     QByteArray token;
     void  startLogoutTimer();
-
+    void näytäTapahtumat(QString value);
 private slots:
 
     void on_siirto_clicked();
@@ -35,6 +35,7 @@ private slots:
     void on_logout_clicked();
     //void on_btnenter_clicked();
     void on_btnback_clicked();
+    void tilitapahtumatSlot (QNetworkReply *reply);
 
 signals:
     void logOutSignal();
@@ -45,7 +46,8 @@ private:
     QNetworkAccessManager *getManager;
     QNetworkReply *reply;
     QByteArray response_data;
-
+    automat *objectTilitapahtuma;
+    QString tapahtuma;
 };
 
 #endif // AUTOMAT_H
