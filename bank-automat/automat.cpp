@@ -137,5 +137,42 @@ void automat::näytäTapahtumat(QString value)
     ui->tekstiAkkuna->setText(value);
 }
 
+void automat::fetchAndDisplayUserName() {
+    QString site_url = "http://localhost:3000/cards/owner/" + cardID;
+    QNetworkRequest request((site_url));
+    request.setRawHeader(QByteArray("Authorization"),(token));
 
+    QNetworkAccessManager *getManager = new QNetworkAccessManager(this);
+    connect(getManager, &QNetworkAccessManager::finished, this, &automat::updateGreetingLabel);
 
+    getManager->get(request);
+}
+
+void automat::updateGreetingLabel(QNetworkReply *reply) {
+    QByteArray response_data = reply->readAll();
+    QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
+
+    // Tarkista, onko vastaus taulukko
+    if (json_doc.isArray()) {
+        QJsonArray json_array = json_doc.array();
+
+        // Tarkista, onko taulukossa ainakin yksi elementti
+        if (!json_array.isEmpty()) {
+            QJsonObject json_obj = json_array.first().toObject();
+            QString firstName = json_obj["first_name"].toString();
+            QString lastName = json_obj["last_name"].toString();
+
+            if (!firstName.isEmpty() && !lastName.isEmpty()) {
+                ui->lblGreeting->setText("Hei " + firstName + " " + lastName + "!");
+            } else {
+                ui->lblGreeting->setText("Nimeä ei saatu haettua");
+            }
+        } else {
+            ui->lblGreeting->setText("Nimeä ei saatu haettua");
+        }
+    } else {
+        ui->lblGreeting->setText("Nimeä ei saatu haettua");
+    }
+
+    reply->deleteLater();
+}

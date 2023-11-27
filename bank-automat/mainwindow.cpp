@@ -55,6 +55,7 @@ void MainWindow::loginSlot(QNetworkReply *reply)
 
                 objectautomat->setToken(token);
                 objectautomat->setCard_id(cardID);
+                objectautomat->fetchAndDisplayUserName();
                 objectautomat->showCardID();
                 objectautomat->show();
                 this->hide();

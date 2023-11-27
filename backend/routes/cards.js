@@ -25,6 +25,16 @@ router.get('/:id',
         })
     });
 
+    router.get('/owner/:card_id', function (request, response) {
+      cards.getOwnerNameByCardId(request.params.card_id, function (err, dbResult) {
+          if (err) {
+              response.json(err);
+          } else {
+              response.json(dbResult);
+          }
+      });
+  });
+
 
     router.post('/', function(request, response) {
       const cardData = request.body.card;
