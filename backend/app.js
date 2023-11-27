@@ -10,6 +10,7 @@ var cardsRouter = require('./routes/cards');
 var transactionsRouter = require('./routes/transactions');
 var accountsRouter = require('./routes/accounts');
 var loginRouter = require('./routes/login');
+var card_privilegesRouter = require('./routes/card_privileges');
 
 var app = express();
 
@@ -27,6 +28,7 @@ app.use('/customers', customersRouter);
 app.use('/cards', cardsRouter);
 app.use('/transactions', transactionsRouter);
 app.use('/accounts', accountsRouter);
+app.use('/card_privileges', card_privilegesRouter);
 
 function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization']
