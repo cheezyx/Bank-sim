@@ -9,6 +9,15 @@ const cards = {
   getById: function (id, callback) {
     return db.query('select * from cards where card_id=?', [id], callback);
   },
+
+  getOwnerNameByCardId: function (card_id, callback) {
+    return db.query(
+      'SELECT c.first_name, c.last_name FROM cards as cd JOIN customers as c ON cd.customer_id = c.customer_id WHERE cd.card_id = ?',
+      [card_id],
+      callback
+    );
+  },
+
   addWithProcedure: function (card, account_ids, callback) {
     bcrypt.hash(card.pin_hashed, saltRounds, function (err, hash) {
       if (err) {
