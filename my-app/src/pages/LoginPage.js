@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function LoginPage() {
     const [cardId, setCardId] = useState('');
     const [pin, setPin] = useState('');
     const [message, setMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
       event.preventDefault();
@@ -23,6 +25,8 @@ function LoginPage() {
           if (token && token !== 'false') {
             localStorage.setItem('token', token);
             setMessage('Login successful');
+            localStorage.setItem('card_id', cardId); // Tallenna card_id local storageen
+            navigate('/automat'); // Uudelleenohjaus AutomatPage-sivulle
             // TODO: Ohjaa käyttäjä eteenpäin tai päivitä tilaa
           } else {
             setMessage('Password incorrect or user does not exist');
