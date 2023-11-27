@@ -1,4 +1,5 @@
 backend/node_modules/
+my-app/node_modules
 bank-automat/build/
 bank-automat/*.user
 my-app/node_modules/
