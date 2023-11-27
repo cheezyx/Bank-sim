@@ -244,7 +244,7 @@
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>20</y>
+     <y>70</y>
      <width>101</width>
      <height>61</height>
     </rect>
@@ -261,8 +261,8 @@
   <widget class="QLabel" name="IDLabelcard">
    <property name="geometry">
     <rect>
-     <x>130</x>
-     <y>20</y>
+     <x>150</x>
+     <y>70</y>
      <width>131</width>
      <height>61</height>
     </rect>
@@ -489,6 +489,19 @@
      <width>211</width>
      <height>181</height>
     </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="lblGreeting">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>10</y>
+     <width>381</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20pt;&quot;&gt;TextLabel&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
  </widget>

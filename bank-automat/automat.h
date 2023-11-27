@@ -16,6 +16,7 @@ class automat : public QDialog
     Q_OBJECT
 
 public:
+
     Ui::automat *ui;
     explicit automat(QWidget *parent = nullptr);
     ~automat();
@@ -25,6 +26,9 @@ public:
     QByteArray token;
     void  startLogoutTimer();
     void näytäTapahtumat(QString value);
+    void fetchAndDisplayUserName();
+    void updateGreetingLabel(QNetworkReply *reply);
+
 private slots:
 
     void on_siirto_clicked();
