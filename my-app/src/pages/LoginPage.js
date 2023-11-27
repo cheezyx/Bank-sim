@@ -12,7 +12,7 @@ function LoginPage() {
       event.preventDefault();
       setIsLoading(true);
       try {
-        const response = await fetch('http://localhost:3000/login', {
+        const loginResponse = await fetch('http://localhost:3000/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -20,14 +20,29 @@ function LoginPage() {
           body: JSON.stringify({ card_id: cardId, pin_hashed: pin }),
         });
     
-        if (response.ok) {
-          const token = await response.text(); // Käytä text-metodia vastauksen lukemiseen
+        if (loginResponse.ok) {
+          const token = await loginResponse.text();
           if (token && token !== 'false') {
             localStorage.setItem('token', token);
-            setMessage('Login successful');
-            localStorage.setItem('card_id', cardId); // Tallenna card_id local storageen
-            navigate('/automat'); // Uudelleenohjaus AutomatPage-sivulle
-            // TODO: Ohjaa käyttäjä eteenpäin tai päivitä tilaa
+            localStorage.setItem('card_id', cardId);
+    
+            // Hae kortin tiedot
+            const cardResponse = await fetch(`http://localhost:3000/cards/${cardId}`, {
+              headers: {
+                'Authorization': `Bearer ${token}`
+              }
+            });
+    
+            if (cardResponse.ok) {
+              const cardDataArray = await cardResponse.json();
+              if (cardDataArray.length > 0 && cardDataArray[0].card_type.toLowerCase() === 'dual') {
+                navigate('/cardTypeSelection');
+              } else {
+                navigate('/automat');
+              }
+            } else {
+              setMessage('Error fetching card data');
+            }
           } else {
             setMessage('Password incorrect or user does not exist');
           }
