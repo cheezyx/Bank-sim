@@ -6,6 +6,10 @@
 #include <QNetworkAccessManager>
 #include <QJsonDocument>
 #include <Automat.h>
+#include <QTimer>
+#include <tilinvalinta.h>
+
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -18,19 +22,28 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
+    int accountID1;
+    int accountID2;
 private slots:
     void on_btnLogin_clicked();
     void loginSlot (QNetworkReply *reply);
     void logoutSlot();
+    void accountSlot(QNetworkReply * reply);
+
 private:
+
     Ui::MainWindow *ui;
     QNetworkAccessManager *postManager;
+    QNetworkAccessManager *getManager;
     QNetworkReply *reply;
+    QNetworkReply *reply2;
+
     QByteArray response_data;
     automat *objectautomat;
     QString cardID;
+    QString accountID;
     QByteArray token;
+;
 
 };
 #endif // MAINWINDOW_H

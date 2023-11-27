@@ -18,6 +18,11 @@ void automat::setCard_id(const QString &newCardID)
 {
     cardID = newCardID;
 }
+
+void automat::setAccount_id(const QString &newAccount_id)
+{
+    accountID = newAccount_id;
+}
 void automat::showCardID()
 {
     ui->IDLabelcard->setText(cardID);
@@ -42,7 +47,7 @@ void automat::on_saldo_clicked()
 }
 void automat::on_tilitapahtumat_clicked()
 {
-    QString site_url="http://localhost:3000/transactions/last_five_transactions/"+cardID;
+    QString site_url="http://localhost:3000/transactions/last_five_transactions/"+accountID;
     QNetworkRequest request((site_url));
     request.setRawHeader(QByteArray("Authorization"),(token));
 
