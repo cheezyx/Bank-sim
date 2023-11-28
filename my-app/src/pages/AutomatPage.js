@@ -14,6 +14,7 @@ function AutomatPage() {
   const selectedCardType = localStorage.getItem('selected_card_type');
   const token = localStorage.getItem('token');
   const navigate = useNavigate();
+  const [message, setMessage] = useState('');
 
   const fetchAccountDetails = () => {
     fetch(`http://localhost:3000/cards/accountinf/${cardId}`, {
@@ -54,6 +55,7 @@ function AutomatPage() {
         });
         const result = await response.json();
         console.log(result);
+        setMessage(result.message); // Tallenna viesti tilamuuttujaan
         setShowTransactionForm(false); // Sulje lomake
         setTransactionAmount('');
         setTransactionDescription('');
@@ -62,6 +64,16 @@ function AutomatPage() {
         console.error('Transaction error:', error);
     }
 };
+
+useEffect(() => {
+  if (message) {
+      const timer = setTimeout(() => {
+          setMessage('');
+      }, 5000); // Tyhjentää viestin 5 sekunnin kuluttua
+
+      return () => clearTimeout(timer); // Siivousfunktio
+  }
+}, [message]);
 
     useEffect(() => {
         if (cardId && token) {
@@ -167,6 +179,7 @@ return (
         )}
         <button disabled>Siirto</button>
         <button onClick={handleLogout}>Kirjaudu ulos</button>
+        {message && <div>{message}</div>} {/* Tässä näkyy palautetut viestit */}
     </div>
 );
 }
