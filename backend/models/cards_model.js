@@ -10,6 +10,14 @@ const cards = {
     return db.query('select * from cards where card_id=?', [id], callback);
   },
 
+  getAccountsWithCardID: function (card_id, callback) {
+    return db.query(
+        'SELECT a.* FROM accounts as a JOIN card_privileges as cp ON a.account_id = cp.account_id WHERE cp.card_id = ?',
+        [card_id],
+        callback
+    );
+},
+
   getOwnerNameByCardId: function (card_id, callback) {
     return db.query(
       'SELECT c.first_name, c.last_name FROM cards as cd JOIN customers as c ON cd.customer_id = c.customer_id WHERE cd.card_id = ?',
