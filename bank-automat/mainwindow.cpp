@@ -1,13 +1,18 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "automat.h"
+#include "tilinvalinta.h"
+
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
     objectautomat=new automat(this);
+
     connect(objectautomat, SIGNAL(logOutSignal()), this, SLOT(logoutSlot()));
 }
 
@@ -18,8 +23,12 @@ MainWindow::~MainWindow()
 }
 
 
+
+
+
 void MainWindow::on_btnLogin_clicked()
 {
+
     cardID=ui->TextCardID->text();
     QString cardPIN=ui->TextPin->text();
     QJsonObject jsonObj;
@@ -34,10 +43,15 @@ void MainWindow::on_btnLogin_clicked()
     connect(postManager, SIGNAL(finished (QNetworkReply*)), this, SLOT(loginSlot(QNetworkReply*)));
 
     reply = postManager->post(request, QJsonDocument(jsonObj).toJson());
+
+
+
 }
+
 
 void MainWindow::loginSlot(QNetworkReply *reply)
 {
+
     response_data=reply->readAll();
     //qDebug()<<response_data;
     if (response_data.length() < 2)
@@ -52,6 +66,9 @@ void MainWindow::loginSlot(QNetworkReply *reply)
                 qDebug() << "Login successful";
                 // Antaa tokenin
                 token = "Bearer "+response_data;
+                Tilinvalinta *tilinvalinta = new Tilinvalinta();
+                tilinvalinta->show();
+                this->hide();
 
                 objectautomat->setToken(token);
                 objectautomat->setCard_id(cardID);
@@ -59,6 +76,15 @@ void MainWindow::loginSlot(QNetworkReply *reply)
                 objectautomat->showCardID();
                 objectautomat->show();
                 this->hide();
+
+                QString site_url2 = "http://localhost:3000/card_privileges/" + cardID;
+                   QNetworkRequest request2(site_url2);
+                   request2.setRawHeader(QByteArray("Authorization"), (token));
+
+                   getManager = new QNetworkAccessManager(this);
+                   connect(getManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(accountSlot(QNetworkReply*)));
+
+                   reply2 = getManager->get(request2);
             }
             else
             {
@@ -79,4 +105,30 @@ void MainWindow::logoutSlot()
     ui->labelInfo->setText("Kirjauduttu ulos");
     token.clear();
 }
+
+void MainWindow::accountSlot(QNetworkReply *reply2)
+{
+
+    response_data=reply2->readAll();
+
+        qDebug() << "RAW DATA: " << response_data;
+           QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
+           QJsonArray json_array = json_doc.array();
+
+           foreach (const QJsonValue &value, json_array) {
+             QJsonObject json_obj = value.toObject();
+            int aAccounts = json_obj["account_id"].toInt();
+
+                qDebug()<<aAccounts;
+                accountID=aAccounts;
+                qDebug()<<accountID;
+
+           }
+           reply2->deleteLater();
+           getManager->deleteLater();
+
+
+
+}
+
 

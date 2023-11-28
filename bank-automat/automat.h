@@ -6,6 +6,9 @@
 #include <QNetworkAccessManager>
 #include <QJsonDocument>
 #include <QTimer>
+#include <tilinvalinta.h>
+
+
 
 namespace Ui {
 class automat;
@@ -21,6 +24,8 @@ public:
     explicit automat(QWidget *parent = nullptr);
     ~automat();
     void setCard_id(const QString &newCard_id);
+    void setAccount_id(const QString &newAccount_id);
+
     void showCardID();
     void setToken(const QByteArray &newToken);
     QByteArray token;
@@ -41,6 +46,7 @@ private slots:
     void on_btnback_clicked();
     void tilitapahtumatSlot (QNetworkReply *reply);
 
+
 signals:
     void logOutSignal();
 
@@ -49,6 +55,7 @@ private:
     QString cardID;
     QNetworkAccessManager *getManager;
     QNetworkReply *reply;
+    QNetworkReply *reply2;
     QByteArray response_data;
     automat *objectTilitapahtuma;
     QString tapahtuma;

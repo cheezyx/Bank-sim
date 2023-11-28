@@ -12,15 +12,18 @@ CONFIG += c++17
 SOURCES += \
     automat.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    tilinvalinta.cpp
 
 HEADERS += \
     automat.h \
-    mainwindow.h
+    mainwindow.h \
+    tilinvalinta.h
 
 FORMS += \
     automat.ui \
-    mainwindow.ui
+    mainwindow.ui \
+    tilinvalinta.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
