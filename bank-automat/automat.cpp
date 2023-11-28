@@ -43,7 +43,42 @@ void automat::on_nosto_clicked()
 }
 void automat::on_saldo_clicked()
 {
+    QString site_url = "http://localhost:3000/cards/accountinf/" + cardID;
+    QNetworkRequest request((site_url));
+    request.setRawHeader(QByteArray("Authorization"), (token));
+
+    getManager = new QNetworkAccessManager(this);
+    connect(getManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(saldoSlot(QNetworkReply*)));
+
+    reply = getManager->get(request);
     ui->stackedWidget->setCurrentIndex(4);
+}
+
+void automat::saldoSlot(QNetworkReply *reply)
+{
+    QByteArray response_data = reply->readAll();
+    QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
+    QJsonArray accountsArray = json_doc.array();
+
+    QString saldoInfo;
+    foreach (const QJsonValue &value, accountsArray) {
+        QJsonObject account = value.toObject();
+        int accountId = account["account_id"].toInt();
+        QString balance = account["balance"].toString();
+        QString accountType = account["account_type"].toString();
+        QString creditLimit = account["credit_limit"].toString();
+
+        saldoInfo += "Tilin ID: " + QString::number(accountId) +
+                     "\rSaldo: " + balance +
+                     "\rTilin tyyppi: " + accountType +
+                     "\rLuottoraja: " + creditLimit + "\r\n";
+    }
+
+    qDebug() << saldoInfo;
+    ui->tekstiAkkuna->setText(saldoInfo); // Asetetaan tilitiedot tekstiAkkunaan
+
+    reply->deleteLater();
+    getManager->deleteLater();
 }
 void automat::on_tilitapahtumat_clicked()
 {
