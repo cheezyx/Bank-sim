@@ -1,13 +1,18 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "automat.h"
+#include "tilinvalinta.h"
+
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
     objectautomat=new automat(this);
+
     connect(objectautomat, SIGNAL(logOutSignal()), this, SLOT(logoutSlot()));
 }
 
@@ -16,6 +21,9 @@ MainWindow::~MainWindow()
     disconnect(objectautomat, SIGNAL(logOutSignal()), this, SLOT(logoutSlot()));
     delete ui;
 }
+
+
+
 
 
 void MainWindow::on_btnLogin_clicked()
@@ -58,7 +66,9 @@ void MainWindow::loginSlot(QNetworkReply *reply)
                 qDebug() << "Login successful";
                 // Antaa tokenin
                 token = "Bearer "+response_data;
-
+                Tilinvalinta *tilinvalinta = new Tilinvalinta();
+                tilinvalinta->show();
+                this->hide();
 
                 objectautomat->setToken(token);
                 objectautomat->setCard_id(cardID);
@@ -104,35 +114,16 @@ void MainWindow::accountSlot(QNetworkReply *reply2)
         qDebug() << "RAW DATA: " << response_data;
            QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
            QJsonArray json_array = json_doc.array();
-           QString aAccounts;
-           QString aAccounts2;
 
            foreach (const QJsonValue &value, json_array) {
-               QJsonObject json_obj = value.toObject();
-               aAccounts+=QString::number(json_obj["account_id"].toInt())+",";
-               aAccounts2+=QString::number(json_obj["card_id"].toInt())+",";
+             QJsonObject json_obj = value.toObject();
+            int aAccounts = json_obj["account_id"].toInt();
+
+                qDebug()<<aAccounts;
+                accountID=aAccounts;
+                qDebug()<<accountID;
+
            }
-
-           qDebug()<<aAccounts;//account_IDs
-           qDebug()<<aAccounts2;//card_id
-
-
-          // ui->textEditResults->setText(aAccounts);
-                    QString testi = aAccounts;
-                    QStringList numerot = aAccounts.split(',');
-
-                    if (numerot.size() >= 2) {
-                         accountID1 = numerot[0].toInt();
-                         accountID2 = numerot[1].toInt();
-
-                               qDebug()<<accountID1;//accountID1
-                               qDebug()<<accountID2;//accountID2
-
-
-                              }  else {
-                                   qDebug()<<"vituiks meni";
-
-             }
            reply2->deleteLater();
            getManager->deleteLater();
 

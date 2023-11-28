@@ -9,6 +9,7 @@
 #include <tilinvalinta.h>
 
 
+
 namespace Ui {
 class automat;
 }
@@ -33,7 +34,6 @@ public:
     void fetchAndDisplayUserName();
     void updateGreetingLabel(QNetworkReply *reply);
 
-
 private slots:
 
     void on_siirto_clicked();
@@ -53,7 +53,6 @@ signals:
 private:
 
     QString cardID;
-    QString accountID;
     QNetworkAccessManager *getManager;
     QNetworkReply *reply;
     QNetworkReply *reply2;
