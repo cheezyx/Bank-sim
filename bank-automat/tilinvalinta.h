@@ -3,7 +3,6 @@
 
 #include <QDialog>
 
-
 namespace Ui {
 class Tilinvalinta;
 }
@@ -16,6 +15,8 @@ public:
     explicit Tilinvalinta(QWidget *parent = nullptr);
     ~Tilinvalinta();
 
+    void näytäAccountit();
+
 private slots:
     void on_tiliYksiBtn_clicked();
 
@@ -24,6 +25,8 @@ private slots:
 
 private:
     Ui::Tilinvalinta *ui;
+    QString accountID2;
+    QString accountID1;
 };
 
 #endif // TILINVALINTA_H

@@ -20,10 +20,14 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    int accountID1;
-    int accountID2;
+
+    void showAccounts();
+    int accountID;
+
+
+
 private slots:
     void on_btnLogin_clicked();
     void loginSlot (QNetworkReply *reply);
@@ -41,7 +45,6 @@ private:
     QByteArray response_data;
     automat *objectautomat;
     QString cardID;
-    QString accountID;
     QByteArray token;
 ;
 
