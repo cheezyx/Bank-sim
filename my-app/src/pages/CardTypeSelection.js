@@ -1,23 +1,37 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function CardTypeSelection() {
+const CardTypeSelection = () => {
   const navigate = useNavigate();
+  const [accounts, setAccounts] = useState([]);
+
+  useEffect(() => {
+      // Lue tilitiedot local storagesta tai contextista
+      const storedAccounts = JSON.parse(localStorage.getItem('accounts'));
+      if (storedAccounts) {
+          setAccounts(storedAccounts);
+      }
+  }, []);
 
   const handleSelection = (type) => {
-    // Tallenna valittu korttityyppi, esimerkiksi local storageen
-    localStorage.setItem('selected_card_type', type);
-    // Ohjaa käyttäjä AutomatPage-sivulle
-    navigate('/automat');
+      localStorage.setItem('selected_card_type', type);
+      navigate('/automat');
   };
 
   return (
-    <div>
-      <h1>Valitse tilimuoto</h1>
-      <button onClick={() => handleSelection('credit')}>Credit</button>
-      <button onClick={() => handleSelection('debit')}>Debit</button>
-    </div>
+      <div>
+          <h1>Valitse tilimuoto</h1>
+          {accounts.map((account, index) => (
+              <div key={index}>
+                  <p>Tilin tyyppi: {account.account_type}</p>
+                  <p>Saldo: {account.balance}</p>
+                  <p>Limiitti: {account.credit_limit}</p>
+              </div>
+          ))}
+          <button onClick={() => handleSelection('credit')}>Credit</button>
+          <button onClick={() => handleSelection('debit')}>Debit</button>
+      </div>
   );
-}
+};
 
 export default CardTypeSelection;

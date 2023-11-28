@@ -36,13 +36,27 @@ function LoginPage() {
             if (cardResponse.ok) {
               const cardDataArray = await cardResponse.json();
               if (cardDataArray.length > 0 && cardDataArray[0].card_type.toLowerCase() === 'dual') {
-                navigate('/cardTypeSelection');
+                  // Hae korttiin liittyvät tilit ennen kuin ohjaat eteenpäin
+                  const accountsResponse = await fetch(`http://localhost:3000/cards/accountinf/${cardId}`, {
+                    headers: {
+                      'Authorization': `Bearer ${token}`
+                    }
+                  });
+                  if (accountsResponse.ok) {
+                      const accountsData = await accountsResponse.json();
+                      // Tallenna tilitiedot, esimerkiksi local storageen tai contextiin
+                      localStorage.setItem('accounts', JSON.stringify(accountsData));
+                  } else {
+                      // Käsittele virhetilanne
+                      console.error('Error fetching accounts data');
+                  }
+                  navigate('/cardTypeSelection');
               } else {
-                navigate('/automat');
+                  navigate('/automat');
               }
-            } else {
+          } else {
               setMessage('Error fetching card data');
-            }
+          }
           } else {
             setMessage('Password incorrect or user does not exist');
           }
