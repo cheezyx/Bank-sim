@@ -21,13 +21,6 @@ const CardTypeSelection = () => {
   return (
       <div>
           <h1>Valitse tilimuoto</h1>
-          {accounts.map((account, index) => (
-              <div key={index}>
-                  <p>Tilin tyyppi: {account.account_type}</p>
-                  <p>Saldo: {account.balance}</p>
-                  <p>Limiitti: {account.credit_limit}</p>
-              </div>
-          ))}
           <button onClick={() => handleSelection('credit')}>Credit</button>
           <button onClick={() => handleSelection('debit')}>Debit</button>
       </div>
