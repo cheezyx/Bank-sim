@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "automat.h"
-#include "tilinvalinta.h"
 
 
 
@@ -66,9 +65,7 @@ void MainWindow::loginSlot(QNetworkReply *reply)
                 qDebug() << "Login successful";
                 // Antaa tokenin
                 token = "Bearer "+response_data;
-                Tilinvalinta *tilinvalinta = new Tilinvalinta();
-                tilinvalinta->show();
-                this->hide();
+
 
                 objectautomat->setToken(token);
                 objectautomat->setCard_id(cardID);
@@ -111,24 +108,54 @@ void MainWindow::accountSlot(QNetworkReply *reply2)
 
     response_data=reply2->readAll();
 
-        qDebug() << "RAW DATA: " << response_data;
+       // qDebug() << "RAW DATA: " << response_data;
            QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
            QJsonArray json_array = json_doc.array();
+           QString accID;
 
            foreach (const QJsonValue &value, json_array) {
              QJsonObject json_obj = value.toObject();
-            int aAccounts = json_obj["account_id"].toInt();
+             accID+= QString::number(json_obj ["account_id"].toInt())+",";
 
-                qDebug()<<aAccounts;
-                accountID=aAccounts;
-                qDebug()<<accountID;
+            }
+               qDebug()<<accID;
 
-           }
+               QStringList accIDList = accID.split(",", Qt::SkipEmptyParts);
+
+                   if (accIDList.size() >= 2) {
+                        ekaTili = accIDList.at(0);  // ekan tilin numero
+                        tokaTili = accIDList.at(1); // tokan tilin numero
+
+                       // nyt voidaan käyttää ekan ja tokan tilin numeroa
+                       qDebug() << "Ensimmäinen numero: " << ekaTili;
+                       qDebug() << "Toinen numero: " << tokaTili;
+
+                       tiliobjekti = new Tilinvalinta(this);
+
+                       tiliobjekti->näytäTilit(accID);
+
+                       objectautomat->setTokaTili(tokaTili);
+                       objectautomat->setEkaTili(ekaTili);
+
+                      // tiliobjekti->setEkaTili(ekaTili);
+                     //  tiliobjekti->setTokaTili(tokaTili);
+                       tiliobjekti->show();
+
+                   } else {
+                       tiliobjekti = new Tilinvalinta(this);
+
+
+                       objectautomat->setSoloTili(accID);
+
+                       qDebug() << "numeroi"<<accID;
+
+
+                       qDebug() << "vain yksitili";
+                   }
+
            reply2->deleteLater();
            getManager->deleteLater();
 
 
 
 }
-
-

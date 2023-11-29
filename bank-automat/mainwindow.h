@@ -1,13 +1,13 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "tilinvalinta.h"
 #include <QMainWindow>
 #include <QtNetwork>
 #include <QNetworkAccessManager>
 #include <QJsonDocument>
 #include <Automat.h>
 #include <QTimer>
-#include <tilinvalinta.h>
 
 
 
@@ -24,7 +24,6 @@ public:
     ~MainWindow();
 
     void showAccounts();
-    int accountID;
 
 
 
@@ -35,7 +34,8 @@ private slots:
     void accountSlot(QNetworkReply * reply);
 
 private:
-
+    QString ekaTili;
+    QString tokaTili;
     Ui::MainWindow *ui;
     QNetworkAccessManager *postManager;
     QNetworkAccessManager *getManager;
@@ -46,7 +46,8 @@ private:
     automat *objectautomat;
     QString cardID;
     QByteArray token;
-;
+    Tilinvalinta *tiliobjekti;
+
 
 };
 #endif // MAINWINDOW_H
