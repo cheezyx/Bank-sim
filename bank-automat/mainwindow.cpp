@@ -11,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     objectautomat=new automat(this);
+    tiliobjekti = new Tilinvalinta(this);
 
     connect(objectautomat, SIGNAL(logOutSignal()), this, SLOT(logoutSlot()));
 }
@@ -42,9 +43,6 @@ void MainWindow::on_btnLogin_clicked()
     connect(postManager, SIGNAL(finished (QNetworkReply*)), this, SLOT(loginSlot(QNetworkReply*)));
 
     reply = postManager->post(request, QJsonDocument(jsonObj).toJson());
-
-
-
 }
 
 
@@ -130,9 +128,9 @@ void MainWindow::accountSlot(QNetworkReply *reply2)
                        qDebug() << "Ensimmäinen numero: " << ekaTili;
                        qDebug() << "Toinen numero: " << tokaTili;
 
-                       tiliobjekti = new Tilinvalinta(this);
+                       //tiliobjekti = new Tilinvalinta(this);
 
-                       tiliobjekti->näytäTilit(accID);
+                       tiliobjekti->naytaTilit(accID);
 
                        objectautomat->setTokaTili(tokaTili);
                        objectautomat->setEkaTili(ekaTili);
@@ -142,7 +140,7 @@ void MainWindow::accountSlot(QNetworkReply *reply2)
                        tiliobjekti->show();
 
                    } else {
-                       tiliobjekti = new Tilinvalinta(this);
+                       //tiliobjekti = new Tilinvalinta(this);
 
 
                        objectautomat->setSoloTili(accID);

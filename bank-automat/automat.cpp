@@ -91,7 +91,6 @@ void automat::on_saldo_clicked()
     reply = getManager->get(request);
     ui->stackedWidget->setCurrentIndex(4);
 }
-
 void automat::saldoSlot(QNetworkReply *reply)
 {
     QByteArray response_data = reply->readAll();
@@ -136,7 +135,6 @@ void automat::on_tilitapahtumat_clicked()
     ui->stackedWidget->setCurrentIndex(5);
 
 }
-
 void automat::tilitapahtumatSlot(QNetworkReply *reply)
 {
     response_data = reply->readAll();
@@ -172,9 +170,9 @@ void automat::tilitapahtumatSlot(QNetworkReply *reply)
                       qDebug() << "Selite: " << description;
                       qDebug() << "Tilitapahtuman tyyppi: " << transactionType;
 */
-                      objectTilitapahtuma=new automat(this);
-                      objectTilitapahtuma->näytäTapahtumat(tTapahtumat);
-                      objectTilitapahtuma->show();
+                      //objectTilitapahtuma=new automat(this);
+                    ui->tekstiAkkuna->setText(tTapahtumat);
+                      //objectTilitapahtuma->show();
 
        }
 
@@ -192,24 +190,20 @@ void automat::on_logout_clicked()
     qDebug()<<"Logging out";
 
 }
-
-void automat::on_btnback_clicked()
+void automat::on_btncancel_clicked()
 {
     ui->stackedWidget->setCurrentIndex(0);
-
+    ui->tekstiAkkuna->clear();
 }
-
 void automat::setToken(const QByteArray &newToken)
 {
     token = newToken;
    // qDebug()<<token;
 }
-
-void automat::näytäTapahtumat(QString value)
+void automat::naytaTapahtumat(QString value)
 {
     ui->tekstiAkkuna->setText(value);
 }
-
 void automat::fetchAndDisplayUserName() {
     QString site_url = "http://localhost:3000/cards/owner/" + cardID;
     QNetworkRequest request((site_url));
@@ -220,7 +214,6 @@ void automat::fetchAndDisplayUserName() {
 
     getManager->get(request);
 }
-
 void automat::updateGreetingLabel(QNetworkReply *reply) {
     QByteArray response_data = reply->readAll();
     QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
@@ -249,10 +242,6 @@ void automat::updateGreetingLabel(QNetworkReply *reply) {
 
     reply->deleteLater();
 }
-
-
-
-
 void automat::on_Tili2_clicked()
 {
     accountID=tokaTili;
@@ -261,8 +250,6 @@ void automat::on_Tili2_clicked()
     ui->tili1->hide();
     qDebug()<<accountID;
 }
-
-
 void automat::on_tili1_clicked()
 {
     accountID=ekaTili;
@@ -271,13 +258,6 @@ void automat::on_tili1_clicked()
     ui->tili1->hide();
     qDebug()<<accountID;
 }
-
-
-void automat::on_btn1_clicked()
-{
-
-}
-
 void automat::numberClickedHandler()
 {
   QPushButton * button = qobject_cast<QPushButton*>(sender());
@@ -296,7 +276,6 @@ void automat::numberClickedHandler()
        qDebug() <<"Button name:"<< button;
       }
 }
-
 void automat::backspacehandler()
 {
 
@@ -307,4 +286,5 @@ void automat::backspacehandler()
     }
     ui->tekstiAkkuna->setPlainText(nyykyneteksti);
 }
+
 

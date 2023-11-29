@@ -50,7 +50,7 @@ void Tilinvalinta::on_tiliKaksiBtn_clicked()
 
 }
 
-void Tilinvalinta::näytäTilit(QString value)
+void Tilinvalinta::naytaTilit(QString value)
 {
     ui->tilinValintamenu_2->setText("valitse tileistä");
 

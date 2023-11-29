@@ -25,12 +25,11 @@ public:
     explicit automat(QWidget *parent = nullptr);
     ~automat();
     void setCard_id(const QString &newCard_id);
-
     void showCardID();
     void setToken(const QByteArray &newToken);
     QByteArray token;
     void  startLogoutTimer();
-    void näytäTapahtumat(QString value);
+    void naytaTapahtumat(QString value);
     void fetchAndDisplayUserName();
     void updateGreetingLabel(QNetworkReply *reply);
     void setAccountID(const QString &newAccountID);
@@ -39,9 +38,7 @@ public:
     QString tokaTili;
     QString soloTili;
     void setEkaTili(const QString &newEkaTili);
-
     void setTokaTili(const QString &newTokaTili);
-
     void setSoloTili(const QString &newSoloTili);
 
 public slots:
@@ -55,15 +52,15 @@ private slots:
     void on_tilitapahtumat_clicked();
     void on_logout_clicked();
     //void on_btnenter_clicked();
-    void on_btnback_clicked();
+    //void on_btnback_clicked();
+    void on_btncancel_clicked();
     void tilitapahtumatSlot (QNetworkReply *reply);
     void saldoSlot (QNetworkReply *reply);
 
     void on_Tili2_clicked();
-
     void on_tili1_clicked();
 
-    void on_btn1_clicked();
+    //void on_btn1_clicked();
     void numberClickedHandler();
     void backspacehandler();
 
@@ -80,7 +77,7 @@ private:
     QNetworkReply *reply;
     QNetworkReply *reply2;
     QByteArray response_data;
-    automat *objectTilitapahtuma;
+    //automat *objectTilitapahtuma;
     QString tapahtuma;
 
 
