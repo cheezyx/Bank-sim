@@ -15,6 +15,24 @@ function AutomatPage() {
   const token = localStorage.getItem('token');
   const navigate = useNavigate();
   const [message, setMessage] = useState('');
+  const [transactions, setTransactions] = useState([]);
+  const [showTransactions, setShowTransactions] = useState(false);
+
+  const fetchTransactions = () => {
+    if (selectedAccount) {
+        fetch(`http://localhost:3000/transactions/all_transfers/${selectedAccount.account_id}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            setTransactions(data.slice(-5)); // Tallentaa viisi viimeisintä tilitapahtumaa
+        })
+        .catch(error => console.error('Error:', error));
+    }
+};
+
 
   const fetchAccountDetails = () => {
     fetch(`http://localhost:3000/cards/accountinf/${cardId}`, {
@@ -63,6 +81,11 @@ function AutomatPage() {
     } catch (error) {
         console.error('Transaction error:', error);
     }
+};
+
+const handleShowTransactions = () => {
+    setShowTransactions(!showTransactions);
+    fetchTransactions();
 };
 
 useEffect(() => {
@@ -123,6 +146,11 @@ useEffect(() => {
         navigate('/');
     };
 
+    function formatDate(dateString) {
+        const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' };
+        return new Date(dateString).toLocaleDateString('fi-FI', options).replace(/\//g, '.');
+    }
+
 return (
     <div>
         {name ? <h1>Hei {name}!</h1> : <p>Ladataan...</p>}
@@ -133,17 +161,25 @@ return (
             <div>
                 <h2>Tilitiedot</h2>
                 {selectedAccount ? (
-                    <div>
-                        <p>Tilin tyyppi: {selectedAccount.account_type}</p>
-                        <p>Saldo: {selectedAccount.balance}</p>
-                        {selectedAccount.credit_limit && <p>Limiitti: {selectedAccount.credit_limit}</p>}
+                    <div style={{
+                        padding: '10px',
+                        margin: '5px 0',
+                        backgroundColor: '#e0e0e0',
+                    }}>
+                        <p><strong>Tilin tyyppi:</strong> {selectedAccount.account_type}</p>
+                        <p><strong>Saldo:</strong> {selectedAccount.balance}</p>
+                        {selectedAccount.credit_limit && <p><strong>Luottoraja:</strong> {selectedAccount.credit_limit}</p>}
                     </div>
                 ) : (
                     accounts.map((account, index) => (
-                        <div key={index}>
-                            <p>Tilin tyyppi: {account.account_type}</p>
-                            <p>Saldo: {account.balance}</p>
-                            {account.credit_limit && <p>Limiitti: {account.credit_limit}</p>}
+                        <div key={index} style={{
+                            padding: '10px',
+                            margin: '5px 0',
+                            backgroundColor: index % 2 === 0 ? '#e0e0e0' : '#ffffff',
+                        }}>
+                            <p><strong>Tilin tyyppi:</strong> {account.account_type}</p>
+                            <p><strong>Saldo:</strong> {account.balance}</p>
+                            {account.credit_limit && <p><strong>Luottoraja:</strong> {account.credit_limit}</p>}
                         </div>
                     ))
                 )}
@@ -178,6 +214,27 @@ return (
             </div>
         )}
         <button disabled>Siirto</button>
+        <button onClick={handleShowTransactions}>
+            {showTransactions ? 'Piilota tilitapahtumat' : 'Näytä tilitapahtumat'}
+        </button>
+        {showTransactions && (
+            <div>
+                <h2>Tilitapahtumat</h2>
+                {transactions.map((transaction, index) => (
+                    <div key={index} style={{
+                        padding: '10px',
+                        margin: '5px 0',
+                        backgroundColor: index % 2 === 0 ? '#e0e0e0' : '#ffffff',
+                    }}>
+                        <p><strong>Tilitapahtuma:</strong> {transaction.transaction_type}</p>
+                        <p><strong>Määrä:</strong> {transaction.amount}</p>
+                        <p><strong>Kuvaus:</strong> {transaction.description}</p>
+                        <p><strong>Aika:</strong> {formatDate(transaction.date_time)}</p>
+                        {/* Lisää haluamasi tietoja tilitapahtumista tähän */}
+                    </div>
+                ))}
+            </div>
+        )}
         <button onClick={handleLogout}>Kirjaudu ulos</button>
         {message && <div>{message}</div>} {/* Tässä näkyy palautetut viestit */}
     </div>
