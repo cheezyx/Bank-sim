@@ -6,6 +6,10 @@ transaction::transaction(QWidget *parent)
     , ui(new Ui::transaction)
 {
     ui->setupUi(this);
+    connect(ui->siirto, &QPushButton::clicked, this,SLOT(siirtoSlot);
+    connect(ui->talletus, &QPushButton::clicked, this, &automat::on_talletus_clicked);
+    connect(ui->nosto, &QPushButton::clicked, this, &automat::on_nosto_clicked);
+
 }
 
 transaction::~transaction()

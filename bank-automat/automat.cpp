@@ -67,18 +67,7 @@ void automat::setEkaTili(const QString &newEkaTili)
     qDebug()<<"eka"<<ekaTili;
 }
 
-void automat::on_siirto_clicked()
-{
-    ui->stackedWidget->setCurrentIndex(1);
-}
-void automat::on_talletus_clicked()
-{
-    ui->stackedWidget->setCurrentIndex(2);
-}
-void automat::on_nosto_clicked()
-{
-    ui->stackedWidget->setCurrentIndex(3);
-}
+
 void automat::on_saldo_clicked()
 {
     QString site_url = "http://localhost:3000/cards/accountinf/" + cardID;
@@ -287,4 +276,10 @@ void automat::backspacehandler()
     ui->tekstiAkkuna->setPlainText(nyykyneteksti);
 }
 
+void automat::on_siirto_clicked();
+{
 
+        this->hide();
+        emit siirtoSignal();
+        qDebug()<<"rahanhallinta";
+}

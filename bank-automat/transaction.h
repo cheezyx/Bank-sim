@@ -1,5 +1,6 @@
 #ifndef TRANSACTION_H
 #define TRANSACTION_H
+#include "automat.h"
 
 #include <QDialog>
 
@@ -14,6 +15,9 @@ class transaction : public QDialog
 public:
     explicit transaction(QWidget *parent = nullptr);
     ~transaction();
+
+private slots:
+    void siirtoSlot();
 
 private:
     Ui::transaction *ui;
