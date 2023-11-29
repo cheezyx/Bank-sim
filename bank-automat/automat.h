@@ -6,7 +6,8 @@
 #include <QNetworkAccessManager>
 #include <QJsonDocument>
 #include <QTimer>
-#include <tilinvalinta.h>
+
+
 
 
 
@@ -24,7 +25,6 @@ public:
     explicit automat(QWidget *parent = nullptr);
     ~automat();
     void setCard_id(const QString &newCard_id);
-    void setAccount_id(const QString &newAccount_id);
 
     void showCardID();
     void setToken(const QByteArray &newToken);
@@ -33,9 +33,21 @@ public:
     void näytäTapahtumat(QString value);
     void fetchAndDisplayUserName();
     void updateGreetingLabel(QNetworkReply *reply);
+    void setAccountID(const QString &newAccountID);
+    QString accountID;
+    QString ekaTili;
+    QString tokaTili;
+    QString soloTili;
+    void setEkaTili(const QString &newEkaTili);
+
+    void setTokaTili(const QString &newTokaTili);
+
+    void setSoloTili(const QString &newSoloTili);
+
+public slots:
+
 
 private slots:
-
     void on_siirto_clicked();
     void on_talletus_clicked();
     void on_nosto_clicked();
@@ -46,11 +58,21 @@ private slots:
     void on_btnback_clicked();
     void tilitapahtumatSlot (QNetworkReply *reply);
 
+    void on_Tili2_clicked();
+
+    void on_tili1_clicked();
+
+    void on_btn1_clicked();
+    void numberClickedHandler();
+    void backspacehandler();
 
 signals:
     void logOutSignal();
 
+
+
 private:
+
 
     QString cardID;
     QNetworkAccessManager *getManager;
@@ -59,6 +81,9 @@ private:
     QByteArray response_data;
     automat *objectTilitapahtuma;
     QString tapahtuma;
+
+
+
 };
 
 #endif // AUTOMAT_H

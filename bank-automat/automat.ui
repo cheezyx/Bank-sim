@@ -512,6 +512,32 @@
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
+  <widget class="QPushButton" name="tili1">
+   <property name="geometry">
+    <rect>
+     <x>420</x>
+     <y>130</y>
+     <width>71</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Tili1</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Tili2">
+   <property name="geometry">
+    <rect>
+     <x>500</x>
+     <y>130</y>
+     <width>75</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Tili2</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>
