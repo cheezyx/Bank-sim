@@ -2,6 +2,7 @@
 #define TILINVALINTA_H
 
 #include <QDialog>
+#include <Automat.h>
 
 namespace Ui {
 class Tilinvalinta;
@@ -15,18 +16,29 @@ public:
     explicit Tilinvalinta(QWidget *parent = nullptr);
     ~Tilinvalinta();
 
-    void näytäAccountit();
+    void näytäTilit(QString value);
+
+    void setAccountID(const QString &newAccountID);
+    QString getAccountID() ;
+    QString accountID;
+
+signals:
+public slots:
+    void on_tiliYksiBtn_clicked();
+    void on_tiliKaksiBtn_clicked();
 
 private slots:
-    void on_tiliYksiBtn_clicked();
-
-    void on_tiliKaksiBtn_clicked();
 
 
 private:
     Ui::Tilinvalinta *ui;
-    QString accountID2;
-    QString accountID1;
+    QString ekaTili;
+    QString tokaTili;
+    automat *objectAuto;
+
+
+
+
 };
 
 #endif // TILINVALINTA_H
