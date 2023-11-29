@@ -12,9 +12,11 @@ BEGIN
 
 
     INSERT INTO transactions (from_account_id, to_account_id, amount, date_time, description, transaction_type)
-    VALUES (NULL, p_account_id, p_amount, NOW(), p_description, 5); 
+    VALUES (NULL, p_account_id, p_amount, NOW(), p_description, 'deposit'); 
 
     SET p_message = 'Talletus onnistui';
 END //
 
 DELIMITER ;
+
+--  DROP PROCEDURE DepositBalance

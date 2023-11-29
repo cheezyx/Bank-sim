@@ -33,10 +33,10 @@ const transactionsmodel = {
       }
     );
   },
-  transferBalance: function(from_account_id, to_account_id, amount, description, transaction_type, callback) {
+  transferBalance: function(from_account_id, to_account_id, amount, description, callback) {
     db.query(
-      'CALL TransferBalance(?, ?, ?, ?, ?, @message)',
-      [from_account_id, to_account_id, amount, description, transaction_type],
+      'CALL TransferBalance(?, ?, ?, ?, @message)',
+      [from_account_id, to_account_id, amount, description],
       (err, results) => {
         if (err) {
           return callback(err, null);
