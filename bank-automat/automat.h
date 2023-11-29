@@ -6,7 +6,7 @@
 #include <QNetworkAccessManager>
 #include <QJsonDocument>
 #include <QTimer>
-
+#include "transaction.h"
 
 
 
@@ -42,7 +42,7 @@ public:
     void setSoloTili(const QString &newSoloTili);
 
 public slots:
-
+     void opentransactionWindow();
 
 private slots:
     void on_siirto_clicked();
@@ -79,7 +79,7 @@ private:
     QByteArray response_data;
     //automat *objectTilitapahtuma;
     QString tapahtuma;
-
+    transaction *transactionWindow;
 
 
 };

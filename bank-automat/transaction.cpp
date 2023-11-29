@@ -6,13 +6,15 @@ transaction::transaction(QWidget *parent)
     , ui(new Ui::transaction)
 {
     ui->setupUi(this);
-    connect(ui->siirto, &QPushButton::clicked, this,SLOT(siirtoSlot);
-    connect(ui->talletus, &QPushButton::clicked, this, &automat::on_talletus_clicked);
-    connect(ui->nosto, &QPushButton::clicked, this, &automat::on_nosto_clicked);
+    connect(ui->btncancel, &QPushButton::clicked, this, &transaction::onbtncancelClicked);
 
 }
 
 transaction::~transaction()
 {
     delete ui;
+}
+void transaction::onbtncancelClicked() {
+    this->hide();
+    emit closetransactionWindow();
 }

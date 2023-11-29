@@ -106,16 +106,16 @@ void MainWindow::accountSlot(QNetworkReply *reply2)
 
     response_data=reply2->readAll();
 
-       // qDebug() << "RAW DATA: " << response_data;
-           QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
-           QJsonArray json_array = json_doc.array();
-           QString accID;
+    // qDebug() << "RAW DATA: " << response_data;
+    QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
+    QJsonArray json_array = json_doc.array();
+    QString accID;
 
-           foreach (const QJsonValue &value, json_array) {
-             QJsonObject json_obj = value.toObject();
-             accID+= QString::number(json_obj ["account_id"].toInt())+",";
+    foreach (const QJsonValue &value, json_array) {
+            QJsonObject json_obj = value.toObject();
+            accID+= QString::number(json_obj ["account_id"].toInt())+",";
 
-            }
+    }
                qDebug()<<accID;
 
                QStringList accIDList = accID.split(",", Qt::SkipEmptyParts);

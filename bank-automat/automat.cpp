@@ -1,13 +1,13 @@
 #include "automat.h"
 #include "ui_automat.h"
-
+#include "transaction.h"
 automat::automat(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::automat)
 {
 
     ui->setupUi(this);
-
+    transactionWindow = new transaction(this);
     ui->stackedWidget->setCurrentIndex(0);
     connect(ui->btn1,SIGNAL(clicked(bool)),this,SLOT(numberClickedHandler()));
     connect(ui->btn2,SIGNAL(clicked(bool)),this,SLOT(numberClickedHandler()));
@@ -20,7 +20,10 @@ automat::automat(QWidget *parent) :
     connect(ui->btn9,SIGNAL(clicked(bool)),this,SLOT(numberClickedHandler()));
     connect(ui->btn0,SIGNAL(clicked(bool)),this,SLOT(numberClickedHandler()));
     connect(ui->btnback, SIGNAL(clicked(bool)), this, SLOT(backspacehandler()));
-
+    connect(ui->siirto, &QPushButton::clicked, this, &automat::opentransactionWindow);
+    connect(ui->talletus, &QPushButton::clicked, this, &automat::opentransactionWindow);
+    connect(ui->nosto, &QPushButton::clicked, this, &automat::opentransactionWindow);
+    connect(transactionWindow, &transaction::closetransactionWindow, this, &automat::show);
 }
 
 automat::~automat()
@@ -276,10 +279,25 @@ void automat::backspacehandler()
     ui->tekstiAkkuna->setPlainText(nyykyneteksti);
 }
 
-void automat::on_siirto_clicked();
+void automat::on_siirto_clicked()
 {
+    this->hide(); // Piilota automat-ikkuna
+    transactionWindow->show(); // Näytä transactions-ikkuna
+}
 
-        this->hide();
-        emit siirtoSignal();
-        qDebug()<<"rahanhallinta";
+void automat::on_nosto_clicked()
+{
+    this->hide();
+    transactionWindow->show();
+}
+
+void automat::on_talletus_clicked()
+{
+    this->hide();
+    transactionWindow->show();
+}
+void automat::opentransactionWindow()
+{
+    this->hide();
+    transactionWindow->show();
 }
