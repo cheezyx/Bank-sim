@@ -1,6 +1,5 @@
 #ifndef TRANSACTION_H
 #define TRANSACTION_H
-#include "automat.h"
 
 #include <QDialog>
 
@@ -15,9 +14,13 @@ class transaction : public QDialog
 public:
     explicit transaction(QWidget *parent = nullptr);
     ~transaction();
-
+public slots:
+    void onbtncancelClicked();
 private slots:
-    void siirtoSlot();
+
+signals:
+    void opentransactionWindow();
+    void closetransactionWindow();
 
 private:
     Ui::transaction *ui;
