@@ -57,6 +57,7 @@ private slots:
     //void on_btnenter_clicked();
     void on_btnback_clicked();
     void tilitapahtumatSlot (QNetworkReply *reply);
+    void saldoSlot (QNetworkReply *reply);
 
     void on_Tili2_clicked();
 
