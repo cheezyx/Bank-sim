@@ -13,19 +13,16 @@ SOURCES += \
     automat.cpp \
     main.cpp \
     mainwindow.cpp \
-    tilinvalinta.cpp \
     transaction.cpp
 
 HEADERS += \
     automat.h \
     mainwindow.h \
-    tilinvalinta.h \
     transaction.h
 
 FORMS += \
     automat.ui \
     mainwindow.ui \
-    tilinvalinta.ui \
     transaction.ui
 
 # Default rules for deployment.

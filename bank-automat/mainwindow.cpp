@@ -11,7 +11,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     objectautomat=new automat(this);
-    tiliobjekti = new Tilinvalinta(this);
 
     connect(objectautomat, SIGNAL(logOutSignal()), this, SLOT(logoutSlot()));
 }
@@ -70,6 +69,8 @@ void MainWindow::loginSlot(QNetworkReply *reply)
                 objectautomat->fetchAndDisplayUserName();
                 objectautomat->showCardID();
                 objectautomat->show();
+                objectautomat->nollaa();
+
                 this->hide();
 
                 QString site_url2 = "http://localhost:3000/card_privileges/" + cardID;
@@ -110,11 +111,9 @@ void MainWindow::accountSlot(QNetworkReply *reply2)
     QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
     QJsonArray json_array = json_doc.array();
     QString accID;
-
     foreach (const QJsonValue &value, json_array) {
             QJsonObject json_obj = value.toObject();
             accID+= QString::number(json_obj ["account_id"].toInt())+",";
-
     }
                qDebug()<<accID;
 
@@ -127,27 +126,14 @@ void MainWindow::accountSlot(QNetworkReply *reply2)
                        // nyt voidaan käyttää ekan ja tokan tilin numeroa
                        qDebug() << "Ensimmäinen numero: " << ekaTili;
                        qDebug() << "Toinen numero: " << tokaTili;
-
-                       //tiliobjekti = new Tilinvalinta(this);
-
-                       tiliobjekti->naytaTilit(accID);
-
                        objectautomat->setTokaTili(tokaTili);
                        objectautomat->setEkaTili(ekaTili);
 
-                      // tiliobjekti->setEkaTili(ekaTili);
-                     //  tiliobjekti->setTokaTili(tokaTili);
-                       tiliobjekti->show();
-
                    } else {
-                       //tiliobjekti = new Tilinvalinta(this);
-
 
                        objectautomat->setSoloTili(accID);
 
                        qDebug() << "numeroi"<<accID;
-
-
                        qDebug() << "vain yksitili";
                    }
 
