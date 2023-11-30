@@ -1,7 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "tilinvalinta.h"
 #include <QMainWindow>
 #include <QtNetwork>
 #include <QNetworkAccessManager>
@@ -46,8 +45,6 @@ private:
     automat *objectautomat;
     QString cardID;
     QByteArray token;
-    Tilinvalinta *tiliobjekti;
-
 
 };
 #endif // MAINWINDOW_H

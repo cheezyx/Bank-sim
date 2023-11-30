@@ -51,7 +51,7 @@ void automat::setSoloTili(const QString &newSoloTili)
 {
     soloTili = newSoloTili;
     ui->Tili2->hide();
-    ui->tili1->hide();
+    ui->Tili1->hide();
     accountID = soloTili;
     qDebug()<<"solo"<<soloTili;
 }
@@ -115,7 +115,7 @@ void automat::on_tilitapahtumat_clicked()
 {
 
 
-    qDebug() <<"accountID: " << accountID;
+    //qDebug() <<"accountID: " << accountID;
     QString site_url="http://localhost:3000/transactions/last_five_transactions/"+accountID;
     QNetworkRequest request((site_url));
     request.setRawHeader(QByteArray("Authorization"),(token));
@@ -163,22 +163,8 @@ void automat::tilitapahtumatSlot(QNetworkReply *reply)
                       qDebug() << "Selite: " << description;
                       qDebug() << "Tilitapahtuman tyyppi: " << transactionType;
 */
-<<<<<<< HEAD
-                   //   objectTilitapahtuma=new automat(this);
                  ui->tekstiAkkuna->setText(tTapahtumat);
-                    //  objectTilitapahtuma->näytäTapahtumat(tTapahtumat);
-                    // objectTilitapahtuma->show();
-=======
-                      //objectTilitapahtuma=new automat(this);
-                    ui->tekstiAkkuna->setText(tTapahtumat);
-                      //objectTilitapahtuma->show();
->>>>>>> origin
-
        }
-
-
-
-
     reply->deleteLater();
     getManager->deleteLater();
 }
@@ -186,6 +172,15 @@ void automat::on_logout_clicked()
 {
     this->hide();
     emit logOutSignal();
+    ui->Tili2->show();
+    ui->Tili1->show();
+    ui->Tili2->setDisabled(false);
+    ui->Tili1->setDisabled(false);
+    ui->tekstiAkkuna->clear();
+    ui->stackedWidget->setCurrentWidget(0);
+
+    accountID = 0;
+
     qDebug()<<"Logging out";
 
 }
@@ -212,6 +207,12 @@ void automat::fetchAndDisplayUserName() {
     connect(getManager, &QNetworkAccessManager::finished, this, &automat::updateGreetingLabel);
 
     getManager->get(request);
+}
+
+void automat::nollaa()
+{
+    ui->stackedWidget->setCurrentIndex(0);
+    ui->tekstiAkkuna->clear();
 }
 void automat::updateGreetingLabel(QNetworkReply *reply) {
     QByteArray response_data = reply->readAll();
@@ -241,22 +242,25 @@ void automat::updateGreetingLabel(QNetworkReply *reply) {
 
     reply->deleteLater();
 }
-void automat::on_Tili2_clicked()
-{
-    accountID=tokaTili;
-    ui->tili1->setDisabled(true);
-    ui->Tili2->hide();
-    ui->tili1->hide();
-    qDebug()<<accountID;
-}
-void automat::on_tili1_clicked()
+void automat::on_Tili1_clicked()
 {
     accountID=ekaTili;
     ui->Tili2->setDisabled(true);
     ui->Tili2->hide();
-    ui->tili1->hide();
-    qDebug()<<accountID;
+    ui->Tili1->hide();
+    qDebug()<<"tili1 accountID"<<accountID;
 }
+void automat::on_Tili2_clicked()
+{
+    accountID=tokaTili;
+    ui->Tili1->setDisabled(true);
+    ui->Tili2->hide();
+    ui->Tili1->hide();
+    qDebug()<<"tili2 accountID"<<accountID;
+
+}
+
+
 void automat::numberClickedHandler()
 {
   QPushButton * button = qobject_cast<QPushButton*>(sender());
@@ -264,24 +268,18 @@ void automat::numberClickedHandler()
  {
        QString numero = button->text();
        if(numero == "btnback"){
-
        backspacehandler();
-
        } else
-       {
-       ui->tekstiAkkuna->insertPlainText(numero);
+       {       ui->tekstiAkkuna->insertPlainText(numero);
 
-           }
-       qDebug() <<"Button name:"<< button;
+       }    qDebug() <<"Button name:"<< button;
       }
 }
 void automat::backspacehandler()
 {
-
     QString nyykyneteksti = ui->tekstiAkkuna->toPlainText();
     if (!nyykyneteksti.isEmpty()){
         nyykyneteksti.chop(1);
-
     }
     ui->tekstiAkkuna->setPlainText(nyykyneteksti);
 }

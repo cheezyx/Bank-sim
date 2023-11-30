@@ -31,6 +31,7 @@ public:
     void  startLogoutTimer();
     void naytaTapahtumat(QString value);
     void fetchAndDisplayUserName();
+    void nollaa();
     void updateGreetingLabel(QNetworkReply *reply);
     void setAccountID(const QString &newAccountID);
     QString accountID;
@@ -57,12 +58,12 @@ private slots:
     void tilitapahtumatSlot (QNetworkReply *reply);
     void saldoSlot (QNetworkReply *reply);
 
-    void on_Tili2_clicked();
-    void on_tili1_clicked();
-
-    //void on_btn1_clicked();
     void numberClickedHandler();
     void backspacehandler();
+
+    void on_Tili1_clicked();
+
+    void on_Tili2_clicked();
 
 signals:
     void logOutSignal();
