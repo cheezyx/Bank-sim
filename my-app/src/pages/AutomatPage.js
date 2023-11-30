@@ -296,6 +296,12 @@ function AutomatPage() {
                         {transactions.map((transaction, index) => (
                             <div key={index} className="transaction-detail">
                                 <p><strong>Tilitapahtuma:</strong> {transaction.transaction_type}</p>
+                                {transaction.transaction_type !== 'withdraw' && transaction.transaction_type !== 'deposit' && (
+                                    <>
+                                        <p><strong>Tililtä:</strong> {transaction.from_account_id}</p>
+                                        <p><strong>Tilille:</strong> {transaction.to_account_id}</p>
+                                    </>
+                                )}
                                 <p><strong>Määrä:</strong> {transaction.amount}</p>
                                 <p><strong>Kuvaus:</strong> {transaction.description}</p>
                                 <p><strong>Aika:</strong> {formatDate(transaction.date_time)}</p>

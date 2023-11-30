@@ -13,7 +13,6 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/automat" element={<AutomatPage />} />
         <Route path="/cardTypeSelection" element={<CardTypeSelection />} />
-        {/* Lisää reittejä tarvittaessa */}
       </Routes>
     </Router>
   );
