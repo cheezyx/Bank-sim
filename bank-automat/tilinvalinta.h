@@ -16,7 +16,7 @@ public:
     explicit Tilinvalinta(QWidget *parent = nullptr);
     ~Tilinvalinta();
 
-    void näytäTilit(QString value);
+    void naytaTilit(QString value);
 
     void setAccountID(const QString &newAccountID);
     QString getAccountID() ;
