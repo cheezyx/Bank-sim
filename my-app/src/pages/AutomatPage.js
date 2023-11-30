@@ -22,7 +22,7 @@ function AutomatPage() {
     const [showTransferForm, setShowTransferForm] = useState(false);
     const [isTransactionActive, setIsTransactionActive] = useState(false);
 
-   
+
 
     const openTransactionForm = (type) => {
         setTransactionType(type);
@@ -76,9 +76,9 @@ function AutomatPage() {
             })
             .then(response => response.json())
             .then(data => {
-                // Kääntää saadun datan järjestyksen
-                const reversedData = data.slice().reverse();
-                setTransactions(reversedData); // Tallentaa tilitapahtumat käännetyssä järjestyksessä
+                // Kääntää saadun datan järjestyksen ja ottaa viisi viimeisintä alkiota
+                const latestTransactions = data.slice().reverse().slice(0, 5);
+                setTransactions(latestTransactions); // Tallentaa viisi viimeisintä tilitapahtumaa
             })
             .catch(error => console.error('Error:', error));
         }
