@@ -13,19 +13,20 @@ SOURCES += \
     automat.cpp \
     main.cpp \
     mainwindow.cpp \
-    tilinvalinta.cpp
+    transaction.cpp
 
 HEADERS += \
     automat.h \
     mainwindow.h \
-    tilinvalinta.h
+    transaction.h
 
 FORMS += \
     automat.ui \
     mainwindow.ui \
-    tilinvalinta.ui
+    transaction.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
