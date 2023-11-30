@@ -74,13 +74,13 @@ function AutomatPage() {
                     'Authorization': `Bearer ${token}`
                 }
             })
-            .then(response => response.json())
-            .then(data => {
-                // Kääntää saadun datan järjestyksen ja ottaa viisi viimeisintä alkiota
-                const latestTransactions = data.slice().reverse().slice(0, 5);
-                setTransactions(latestTransactions); // Tallentaa viisi viimeisintä tilitapahtumaa
-            })
-            .catch(error => console.error('Error:', error));
+                .then(response => response.json())
+                .then(data => {
+                    // Kääntää saadun datan järjestyksen ja ottaa viisi viimeisintä alkiota
+                    const latestTransactions = data.slice().reverse().slice(0, 5);
+                    setTransactions(latestTransactions); // Tallentaa viisi viimeisintä tilitapahtumaa
+                })
+                .catch(error => console.error('Error:', error));
         }
     };
 
@@ -210,7 +210,7 @@ function AutomatPage() {
                 {!showTransactionForm && !showTransferForm && (
                     <>
                         <button onClick={handleShowAccountDetails}>
-                            {showAccountDetails ? 'Piilota saldo' : 'Näytä saldo'}
+                            {showAccountDetails ? 'Piilota saldo' : 'Saldo'}
                         </button>
                         <button onClick={() => {
                             setTransactionType('withdraw');
@@ -225,7 +225,7 @@ function AutomatPage() {
                             setShowTransferForm(true);
                         }}>Siirto</button>
                         <button onClick={handleShowTransactions}>
-                            {showTransactions ? 'Piilota tilitapahtumat' : 'Näytä tilitapahtumat'}
+                            {showTransactions ? 'Piilota tilitapahtumat' : 'Tilitapahtumat'}
                         </button>
                     </>
                 )}
@@ -239,9 +239,12 @@ function AutomatPage() {
                                 margin: '5px 0',
                                 backgroundColor: '#e0e0e0',
                             }}>
-                                <p><strong>Tilin tyyppi:</strong> {selectedAccount.account_type}</p>
+                                <p><strong>Tilinumero:</strong> {selectedAccount.account_id}</p>
+                                <p><strong>Tyyppi:</strong> {selectedAccount.account_type}</p>
                                 <p><strong>Saldo:</strong> {selectedAccount.balance}</p>
-                                {selectedAccount.credit_limit && <p><strong>Luottoraja:</strong> {selectedAccount.credit_limit}</p>}
+                                {selectedAccount.account_type === 'credit' && selectedAccount.credit_limit && (
+                                    <p><strong>Luottoraja:</strong> {selectedAccount.credit_limit}</p>
+                                )}
                             </div>
                         ) : (
                             accounts.map((account, index) => (
@@ -252,7 +255,9 @@ function AutomatPage() {
                                 }}>
                                     <p><strong>Tilin tyyppi:</strong> {account.account_type}</p>
                                     <p><strong>Saldo:</strong> {account.balance}</p>
-                                    {account.credit_limit && <p><strong>Luottoraja:</strong> {account.credit_limit}</p>}
+                                    {account.account_type === 'credit' && account.credit_limit && (
+                                        <p><strong>Luottoraja:</strong> {account.credit_limit}</p>
+                                    )}
                                 </div>
                             ))
                         )}
