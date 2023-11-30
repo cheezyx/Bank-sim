@@ -6,6 +6,7 @@ automat::automat(QWidget *parent) :
     ui(new Ui::automat)
 {
 
+
     ui->setupUi(this);
 
     ui->stackedWidget->setCurrentIndex(0);
@@ -172,15 +173,15 @@ void automat::tilitapahtumatSlot(QNetworkReply *reply)
                       qDebug() << "Selite: " << description;
                       qDebug() << "Tilitapahtuman tyyppi: " << transactionType;
 */
-                      objectTilitapahtuma=new automat(this);
-                      objectTilitapahtuma->näytäTapahtumat(tTapahtumat);
-                      objectTilitapahtuma->show();
+                   //   objectTilitapahtuma=new automat(this);
+                 ui->tekstiAkkuna->setText(tTapahtumat);
+                    //  objectTilitapahtuma->näytäTapahtumat(tTapahtumat);
+                    // objectTilitapahtuma->show();
 
        }
 
 
 
-       //ui->textEditResults->setText(tTapahtumat);
 
     reply->deleteLater();
     getManager->deleteLater();

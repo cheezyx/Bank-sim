@@ -80,7 +80,7 @@ private:
     QNetworkReply *reply;
     QNetworkReply *reply2;
     QByteArray response_data;
-    automat *objectTilitapahtuma;
+    //automat *objectTilitapahtuma;
     QString tapahtuma;
 
 
