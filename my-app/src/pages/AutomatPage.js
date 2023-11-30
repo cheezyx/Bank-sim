@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './AutomatPage.css';
 
 function AutomatPage() {
     const [name, setName] = useState('');
@@ -186,11 +187,12 @@ function AutomatPage() {
     }
 
     return (
-        <div>
-            {name ? <h1>Hei {name}!</h1> : <p>Ladataan...</p>}
-            <button onClick={handleShowAccountDetails}>
-                {showAccountDetails ? 'Piilota saldo' : 'Näytä saldo'}
-            </button>
+        <div className="automat-container"> {/* Käytä luokkaa 'automat-container' */}
+            <div className="automat-box"> {/* Käytä luokkaa 'automat-box' */}
+                {name ? <h1>Hei {name}!</h1> : <p>Ladataan...</p>}
+                <button onClick={handleShowAccountDetails}>
+                    {showAccountDetails ? 'Piilota saldo' : 'Näytä saldo'}
+                </button>
             {showAccountDetails && (
                 <div>
                     <h2>Tilitiedot</h2>
@@ -284,26 +286,20 @@ function AutomatPage() {
             </button>
             <button onClick={handleLogout}>Kirjaudu ulos</button>
             {showTransactions && (
-                <div>
-                    <h2>Tilitapahtumat</h2>
-                    {transactions.map((transaction, index) => (
-                        <div key={index} style={{
-                            padding: '10px',
-                            margin: '5px 0',
-                            backgroundColor: index % 2 === 0 ? '#e0e0e0' : '#ffffff',
-                        }}>
-                            <p><strong>Tilitapahtuma:</strong> {transaction.transaction_type}</p>
-                            <p><strong>Määrä:</strong> {transaction.amount}</p>
-                            <p><strong>Kuvaus:</strong> {transaction.description}</p>
-                            <p><strong>Aika:</strong> {formatDate(transaction.date_time)}</p>
-                            {/* Lisää haluamasi tietoja tilitapahtumista tähän */}
-                        </div>
-                    ))}
-                </div>
-            )}
-
-
-            {message && <div>{message}</div>} {/* Tässä näkyy palautetut viestit */}
+                    <div>
+                        <h2>Tilitapahtumat</h2>
+                        {transactions.map((transaction, index) => (
+                            <div key={index} className="transaction-detail"> {/* Käytä luokkaa 'transaction-detail' */}
+                                <p><strong>Tilitapahtuma:</strong> {transaction.transaction_type}</p>
+                                <p><strong>Määrä:</strong> {transaction.amount}</p>
+                                <p><strong>Kuvaus:</strong> {transaction.description}</p>
+                                <p><strong>Aika:</strong> {formatDate(transaction.date_time)}</p>
+                            </div>
+                        ))}
+                    </div>
+                )}
+                {message && <div className="message-box">{message}</div>} {/* Käytä luokkaa 'message-box' */}
+            </div>
         </div>
     );
 }

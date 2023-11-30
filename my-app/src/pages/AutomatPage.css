@@ -1,0 +1,73 @@
+.automat-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    min-height: 100vh;
+  }
+  
+  .automat-box {
+    text-align: center;
+    border: 4px solid #ccc;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    width: 600px; /* Säädä leveyttä tarpeen mukaan */
+    background-color: white;
+  }
+  
+  .automat-box h1,
+  .automat-box h2 {
+    margin-bottom: 20px;
+  }
+  
+  .automat-box div,
+  .automat-box form {
+    margin-bottom: 10px;
+  }
+  
+  .automat-box button {
+    margin: 5px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50; /* Vihreä taustaväri */
+    color: white;
+    cursor: pointer;
+  }
+  
+  .automat-box button:hover {
+    background-color: #45a049;
+  }
+  
+  .automat-box input,
+  .automat-box select {
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: calc(100% - 22px); /* Vähennetään padding ja border */
+  }
+  
+  .transaction-form,
+  .transfer-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .transaction-detail {
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #f2f2f2;
+    border-radius: 10px;
+  }
+  
+  .transaction-detail:nth-child(even) {
+    background-color: #e6e6e6;
+  }
+  
+  .message-box {
+    color: red; /* Viestien väritys */
+    margin: 10px 0;
+  }

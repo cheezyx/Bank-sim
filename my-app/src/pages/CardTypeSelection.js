@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './CardTypeSelection.css'; // Tuodaan tyylitiedosto
 
 const CardTypeSelection = () => {
     const navigate = useNavigate();
@@ -19,10 +20,12 @@ const CardTypeSelection = () => {
     };
 
     return (
-        <div>
-            <h1>Valitse tilimuoto</h1>
-            <button onClick={() => handleSelection('credit')}>Credit</button>
-            <button onClick={() => handleSelection('debit')}>Debit</button>
+        <div className="card-selection-container"> {/* Käytä luokkaa 'card-selection-container' */}
+            <div className="card-selection-box"> {/* Käytä luokkaa 'card-selection-box' */}
+                <h1>Valitse tilimuoto</h1>
+                <button onClick={() => handleSelection('credit')}>Credit</button>
+                <button onClick={() => handleSelection('debit')}>Debit</button>
+            </div>
         </div>
     );
 };
