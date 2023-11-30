@@ -39,3 +39,17 @@
   /* Lisää väliä tekstin ja syötekentän välille */
   width: 190px;
 }
+
+.login-box button {
+  margin: 5px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  background-color: #4CAF50; /* Vihreä taustaväri */
+  color: white;
+  cursor: pointer;
+}
+
+.login-box button:hover {
+  background-color: #45a049;
+}
