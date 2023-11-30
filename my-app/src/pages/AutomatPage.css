@@ -83,3 +83,10 @@
   .automat-box .logout-button:hover {
     background-color: #ff3333; /* Tummempi punainen hover-efektille */
   }
+
+  .account-detail {
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #e0e0e0;
+    border-radius: 10px; /* Pyöristetyt kulmat */
+}

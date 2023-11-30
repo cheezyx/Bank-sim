@@ -20,20 +20,8 @@ function AutomatPage() {
     const [showTransactions, setShowTransactions] = useState(false);
     const [toAccountId, setToAccountId] = useState('');
     const [showTransferForm, setShowTransferForm] = useState(false);
-    const [isTransactionActive, setIsTransactionActive] = useState(false);
 
 
-
-    const openTransactionForm = (type) => {
-        setTransactionType(type);
-        setShowTransactionForm(true);
-        setIsTransactionActive(true);
-    };
-
-    const closeTransactionForm = () => {
-        setShowTransactionForm(false);
-        setIsTransactionActive(false);
-    };
 
     const handleTransfer = async () => {
         const url = `http://localhost:3000/transactions/transfer`;
@@ -234,11 +222,7 @@ function AutomatPage() {
                     <div>
                         <h2>Tilitiedot</h2>
                         {selectedAccount ? (
-                            <div style={{
-                                padding: '10px',
-                                margin: '5px 0',
-                                backgroundColor: '#e0e0e0',
-                            }}>
+                            <div className="account-detail">
                                 <p><strong>Tilinumero:</strong> {selectedAccount.account_id}</p>
                                 <p><strong>Tyyppi:</strong> {selectedAccount.account_type}</p>
                                 <p><strong>Saldo:</strong> {selectedAccount.balance}</p>
@@ -248,11 +232,7 @@ function AutomatPage() {
                             </div>
                         ) : (
                             accounts.map((account, index) => (
-                                <div key={index} style={{
-                                    padding: '10px',
-                                    margin: '5px 0',
-                                    backgroundColor: index % 2 === 0 ? '#e0e0e0' : '#ffffff',
-                                }}>
+                                <div key={index} className={`account-detail ${index % 2 === 0 ? 'even-account' : ''}`}>
                                     <p><strong>Tilin tyyppi:</strong> {account.account_type}</p>
                                     <p><strong>Saldo:</strong> {account.balance}</p>
                                     {account.account_type === 'credit' && account.credit_limit && (
