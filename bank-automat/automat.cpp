@@ -1,13 +1,13 @@
 #include "automat.h"
 #include "ui_automat.h"
-
+#include "transaction.h"
 automat::automat(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::automat)
 {
 
     ui->setupUi(this);
-
+    transactionWindow = new transaction(this);
     ui->stackedWidget->setCurrentIndex(0);
     connect(ui->btn1,SIGNAL(clicked(bool)),this,SLOT(numberClickedHandler()));
     connect(ui->btn2,SIGNAL(clicked(bool)),this,SLOT(numberClickedHandler()));
@@ -20,7 +20,10 @@ automat::automat(QWidget *parent) :
     connect(ui->btn9,SIGNAL(clicked(bool)),this,SLOT(numberClickedHandler()));
     connect(ui->btn0,SIGNAL(clicked(bool)),this,SLOT(numberClickedHandler()));
     connect(ui->btnback, SIGNAL(clicked(bool)), this, SLOT(backspacehandler()));
-
+    connect(ui->siirto, &QPushButton::clicked, this, &automat::opentransactionWindow);
+    connect(ui->talletus, &QPushButton::clicked, this, &automat::opentransactionWindow);
+    connect(ui->nosto, &QPushButton::clicked, this, &automat::opentransactionWindow);
+    connect(transactionWindow, &transaction::closetransactionWindow, this, &automat::show);
 }
 
 automat::~automat()
@@ -67,18 +70,7 @@ void automat::setEkaTili(const QString &newEkaTili)
     qDebug()<<"eka"<<ekaTili;
 }
 
-void automat::on_siirto_clicked()
-{
-    ui->stackedWidget->setCurrentIndex(1);
-}
-void automat::on_talletus_clicked()
-{
-    ui->stackedWidget->setCurrentIndex(2);
-}
-void automat::on_nosto_clicked()
-{
-    ui->stackedWidget->setCurrentIndex(3);
-}
+
 void automat::on_saldo_clicked()
 {
     QString site_url = "http://localhost:3000/cards/accountinf/" + cardID;
@@ -91,7 +83,6 @@ void automat::on_saldo_clicked()
     reply = getManager->get(request);
     ui->stackedWidget->setCurrentIndex(4);
 }
-
 void automat::saldoSlot(QNetworkReply *reply)
 {
     QByteArray response_data = reply->readAll();
@@ -136,7 +127,6 @@ void automat::on_tilitapahtumat_clicked()
     ui->stackedWidget->setCurrentIndex(5);
 
 }
-
 void automat::tilitapahtumatSlot(QNetworkReply *reply)
 {
     response_data = reply->readAll();
@@ -172,9 +162,9 @@ void automat::tilitapahtumatSlot(QNetworkReply *reply)
                       qDebug() << "Selite: " << description;
                       qDebug() << "Tilitapahtuman tyyppi: " << transactionType;
 */
-                      objectTilitapahtuma=new automat(this);
-                      objectTilitapahtuma->näytäTapahtumat(tTapahtumat);
-                      objectTilitapahtuma->show();
+                      //objectTilitapahtuma=new automat(this);
+                    ui->tekstiAkkuna->setText(tTapahtumat);
+                      //objectTilitapahtuma->show();
 
        }
 
@@ -192,24 +182,20 @@ void automat::on_logout_clicked()
     qDebug()<<"Logging out";
 
 }
-
-void automat::on_btnback_clicked()
+void automat::on_btncancel_clicked()
 {
     ui->stackedWidget->setCurrentIndex(0);
-
+    ui->tekstiAkkuna->clear();
 }
-
 void automat::setToken(const QByteArray &newToken)
 {
     token = newToken;
    // qDebug()<<token;
 }
-
-void automat::näytäTapahtumat(QString value)
+void automat::naytaTapahtumat(QString value)
 {
     ui->tekstiAkkuna->setText(value);
 }
-
 void automat::fetchAndDisplayUserName() {
     QString site_url = "http://localhost:3000/cards/owner/" + cardID;
     QNetworkRequest request((site_url));
@@ -220,7 +206,6 @@ void automat::fetchAndDisplayUserName() {
 
     getManager->get(request);
 }
-
 void automat::updateGreetingLabel(QNetworkReply *reply) {
     QByteArray response_data = reply->readAll();
     QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
@@ -249,10 +234,6 @@ void automat::updateGreetingLabel(QNetworkReply *reply) {
 
     reply->deleteLater();
 }
-
-
-
-
 void automat::on_Tili2_clicked()
 {
     accountID=tokaTili;
@@ -261,8 +242,6 @@ void automat::on_Tili2_clicked()
     ui->tili1->hide();
     qDebug()<<accountID;
 }
-
-
 void automat::on_tili1_clicked()
 {
     accountID=ekaTili;
@@ -271,13 +250,6 @@ void automat::on_tili1_clicked()
     ui->tili1->hide();
     qDebug()<<accountID;
 }
-
-
-void automat::on_btn1_clicked()
-{
-
-}
-
 void automat::numberClickedHandler()
 {
   QPushButton * button = qobject_cast<QPushButton*>(sender());
@@ -296,7 +268,6 @@ void automat::numberClickedHandler()
        qDebug() <<"Button name:"<< button;
       }
 }
-
 void automat::backspacehandler()
 {
 
@@ -308,3 +279,25 @@ void automat::backspacehandler()
     ui->tekstiAkkuna->setPlainText(nyykyneteksti);
 }
 
+void automat::on_siirto_clicked()
+{
+    this->hide(); // Piilota automat-ikkuna
+    transactionWindow->show(); // Näytä transactions-ikkuna
+}
+
+void automat::on_nosto_clicked()
+{
+    this->hide();
+    transactionWindow->show();
+}
+
+void automat::on_talletus_clicked()
+{
+    this->hide();
+    transactionWindow->show();
+}
+void automat::opentransactionWindow()
+{
+    this->hide();
+    transactionWindow->show();
+}
