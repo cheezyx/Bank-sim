@@ -68,6 +68,7 @@ private slots:
 signals:
     void logOutSignal();
     void siirtoSignal();
+    void nostoSignal();
 
 
 private:

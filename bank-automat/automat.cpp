@@ -305,4 +305,6 @@ void automat::opentransactionWindow()
 {
     this->hide();
     transactionWindow->show();
+    transactionWindow->setToken(token);
+    transactionWindow->setAccountID(accountID);
 }
