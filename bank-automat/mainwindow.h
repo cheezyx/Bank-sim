@@ -7,7 +7,9 @@
 #include <QJsonDocument>
 #include <Automat.h>
 #include <QTimer>
-
+#include <QInputDialog>
+#include <QLineEdit>
+#include <QApplication>
 
 
 QT_BEGIN_NAMESPACE
