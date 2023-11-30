@@ -11,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     objectautomat=new automat(this);
+    ui->TextPin->hide();
 
     connect(objectautomat, SIGNAL(logOutSignal()), this, SLOT(logoutSlot()));
 }
@@ -29,7 +30,12 @@ void MainWindow::on_btnLogin_clicked()
 {
 
     cardID=ui->TextCardID->text();
-    QString cardPIN=ui->TextPin->text();
+
+
+
+    bool ok;
+    QString cardPIN = QInputDialog::getText(ui->TextPin, "Syötä salasana", "Salasana:", QLineEdit::Password, "", &ok);
+
     QJsonObject jsonObj;
     jsonObj.insert("card_id",cardID);
     jsonObj.insert("pin_hashed",cardPIN);
@@ -143,3 +149,4 @@ void MainWindow::accountSlot(QNetworkReply *reply2)
 
 
 }
+

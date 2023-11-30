@@ -36,8 +36,8 @@
     <property name="geometry">
      <rect>
       <x>80</x>
-      <y>120</y>
-      <width>101</width>
+      <y>110</y>
+      <width>301</width>
       <height>61</height>
      </rect>
     </property>
@@ -47,7 +47,7 @@
      </font>
     </property>
     <property name="text">
-     <string>PIN</string>
+     <string>Syötä kortin ID ja paina kirjaudu</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btnLogin">
