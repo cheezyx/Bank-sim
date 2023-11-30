@@ -68,6 +68,14 @@
   }
   
   .message-box {
-    color: red; /* Viestien väritys */
+    color: rgb(4, 172, 60); /* Viestien väritys */
     margin: 10px 0;
+  }
+  .automat-box .logout-button {
+    background-color: #ff4d4d; /* Punainen taustaväri */
+    color: white; /* Valkoinen tekstiväri */
+  }
+  
+  .automat-box .logout-button:hover {
+    background-color: #ff3333; /* Tummempi punainen hover-efektille */
   }

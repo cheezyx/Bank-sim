@@ -20,6 +20,20 @@ function AutomatPage() {
     const [showTransactions, setShowTransactions] = useState(false);
     const [toAccountId, setToAccountId] = useState('');
     const [showTransferForm, setShowTransferForm] = useState(false);
+    const [isTransactionActive, setIsTransactionActive] = useState(false);
+
+   
+
+    const openTransactionForm = (type) => {
+        setTransactionType(type);
+        setShowTransactionForm(true);
+        setIsTransactionActive(true);
+    };
+
+    const closeTransactionForm = () => {
+        setShowTransactionForm(false);
+        setIsTransactionActive(false);
+    };
 
     const handleTransfer = async () => {
         const url = `http://localhost:3000/transactions/transfer`;
@@ -60,11 +74,13 @@ function AutomatPage() {
                     'Authorization': `Bearer ${token}`
                 }
             })
-                .then(response => response.json())
-                .then(data => {
-                    setTransactions(data.slice(-5)); // Tallentaa viisi viimeisintä tilitapahtumaa
-                })
-                .catch(error => console.error('Error:', error));
+            .then(response => response.json())
+            .then(data => {
+                // Kääntää saadun datan järjestyksen
+                const reversedData = data.slice().reverse();
+                setTransactions(reversedData); // Tallentaa tilitapahtumat käännetyssä järjestyksessä
+            })
+            .catch(error => console.error('Error:', error));
         }
     };
 
@@ -187,109 +203,113 @@ function AutomatPage() {
     }
 
     return (
-        <div className="automat-container"> {/* Käytä luokkaa 'automat-container' */}
-            <div className="automat-box"> {/* Käytä luokkaa 'automat-box' */}
+        <div className="automat-container">
+            <div className="automat-box">
                 {name ? <h1>Hei {name}!</h1> : <p>Ladataan...</p>}
-                <button onClick={handleShowAccountDetails}>
-                    {showAccountDetails ? 'Piilota saldo' : 'Näytä saldo'}
-                </button>
-            {showAccountDetails && (
-                <div>
-                    <h2>Tilitiedot</h2>
-                    {selectedAccount ? (
-                        <div style={{
-                            padding: '10px',
-                            margin: '5px 0',
-                            backgroundColor: '#e0e0e0',
-                        }}>
-                            <p><strong>Tilin tyyppi:</strong> {selectedAccount.account_type}</p>
-                            <p><strong>Saldo:</strong> {selectedAccount.balance}</p>
-                            {selectedAccount.credit_limit && <p><strong>Luottoraja:</strong> {selectedAccount.credit_limit}</p>}
-                        </div>
-                    ) : (
-                        accounts.map((account, index) => (
-                            <div key={index} style={{
+
+                {!showTransactionForm && !showTransferForm && (
+                    <>
+                        <button onClick={handleShowAccountDetails}>
+                            {showAccountDetails ? 'Piilota saldo' : 'Näytä saldo'}
+                        </button>
+                        <button onClick={() => {
+                            setTransactionType('withdraw');
+                            setShowTransactionForm(true);
+                        }}>Nosto</button>
+                        <button onClick={() => {
+                            setTransactionType('deposit');
+                            setShowTransactionForm(true);
+                        }}>Talletus</button>
+                        <button onClick={() => {
+                            setTransactionType('transfer');
+                            setShowTransferForm(true);
+                        }}>Siirto</button>
+                        <button onClick={handleShowTransactions}>
+                            {showTransactions ? 'Piilota tilitapahtumat' : 'Näytä tilitapahtumat'}
+                        </button>
+                    </>
+                )}
+
+                {showAccountDetails && (
+                    <div>
+                        <h2>Tilitiedot</h2>
+                        {selectedAccount ? (
+                            <div style={{
                                 padding: '10px',
                                 margin: '5px 0',
-                                backgroundColor: index % 2 === 0 ? '#e0e0e0' : '#ffffff',
+                                backgroundColor: '#e0e0e0',
                             }}>
-                                <p><strong>Tilin tyyppi:</strong> {account.account_type}</p>
-                                <p><strong>Saldo:</strong> {account.balance}</p>
-                                {account.credit_limit && <p><strong>Luottoraja:</strong> {account.credit_limit}</p>}
+                                <p><strong>Tilin tyyppi:</strong> {selectedAccount.account_type}</p>
+                                <p><strong>Saldo:</strong> {selectedAccount.balance}</p>
+                                {selectedAccount.credit_limit && <p><strong>Luottoraja:</strong> {selectedAccount.credit_limit}</p>}
                             </div>
-                        ))
-                    )}
-                </div>
-            )}
-            <button onClick={() => {
-                setTransactionType('withdraw');
-                setShowTransactionForm(true);
-            }}>Nosto</button>
-            <button onClick={() => {
-                setTransactionType('deposit');
-                setShowTransactionForm(true);
-            }}>Talletus</button>
+                        ) : (
+                            accounts.map((account, index) => (
+                                <div key={index} style={{
+                                    padding: '10px',
+                                    margin: '5px 0',
+                                    backgroundColor: index % 2 === 0 ? '#e0e0e0' : '#ffffff',
+                                }}>
+                                    <p><strong>Tilin tyyppi:</strong> {account.account_type}</p>
+                                    <p><strong>Saldo:</strong> {account.balance}</p>
+                                    {account.credit_limit && <p><strong>Luottoraja:</strong> {account.credit_limit}</p>}
+                                </div>
+                            ))
+                        )}
+                    </div>
+                )}
 
-            {showTransactionForm && (
-                <div>
-                    <h3>{transactionType === 'deposit' ? 'Talletus' : 'Nosto'}</h3>
-                    <input
-                        type="number"
-                        value={transactionAmount}
-                        onChange={(e) => setTransactionAmount(e.target.value)}
-                        placeholder="Määrä"
-                    />
-                    <input
-                        type="text"
-                        value={transactionDescription}
-                        onChange={(e) => setTransactionDescription(e.target.value)}
-                        placeholder="Kuvaus"
-                    />
-                    <button onClick={handleTransaction}>Vahvista</button>
-                    <button onClick={() => setShowTransactionForm(false)}>Peruuta</button>
-                </div>
-            )}
-            <button onClick={() => {
-                setTransactionType('transfer');
-                setShowTransferForm(true);
-            }}>Siirto</button>
+                {showTransactionForm && (
+                    <div>
+                        <h3>{transactionType === 'deposit' ? 'Talletus' : 'Nosto'}</h3>
+                        <input
+                            type="number"
+                            value={transactionAmount}
+                            onChange={(e) => setTransactionAmount(e.target.value)}
+                            placeholder="Määrä"
+                        />
+                        <input
+                            type="text"
+                            value={transactionDescription}
+                            onChange={(e) => setTransactionDescription(e.target.value)}
+                            placeholder="Kuvaus"
+                        />
+                        <button onClick={handleTransaction}>Vahvista</button>
+                        <button onClick={() => setShowTransactionForm(false)}>Peruuta</button>
+                    </div>
+                )}
 
-            {showTransferForm && (
-                <div>
-                    <h3>Siirto</h3>
-                    <input
-                        type="number"
-                        value={toAccountId}
-                        onChange={(e) => setToAccountId(e.target.value)}
-                        placeholder="Vastaanottajan tilinumero"
-                    />
-                    <input
-                        type="number"
-                        value={transactionAmount}
-                        onChange={(e) => setTransactionAmount(e.target.value)}
-                        placeholder="Määrä"
-                    />
-                    <input
-                        type="text"
-                        value={transactionDescription}
-                        onChange={(e) => setTransactionDescription(e.target.value)}
-                        placeholder="Kuvaus"
-                    />
-                    <button onClick={handleTransfer}>Vahvista</button>
-                    <button onClick={() => setShowTransferForm(false)}>Peruuta</button>
-                </div>
-            )}
+                {showTransferForm && (
+                    <div>
+                        <h3>Siirto</h3>
+                        <input
+                            type="number"
+                            value={toAccountId}
+                            onChange={(e) => setToAccountId(e.target.value)}
+                            placeholder="Vastaanottajan tilinumero"
+                        />
+                        <input
+                            type="number"
+                            value={transactionAmount}
+                            onChange={(e) => setTransactionAmount(e.target.value)}
+                            placeholder="Määrä"
+                        />
+                        <input
+                            type="text"
+                            value={transactionDescription}
+                            onChange={(e) => setTransactionDescription(e.target.value)}
+                            placeholder="Kuvaus"
+                        />
+                        <button onClick={handleTransfer}>Vahvista</button>
+                        <button onClick={() => setShowTransferForm(false)}>Peruuta</button>
+                    </div>
+                )}
 
-            <button onClick={handleShowTransactions}>
-                {showTransactions ? 'Piilota tilitapahtumat' : 'Näytä tilitapahtumat'}
-
-            </button>
-            <button onClick={handleLogout}>Kirjaudu ulos</button>
-            {showTransactions && (
+                {showTransactions && (
                     <div>
                         <h2>Tilitapahtumat</h2>
                         {transactions.map((transaction, index) => (
-                            <div key={index} className="transaction-detail"> {/* Käytä luokkaa 'transaction-detail' */}
+                            <div key={index} className="transaction-detail">
                                 <p><strong>Tilitapahtuma:</strong> {transaction.transaction_type}</p>
                                 <p><strong>Määrä:</strong> {transaction.amount}</p>
                                 <p><strong>Kuvaus:</strong> {transaction.description}</p>
@@ -298,7 +318,9 @@ function AutomatPage() {
                         ))}
                     </div>
                 )}
-                {message && <div className="message-box">{message}</div>} {/* Käytä luokkaa 'message-box' */}
+
+                <button onClick={handleLogout} className="logout-button">Kirjaudu ulos</button>
+                {message && <div className="message-box">{message}</div>}
             </div>
         </div>
     );
