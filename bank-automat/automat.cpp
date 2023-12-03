@@ -40,14 +40,14 @@ void automat::showCardID()
 {
     ui->IDLabelcard->setText(cardID);
 }
-void automat::setAccountID(const QString &newAccountID)
+void automat::setAccountID(const int &newAccountID)
 {
 
     accountID = newAccountID;
     qDebug()<<"AcCounTID"<<accountID;
 }
 
-void automat::setSoloTili(const QString &newSoloTili)
+void automat::setSoloTili(const int &newSoloTili)
 {
     soloTili = newSoloTili;
     ui->Tili2->hide();
@@ -56,7 +56,7 @@ void automat::setSoloTili(const QString &newSoloTili)
     qDebug()<<"solo"<<soloTili;
 }
 
-void automat::setTokaTili(const QString &newTokaTili)
+void automat::setTokaTili(const int &newTokaTili)
 {
     tokaTili = newTokaTili;
 
@@ -64,7 +64,7 @@ void automat::setTokaTili(const QString &newTokaTili)
     qDebug()<<"toka"<<tokaTili;
 }
 
-void automat::setEkaTili(const QString &newEkaTili)
+void automat::setEkaTili(const int &newEkaTili)
 {
     ekaTili = newEkaTili;
    // accountID = ekaTili;
@@ -113,10 +113,8 @@ void automat::saldoSlot(QNetworkReply *reply)
 
 void automat::on_tilitapahtumat_clicked()
 {
-
-
     //qDebug() <<"accountID: " << accountID;
-    QString site_url="http://localhost:3000/transactions/last_five_transactions/"+accountID;
+    QString site_url="http://localhost:3000/transactions/last_five_transactions/"+QString::number(accountID);
     QNetworkRequest request((site_url));
     request.setRawHeader(QByteArray("Authorization"),(token));
 
@@ -126,7 +124,6 @@ void automat::on_tilitapahtumat_clicked()
     reply = getManager->get(request);
 
     ui->stackedWidget->setCurrentIndex(5);
-
 }
 void automat::tilitapahtumatSlot(QNetworkReply *reply)
 {
@@ -290,21 +287,23 @@ void automat::on_siirto_clicked()
     transactionWindow->show(); // Näytä transactions-ikkuna
 }
 
-void automat::on_nosto_clicked()
-{
-    this->hide();
-    transactionWindow->show();
-}
-
 void automat::on_talletus_clicked()
 {
     this->hide();
     transactionWindow->show();
 }
+void automat::on_nosto_clicked()
+{
+    this->hide();
+    transactionWindow->show();
+    transactionWindow->nostoWait();
+}
+
 void automat::opentransactionWindow()
 {
     this->hide();
     transactionWindow->show();
     transactionWindow->setToken(token);
     transactionWindow->setAccountID(accountID);
+
 }

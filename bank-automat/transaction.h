@@ -5,6 +5,8 @@
 #include <QtNetwork>
 #include <QNetworkAccessManager>
 #include <QJsonDocument>
+#include <QCursor>
+
 
 namespace Ui {
 class transaction;
@@ -19,20 +21,22 @@ public:
     ~transaction();
 
     QByteArray token;
-    QString accountID;
+    int accountID;
     void setToken(const QByteArray &newToken);
-    void setAccountID(const QString &newAccountID);
+    void setAccountID(const int &newAccountID);
+    void nostoFUNKTIO(float);
+    float amount;
+    void nostoWait();
+
 
 public slots:
     void onbtncancelClicked();
 
 private slots:
-    void on_nosto_2_clicked();
     void nostoSlot(QNetworkReply *reply);
     void numberClickedHandler();
     void backspacehandler();
-    //void enterhandler();
-    void waitingforentry();
+    void on_nostoEnter_clicked();
 
 signals:
     void opentransactionWindow();

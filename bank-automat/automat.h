@@ -8,9 +8,6 @@
 #include <QTimer>
 #include "transaction.h"
 
-
-
-
 namespace Ui {
 class automat;
 }
@@ -33,14 +30,14 @@ public:
     void fetchAndDisplayUserName();
     void nollaa();
     void updateGreetingLabel(QNetworkReply *reply);
-    void setAccountID(const QString &newAccountID);
-    QString accountID;
-    QString ekaTili;
-    QString tokaTili;
-    QString soloTili;
-    void setEkaTili(const QString &newEkaTili);
-    void setTokaTili(const QString &newTokaTili);
-    void setSoloTili(const QString &newSoloTili);
+    void setAccountID(const int &newAccountID);
+    int accountID;
+    int ekaTili;
+    int tokaTili;
+    int soloTili;
+    void setEkaTili(const int &newEkaTili);
+    void setTokaTili(const int &newTokaTili);
+    void setSoloTili(const int &newSoloTili);
 
 public slots:
      void opentransactionWindow();
