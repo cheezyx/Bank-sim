@@ -1,0 +1,37 @@
+.card-selection-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    min-height: 100vh;
+    background-color: #f5f5f5; /* Taustaväri */
+  }
+  
+  .card-selection-box {
+    text-align: center;
+    border: 3px solid #ccc;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    width: 400px; /* Säädä leveyttä tarpeen mukaan */
+    background-color: white;
+  }
+  
+  .card-selection-box h1 {
+    margin-bottom: 20px;
+  }
+  
+  .card-selection-box button {
+    margin: 10px;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50; /* Vihreä taustaväri */
+    color: white;
+    font-size: 16px; /* Tekstin koko */
+    cursor: pointer;
+  }
+  
+  .card-selection-box button:hover {
+    background-color: #45a049;
+  }

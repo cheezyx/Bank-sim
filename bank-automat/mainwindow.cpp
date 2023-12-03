@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     objectautomat=new automat(this);
-    tiliobjekti = new Tilinvalinta(this);
+    ui->TextPin->hide();
 
     connect(objectautomat, SIGNAL(logOutSignal()), this, SLOT(logoutSlot()));
 }
@@ -23,14 +23,14 @@ MainWindow::~MainWindow()
 }
 
 
-
-
-
 void MainWindow::on_btnLogin_clicked()
 {
 
     cardID=ui->TextCardID->text();
-    QString cardPIN=ui->TextPin->text();
+
+    bool ok;
+    QString cardPIN = QInputDialog::getText(ui->TextPin, "Syötä salasana", "Salasana:", QLineEdit::Password, "", &ok);
+
     QJsonObject jsonObj;
     jsonObj.insert("card_id",cardID);
     jsonObj.insert("pin_hashed",cardPIN);
@@ -70,6 +70,8 @@ void MainWindow::loginSlot(QNetworkReply *reply)
                 objectautomat->fetchAndDisplayUserName();
                 objectautomat->showCardID();
                 objectautomat->show();
+                objectautomat->nollaa();
+
                 this->hide();
 
                 QString site_url2 = "http://localhost:3000/card_privileges/" + cardID;
@@ -109,45 +111,30 @@ void MainWindow::accountSlot(QNetworkReply *reply2)
     // qDebug() << "RAW DATA: " << response_data;
     QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
     QJsonArray json_array = json_doc.array();
-    QString accID;
-
+    qDebug()<<"array: "<<json_array;
+    QList<int> accIDs;
     foreach (const QJsonValue &value, json_array) {
             QJsonObject json_obj = value.toObject();
-            accID+= QString::number(json_obj ["account_id"].toInt())+",";
-
+        int account_id = json_obj.value("account_id").toInt();
+            accIDs.append(account_id);
     }
-               qDebug()<<accID;
+    //qDebug()<<"accIDs: "<< accIDs;
 
-               QStringList accIDList = accID.split(",", Qt::SkipEmptyParts);
-
-                   if (accIDList.size() >= 2) {
-                        ekaTili = accIDList.at(0);  // ekan tilin numero
-                        tokaTili = accIDList.at(1); // tokan tilin numero
+                   if (accIDs.size() >= 2) {
+                        int ekaTili = accIDs.at(0);  // ekan tilin numero
+                        int tokaTili = accIDs.at(1); // tokan tilin numero
 
                        // nyt voidaan käyttää ekan ja tokan tilin numeroa
                        qDebug() << "Ensimmäinen numero: " << ekaTili;
                        qDebug() << "Toinen numero: " << tokaTili;
-
-                       //tiliobjekti = new Tilinvalinta(this);
-
-                       tiliobjekti->naytaTilit(accID);
-
                        objectautomat->setTokaTili(tokaTili);
                        objectautomat->setEkaTili(ekaTili);
 
-                      // tiliobjekti->setEkaTili(ekaTili);
-                     //  tiliobjekti->setTokaTili(tokaTili);
-                       tiliobjekti->show();
-
                    } else {
-                       //tiliobjekti = new Tilinvalinta(this);
 
+                       objectautomat->setSoloTili(accIDs.at(0));
 
-                       objectautomat->setSoloTili(accID);
-
-                       qDebug() << "numeroi"<<accID;
-
-
+                       qDebug() << "numeroi"<<accIDs;
                        qDebug() << "vain yksitili";
                    }
 
@@ -157,3 +144,4 @@ void MainWindow::accountSlot(QNetworkReply *reply2)
 
 
 }
+

@@ -1,14 +1,15 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "tilinvalinta.h"
 #include <QMainWindow>
 #include <QtNetwork>
 #include <QNetworkAccessManager>
 #include <QJsonDocument>
 #include <Automat.h>
 #include <QTimer>
-
+#include <QInputDialog>
+#include <QLineEdit>
+#include <QApplication>
 
 
 QT_BEGIN_NAMESPACE
@@ -24,8 +25,6 @@ public:
     ~MainWindow();
 
     void showAccounts();
-
-
 
 private slots:
     void on_btnLogin_clicked();
@@ -46,8 +45,6 @@ private:
     automat *objectautomat;
     QString cardID;
     QByteArray token;
-    Tilinvalinta *tiliobjekti;
-
 
 };
 #endif // MAINWINDOW_H
