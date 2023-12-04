@@ -333,6 +333,24 @@
       <string>Nosto</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="btnTalletus">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>80</y>
+       <width>151</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Talletus</string>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QPushButton" name="btncancel">
