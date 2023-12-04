@@ -26,7 +26,7 @@ public:
     void setAccountID(const int &newAccountID);
     void nostoFUNKTIO(float);
     float amount;
-    void nostoWait();
+    void waitforUser();
 
 
 public slots:
@@ -36,10 +36,11 @@ private slots:
     void nostoSlot(QNetworkReply *reply);
     void numberClickedHandler();
     void backspacehandler();
-    void on_nostoEnter_clicked();
-
+    void on_nosto_4_clicked();
     void on_talletus_clicked();
     void depositFinished(QNetworkReply *reply);
+
+
 
 signals:
     void opentransactionWindow();
