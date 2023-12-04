@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>603</width>
-    <height>547</height>
+    <height>544</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -65,19 +65,6 @@
    </property>
    <property name="text">
     <string>8</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="btnenter">
-   <property name="geometry">
-    <rect>
-     <x>310</x>
-     <y>430</y>
-     <width>51</width>
-     <height>81</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>-&gt;</string>
    </property>
   </widget>
   <widget class="QPushButton" name="btn9">
@@ -229,7 +216,11 @@
     </rect>
    </property>
    <property name="currentIndex">
+<<<<<<< HEAD
     <number>1</number>
+=======
+    <number>3</number>
+>>>>>>> origin
    </property>
    <widget class="QWidget" name="page_7">
     <widget class="QPushButton" name="talletus_2">
@@ -348,34 +339,6 @@
     </widget>
    </widget>
   </widget>
-  <widget class="QPushButton" name="logout">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>470</y>
-     <width>151</width>
-     <height>51</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>14</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>Kirjaudu ulos</string>
-   </property>
-  </widget>
-  <widget class="QTextEdit" name="tekstiAkkuna">
-   <property name="geometry">
-    <rect>
-     <x>140</x>
-     <y>60</y>
-     <width>271</width>
-     <height>181</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QPushButton" name="btncancel">
    <property name="geometry">
     <rect>
@@ -393,6 +356,102 @@
    <property name="text">
     <string>Takaisin</string>
    </property>
+  </widget>
+  <widget class="QLabel" name="statuslbl">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>20</y>
+     <width>251</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>16</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QTextEdit" name="tekstiAkkuna">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>110</y>
+     <width>111</width>
+     <height>121</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="numeroAkkuna">
+   <property name="geometry">
+    <rect>
+     <x>210</x>
+     <y>110</y>
+     <width>261</width>
+     <height>121</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStackedWidget" name="stackedEnter">
+   <property name="geometry">
+    <rect>
+     <x>310</x>
+     <y>430</y>
+     <width>51</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <property name="currentIndex">
+    <number>0</number>
+   </property>
+   <widget class="QWidget" name="page">
+    <widget class="QPushButton" name="nostoEnter">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>51</width>
+       <height>81</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>-&gt;</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="page_3">
+    <widget class="QPushButton" name="talletusEnter">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>51</width>
+       <height>81</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>-&gt;</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="page_2">
+    <widget class="QPushButton" name="siirtoEnter">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>51</width>
+       <height>81</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>-&gt;</string>
+     </property>
+    </widget>
+   </widget>
   </widget>
  </widget>
  <resources/>
