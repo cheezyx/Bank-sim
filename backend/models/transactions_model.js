@@ -16,10 +16,10 @@ const transactionsmodel = {
     return db.query('select * from transactions where from_account_id=? or to_account_id=?', [account_id, account_id], callback);
   },
 
-  getLastFiveTransactions: function (account_id, callback) {
+  getTransactions: function (account_id, start_id, end_id, callback) {
     return db.query(
-      'SELECT * FROM transactions WHERE from_account_id = ? OR to_account_id = ? ORDER BY date_time DESC LIMIT 5',
-      [account_id, account_id],
+      'SELECT * FROM transactions WHERE (from_account_id = ? OR to_account_id = ?) AND transaction_id BETWEEN ? AND ? ORDER BY transaction_id ASC',
+      [account_id, account_id, start_id, end_id],
       function (err, results) {
         if (err) {
           callback(err, null);

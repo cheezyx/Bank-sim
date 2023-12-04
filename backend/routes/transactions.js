@@ -47,8 +47,9 @@ router.get('/all_transfers/:account_id', function (request, response) {
     });
 });
 
-router.get('/last_five_transactions/:account_id', function (request, response) {
-    transactionsmodel.getLastFiveTransactions(request.params.account_id, function (err, dbResult) {
+router.get('/last_transfers/:account_id/:start_id/:end_id', function (request, response) {
+    const { account_id, start_id, end_id } = request.params;
+    transactionsmodel.getTransactions(account_id, start_id, end_id, function (err, dbResult) {
         if (err) {
             response.status(500).json(err);
         } else {
