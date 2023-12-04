@@ -38,6 +38,9 @@ private slots:
     void backspacehandler();
     void on_nostoEnter_clicked();
 
+    void on_talletus_clicked();
+    void depositFinished(QNetworkReply *reply);
+
 signals:
     void opentransactionWindow();
     void closetransactionWindow();

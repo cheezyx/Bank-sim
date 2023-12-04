@@ -19,6 +19,7 @@ transaction::transaction(QWidget *parent)
     connect(ui->btn0,SIGNAL(clicked(bool)),this,SLOT(numberClickedHandler()));
     connect(ui->btnback, SIGNAL(clicked(bool)), this, SLOT(backspacehandler()));
     connect(ui->btncancel, &QPushButton::clicked, this, &transaction::onbtncancelClicked);
+    connect(ui->btnTalletus, SIGNAL(clicked(bool)), this, SLOT(on_talletus_clicked()));
 
 }
 
@@ -130,3 +131,48 @@ void transaction::onbtncancelClicked() {
 
 }
 
+void transaction::on_talletus_clicked()
+{
+    double depositAmount = ui->numeroAkkuna->text().toDouble();
+
+    if (depositAmount <= 0) {
+        qDebug() << "Invalid deposit amount";
+        // You may want to display an error message to the user
+        return;
+    }
+
+    QString site_url = "http://localhost:3000/transactions/deposit";
+
+    // Create a network request
+    QNetworkRequest request(site_url);
+    request.setRawHeader(QByteArray("Authorization"), token);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    // Create JSON data for the deposit request
+    QJsonObject depositData;
+    depositData["account_id"] = accountID;
+    depositData["amount"] = depositAmount;
+    depositData["description"] = "Talletus tilille";
+
+    // Create a network access manager for the deposit request
+    QNetworkAccessManager* depositManager = new QNetworkAccessManager(this);
+    connect(depositManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(depositFinished(QNetworkReply*)));
+
+    // Send a POST request to deposit money
+    QNetworkReply* depositReply = depositManager->post(request, QJsonDocument(depositData).toJson());
+
+}
+
+void transaction::depositFinished(QNetworkReply *reply)
+{
+    // Handle the response from the server here
+    if (reply->error() == QNetworkReply::NoError) {
+        qDebug() << "Deposit successful";
+        // Maybe show a success message to the user
+    } else {
+        qDebug() << "Error depositing money:" << reply->errorString();
+        // Maybe show an error message to the user
+    }
+
+    reply->deleteLater();
+}
