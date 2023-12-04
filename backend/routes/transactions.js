@@ -47,13 +47,24 @@ router.get('/all_transfers/:account_id', function (request, response) {
     });
 });
 
-router.get('/last_transfers/:account_id/:start_id/:end_id', function (request, response) {
-    const { account_id, start_id, end_id } = request.params;
-    transactionsmodel.getTransactions(account_id, start_id, end_id, function (err, dbResult) {
+router.get('/transfers/:account_id/:limit/:offset', function (request, response) {
+    const { account_id, limit, offset } = request.params;
+    transactionsmodel.getTransactions(account_id, parseInt(limit), parseInt(offset), function (err, dbResult) {
         if (err) {
             response.status(500).json(err);
         } else {
             response.json(dbResult);
+        }
+    });
+});
+
+router.get('/transaction_count/:account_id', function (request, response) {
+    const { account_id } = request.params;
+    transactionsmodel.getTransactionCountForAccount(account_id, function (err, result) {
+        if (err) {
+            response.status(500).json(err);
+        } else {
+            response.json(result[0].count); // Olettaen että COUNT(*) palauttaa yhden rivin, jossa on count-sarakkeessa lukumäärä
         }
     });
 });

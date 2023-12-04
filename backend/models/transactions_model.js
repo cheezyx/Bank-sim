@@ -16,10 +16,10 @@ const transactionsmodel = {
     return db.query('select * from transactions where from_account_id=? or to_account_id=?', [account_id, account_id], callback);
   },
 
-  getTransactions: function (account_id, start_id, end_id, callback) {
+  getTransactions: function (account_id, limit, offset, callback) {
     return db.query(
-      'SELECT * FROM transactions WHERE (from_account_id = ? OR to_account_id = ?) AND transaction_id BETWEEN ? AND ? ORDER BY transaction_id ASC',
-      [account_id, account_id, start_id, end_id],
+      'SELECT * FROM transactions WHERE (from_account_id = ? OR to_account_id = ?) ORDER BY transaction_id DESC LIMIT ? OFFSET ?',
+      [account_id, account_id, limit, offset],
       function (err, results) {
         if (err) {
           callback(err, null);
@@ -33,6 +33,15 @@ const transactionsmodel = {
       }
     );
   },
+
+  getTransactionCountForAccount: function (account_id, callback) {
+    return db.query(
+      'SELECT COUNT(*) as count FROM transactions WHERE from_account_id = ? OR to_account_id = ?',
+      [account_id, account_id],
+      callback
+    );
+  },
+
   transferBalance: function (from_account_id, to_account_id, amount, description, callback) {
     db.query(
       'CALL TransferBalance(?, ?, ?, ?, @message)',
