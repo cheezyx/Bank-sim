@@ -42,6 +42,24 @@ const transactionsmodel = {
     );
   },
 
+  getLastFiveTransactions: function (account_id, callback) {
+    return db.query(
+      'SELECT * FROM transactions WHERE from_account_id = ? OR to_account_id = ? ORDER BY date_time DESC LIMIT 5',
+      [account_id, account_id],
+      function (err, results) {
+        if (err) {
+          callback(err, null);
+        } else {
+          if (results.length === 0) {
+            callback(null, 'Ei tilitapahtumia');
+          } else {
+            callback(null, results);
+          }
+        }
+      }
+    );
+  },
+
   transferBalance: function (from_account_id, to_account_id, amount, description, callback) {
     db.query(
       'CALL TransferBalance(?, ?, ?, ?, @message)',

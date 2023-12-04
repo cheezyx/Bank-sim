@@ -69,6 +69,16 @@ router.get('/transaction_count/:account_id', function (request, response) {
     });
 });
 
+router.get('/last_five_transactions/:account_id', function (request, response) {
+    transactionsmodel.getLastFiveTransactions(request.params.account_id, function (err, dbResult) {
+        if (err) {
+            response.status(500).json(err);
+        } else {
+            response.json(dbResult);
+        }
+    });
+});
+
 router.post('/transfer', function (req, res) {
     const { from_account_id, to_account_id, amount, description } = req.body;
     transactionsmodel.transferBalance(from_account_id, to_account_id, amount, description, function (err, result) {
