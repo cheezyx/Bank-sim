@@ -292,12 +292,13 @@ void automat::on_talletus_clicked()
 {
     this->hide();
     transactionWindow->show();
+    transactionWindow->waitforUser();
 }
 void automat::on_nosto_clicked()
 {
     this->hide();
     transactionWindow->show();
-    transactionWindow->nostoWait();
+    transactionWindow->waitforUser();
 }
 
 void automat::opentransactionWindow()

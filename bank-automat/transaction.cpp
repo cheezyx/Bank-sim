@@ -38,25 +38,29 @@ void transaction::setToken(const QByteArray &newToken)
     qDebug() << "Token received in transaction UI:" << newToken;
     token=newToken;
 }
-void transaction::nostoWait() {
+void transaction::waitforUser() {
 
-    ui->stackedEnter->setCurrentIndex(0);
-    ui->stackedWidget->setCurrentIndex(9);
-    ui->tekstiAkkuna->setText("Nostettava määrä: ");
+    ui->tekstiAkkuna->setText("Anna määrä: ");
+    ui->stackedWidget->setCurrentIndex(0);
 }
-void transaction::on_nostoEnter_clicked()
+void transaction::on_nosto_4_clicked()
 {
+    ui->stackedWidget->setCurrentIndex(3);
     float amount = ui->numeroAkkuna->text().toFloat();
     qDebug()<<amount;
     this->nostoFUNKTIO(amount);
 }
+
+
 void transaction::nostoFUNKTIO(float _amount)
 {
     //qDebug()<<accountID;
     //qDebug()<<_amount;
+        QString nst = "Nosto.";
         QJsonObject jsonObj;
         jsonObj.insert("account_id", accountID);
         jsonObj.insert("amount", _amount);
+        jsonObj.insert("description", nst);
         QString site_url="http://localhost:3000/transactions/withdraw";
         QNetworkRequest request((site_url));
         request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
@@ -126,6 +130,7 @@ void transaction::onbtncancelClicked() {
     this->hide();
     ui->tekstiAkkuna->clear();
     ui->numeroAkkuna->clear();
+    ui->statuslbl->clear();
     amount = 0;
     emit closetransactionWindow();
 
@@ -133,6 +138,7 @@ void transaction::onbtncancelClicked() {
 
 void transaction::on_talletus_clicked()
 {
+    ui->stackedWidget->setCurrentIndex(2);
     double depositAmount = ui->numeroAkkuna->text().toDouble();
 
     if (depositAmount <= 0) {
@@ -168,11 +174,12 @@ void transaction::depositFinished(QNetworkReply *reply)
     // Handle the response from the server here
     if (reply->error() == QNetworkReply::NoError) {
         qDebug() << "Deposit successful";
+        ui->statuslbl->setText("Talletus onnistui.");
         // Maybe show a success message to the user
     } else {
         qDebug() << "Error depositing money:" << reply->errorString();
+        ui->statuslbl->setText("Error.");
         // Maybe show an error message to the user
     }
-
     reply->deleteLater();
 }
