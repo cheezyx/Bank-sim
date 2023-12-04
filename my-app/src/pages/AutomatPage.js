@@ -295,7 +295,17 @@ function AutomatPage() {
 
                 {showTransactions && (
                     <div>
-                        <h2>Tilitapahtumat</h2>
+                        <div className="transactions-header">
+                            <h2>Tilitapahtumat</h2>
+                            <div className="transactions-navigation">
+                                <button onClick={() => {/* TODO: Selaustoiminnon toteutus taaksepäin */ }}>
+                                    &lt; {/* Vasemmalle osoittava nuoli */}
+                                </button>
+                                <button onClick={() => {/* TODO: Selaustoiminnon toteutus eteenpäin */ }}>
+                                    &gt; {/* Oikealle osoittava nuoli */}
+                                </button>
+                            </div>
+                        </div>
                         {transactions.map((transaction, index) => (
                             <div key={index} className="transaction-detail">
                                 <p>
