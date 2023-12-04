@@ -253,12 +253,15 @@ function AutomatPage() {
                             onChange={(e) => setTransactionAmount(e.target.value)}
                             placeholder="Määrä"
                         />
-                        <input
-                            type="text"
-                            value={transactionDescription}
-                            onChange={(e) => setTransactionDescription(e.target.value)}
-                            placeholder="Kuvaus"
-                        />
+                        {/* Näytä Kuvaus-kenttä vain siirtojen yhteydessä */}
+                        {transactionType === 'transfer' && (
+                            <input
+                                type="text"
+                                value={transactionDescription}
+                                onChange={(e) => setTransactionDescription(e.target.value)}
+                                placeholder="Kuvaus"
+                            />
+                        )}
                         <button onClick={handleTransaction}>Vahvista</button>
                         <button onClick={() => setShowTransactionForm(false)}>Peruuta</button>
                     </div>
@@ -295,16 +298,28 @@ function AutomatPage() {
                         <h2>Tilitapahtumat</h2>
                         {transactions.map((transaction, index) => (
                             <div key={index} className="transaction-detail">
-                                <p><strong>Tilitapahtuma:</strong> {transaction.transaction_type}</p>
-                                {transaction.transaction_type !== 'withdraw' && transaction.transaction_type !== 'deposit' && (
+                                <p>
+                                    <strong>
+                                        {transaction.transaction_type === 'transfer' && 'Siirto'}
+                                        {transaction.transaction_type === 'withdraw' && 'Nosto'}
+                                        {transaction.transaction_type === 'deposit' && 'Talletus'}
+                                    </strong>
+                                </p>
+                                {transaction.transaction_type === 'transfer' && (
                                     <>
                                         <p><strong>Tililtä:</strong> {transaction.from_account_id}</p>
                                         <p><strong>Tilille:</strong> {transaction.to_account_id}</p>
+                                        <p><strong>Määrä:</strong> {transaction.amount}</p>
+                                        <p><strong>Aika:</strong> {formatDate(transaction.date_time)}</p>
+                                        <p><strong>Kuvaus:</strong> {transaction.description}</p>
                                     </>
                                 )}
-                                <p><strong>Määrä:</strong> {transaction.amount}</p>
-                                <p><strong>Kuvaus:</strong> {transaction.description}</p>
-                                <p><strong>Aika:</strong> {formatDate(transaction.date_time)}</p>
+                                {transaction.transaction_type !== 'transfer' && (
+                                    <>
+                                        <p><strong>Määrä:</strong> {transaction.amount}</p>
+                                        <p><strong>Aika:</strong> {formatDate(transaction.date_time)}</p>
+                                    </>
+                                )}
                             </div>
                         ))}
                     </div>
