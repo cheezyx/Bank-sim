@@ -2,7 +2,7 @@ const db = require('../database.js');
 
 const transactionsmodel = {
 
-  getAll: function(callback) {
+  getAll: function (callback) {
     return db.query('select * from transactions', callback);
   },
   getTransfersInByAccountID: function (id, callback) {
@@ -33,7 +33,7 @@ const transactionsmodel = {
       }
     );
   },
-  transferBalance: function(from_account_id, to_account_id, amount, description, callback) {
+  transferBalance: function (from_account_id, to_account_id, amount, description, callback) {
     db.query(
       'CALL TransferBalance(?, ?, ?, ?, @message)',
       [from_account_id, to_account_id, amount, description],
@@ -47,42 +47,42 @@ const transactionsmodel = {
       }
     );
   },
-  
 
-  deposit: function(account_id, amount, description, callback) {
+
+  deposit: function (account_id, amount, callback) {
     db.query(
-        'CALL DepositBalance(?, ?, ?, @message)',
-        [account_id, amount, description],
-        (err, results) => {
-            if (err) {
-                return callback(err, null);
-            }
-            db.query('SELECT @message AS message', (err, results) => {
-                return callback(err, results[0]);
-            });
-        }
-    );
-},
-
-withdraw: function(account_id, amount, description, callback) {
-  db.query(
-      'CALL WithdrawBalance(?, ?, ?, @message)',
-      [account_id, amount, description],
+      'CALL DepositBalance(?, ?, @message)',
+      [account_id, amount],
       (err, results) => {
-          if (err) {
-              if (callback) return callback(err, null);
-              else throw err;
-          }
-          db.query('SELECT @message AS message', (err, results) => {
-              if (err) {
-                  if (callback) return callback(err, null);
-                  else throw err;
-              }
-              if (callback) return callback(null, results[0]);
-          });
+        if (err) {
+          return callback(err, null);
+        }
+        db.query('SELECT @message AS message', (err, results) => {
+          return callback(err, results[0]);
+        });
       }
-  );
-},
+    );
+  },
+
+  withdraw: function (account_id, amount, callback) {
+    db.query(
+      'CALL WithdrawBalance(?, ?, @message)',
+      [account_id, amount],
+      (err, results) => {
+        if (err) {
+          if (callback) return callback(err, null);
+          else throw err;
+        }
+        db.query('SELECT @message AS message', (err, results) => {
+          if (err) {
+            if (callback) return callback(err, null);
+            else throw err;
+          }
+          if (callback) return callback(null, results[0]);
+        });
+      }
+    );
+  },
 };
 
 module.exports = transactionsmodel;
