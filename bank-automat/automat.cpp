@@ -74,7 +74,7 @@ void automat::setEkaTili(const int &newEkaTili)
 
 void automat::on_saldo_clicked()
 {
-    QString site_url = "http://localhost:3000/cards/accountinf/" + cardID;
+    QString site_url = "http://localhost:3000/accounts/" + QString::number(accountID);
     QNetworkRequest request((site_url));
     request.setRawHeader(QByteArray("Authorization"), (token));
 
