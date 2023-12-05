@@ -50,4 +50,6 @@ BEGIN
     END IF;
 END //
 
+DELIMITER ;
+
 --  DROP PROCEDURE TransferBalance
