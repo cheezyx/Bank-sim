@@ -40,16 +40,22 @@ public:
     void setSoloTili(const int &newSoloTili);
     int currentPage = 1;
     int itemsPerPage = 5;
-    int totalTransactions = 0;
+
+    int laskettuMaxPage;
+    QString maxPage = 0;
     void handleNextPage();
     void handlePreviousPage();
 
-
+    void disablointi();
     void napittoimiitaiei();
+    void tapahtumienMaara();
+
 public slots:
      void opentransactionWindow();
      void on_nextPageButton_clicked();
      void on_previousPageButton_clicked();
+     void tapahtumaMaaraSLot(QNetworkReply *reply);
+
 private slots:
     void on_siirto_clicked();
     void on_talletus_clicked();

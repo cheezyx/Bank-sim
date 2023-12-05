@@ -16,7 +16,6 @@ automat::automat(QWidget *parent) :
     ui->btn1, ui->btn2, ui->btn3, ui->btn4, ui->btn5,
     ui->btn6, ui->btn7, ui->btn8, ui->btn9, ui->btn0
     };
-    qDebug() << "Number of buttons in the list: " << numberButtons.size();
 
     foreach (QPushButton* näppäin, numberButtons) {
         connect(näppäin, SIGNAL(clicked(bool)), this, SLOT(numberClickedHandler()));
@@ -33,7 +32,24 @@ automat::automat(QWidget *parent) :
             "}"
         );
     }
-
+    QList<QPushButton*> widgetit ={
+    ui->siirto, ui->talletus, ui->nosto,
+    ui->saldo, ui->tilitapahtumat
+    };
+    foreach (QPushButton* widgetiti, widgetit){
+    widgetiti->setStyleSheet(
+        "QPushButton:disabled {"
+        "   background-color: rgba(255, 0, 0, 128);"
+        "   color: rgba(255, 255, 255, 255);"
+        "}"
+    );
+    widgetiti->setStyleSheet(
+        "QPushButton:enabled {"
+        "   background-color: rgb(42, 55, 67);;"
+        "   color: rgb(255, 255, 255);"
+        "}"
+    );
+}
     //connect(ui->btnback, SIGNAL(clicked(bool)), this, SLOT(backspacehandler()));
     connect(ui->siirto, &QPushButton::clicked, this, &automat::opentransactionWindow);
     connect(ui->talletus, &QPushButton::clicked, this, &automat::opentransactionWindow);
@@ -153,7 +169,7 @@ void automat::on_tilitapahtumat_clicked()
     int offset = (currentPage - 1) * itemsPerPage;
     qDebug() << "offest" << offset;
     qDebug() << "items" << itemsPerPage;
-
+        automat::tapahtumienMaara();
 
     QString site_url = "http://localhost:3000/transactions/transfers/" + QString::number(accountID) + "/" + QString::number(itemsPerPage) + "/" + QString::number(offset);
     QNetworkRequest request((site_url));
@@ -168,7 +184,33 @@ void automat::on_tilitapahtumat_clicked()
 
     ui->stackedWidget->setCurrentIndex(5);
 }
+void automat::tapahtumienMaara()
+{
+    qDebug() <<"accountID2: " << accountID;
 
+    QString site_url = "http://localhost:3000/transactions/transaction_count/" + QString::number(accountID);
+    QNetworkRequest request((site_url));
+    request.setRawHeader(QByteArray("Authorization"),(token));
+
+    getManager = new QNetworkAccessManager(this);
+    connect(getManager, SIGNAL(finished (QNetworkReply*)), this, SLOT(tapahtumaMaaraSLot(QNetworkReply*)));
+
+    reply = getManager->get(request);
+
+}
+
+void automat::tapahtumaMaaraSLot(QNetworkReply *reply)
+{
+
+    response_data = reply->readAll();
+    maxPage = response_data; //16
+    int testi = maxPage.toInt();
+    laskettuMaxPage = ceil(static_cast<double>(testi) / itemsPerPage);
+
+     qDebug() << "RAAKAA DATAAA: " << response_data;
+     qDebug() << "vittu jees: " << laskettuMaxPage;
+
+}
 void automat::tilitapahtumatSlot(QNetworkReply *reply)
 {
     response_data = reply->readAll();
@@ -196,22 +238,24 @@ void automat::tilitapahtumatSlot(QNetworkReply *reply)
                                            "\rSelite: " + description +
                                            "\rTilitapahtuman tyyppi: " + transactionType + "\r";
 
-
+/*
            qDebug() << "Tapahtuman ID: " << transactionId;
                       qDebug() << "Käyttäjältä " << fromAccountId << " käyttäjälle " << toAccountId;
                       qDebug() << "Määrä: " << amount;
                      qDebug() << "Päivämäärä: " << dateTime;
                       qDebug() << "Selite: " << description;
                       qDebug() << "Tilitapahtuman tyyppi: " << transactionType;
-
+*/
                  ui->tekstiAkkuna->setText(tTapahtumat);
        }
     reply->deleteLater();
     getManager->deleteLater();
 
+
 }
 void automat::handleNextPage()
 {
+    if (currentPage < laskettuMaxPage)
     currentPage++;
     on_tilitapahtumat_clicked();
 }
@@ -222,6 +266,13 @@ void automat::handlePreviousPage()
         currentPage--;
         on_tilitapahtumat_clicked();
     }
+}
+
+void automat::disablointi()
+{
+
+    ui->stackedWidget->setDisabled(true);
+
 }
 void automat::on_nextPageButton_clicked()
 {
@@ -315,7 +366,10 @@ void automat::on_Tili1_clicked()
     ui->Tili2->show();
     ui->Tili1->hide();
     ui->tekstiAkkuna->setText("Tili1 Valittu");
+    ui->stackedWidget->setDisabled(false);
     qDebug()<<"tili1 accountID"<<accountID;
+
+
 }
 void automat::on_Tili2_clicked()
 {
@@ -324,6 +378,8 @@ void automat::on_Tili2_clicked()
     ui->Tili2->hide();
     ui->Tili1->show();
     ui->tekstiAkkuna->setText("Tili2 Valittu");
+    ui->stackedWidget->setDisabled(false);
+
     qDebug()<<"tili2 accountID"<<accountID;
 
 }
