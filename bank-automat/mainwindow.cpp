@@ -71,7 +71,7 @@ void MainWindow::loginSlot(QNetworkReply *reply)
                 objectautomat->showCardID();
                 objectautomat->show();
                 objectautomat->nollaa();
-
+                objectautomat->napittoimiitaiei();
                 this->hide();
 
                 QString site_url2 = "http://localhost:3000/card_privileges/" + cardID;
@@ -108,7 +108,7 @@ void MainWindow::accountSlot(QNetworkReply *reply2)
 
     response_data=reply2->readAll();
 
-     qDebug() << "RAW DATA: " << response_data;
+    // qDebug() << "RAW DATA: " << response_data;
     QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
     QJsonArray json_array = json_doc.array();
     qDebug()<<"array: "<<json_array;
@@ -129,6 +129,7 @@ void MainWindow::accountSlot(QNetworkReply *reply2)
                        qDebug() << "Toinen numero: " << tokaTili;
                        objectautomat->setTokaTili(tokaTili);
                        objectautomat->setEkaTili(ekaTili);
+
 
                    } else {
 
