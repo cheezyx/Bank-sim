@@ -71,7 +71,7 @@ void MainWindow::loginSlot(QNetworkReply *reply)
                 objectautomat->showCardID();
                 objectautomat->show();
                 objectautomat->nollaa();
-
+                objectautomat->napittoimiitaiei();
                 this->hide();
 
                 QString site_url2 = "http://localhost:3000/card_privileges/" + cardID;
@@ -129,6 +129,7 @@ void MainWindow::accountSlot(QNetworkReply *reply2)
                        qDebug() << "Toinen numero: " << tokaTili;
                        objectautomat->setTokaTili(tokaTili);
                        objectautomat->setEkaTili(ekaTili);
+
 
                    } else {
 
