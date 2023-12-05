@@ -1,6 +1,8 @@
 #include "automat.h"
 #include "ui_automat.h"
 #include "transaction.h"
+
+
 automat::automat(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::automat)
@@ -10,26 +12,59 @@ automat::automat(QWidget *parent) :
     ui->setupUi(this);
     transactionWindow = new transaction(this);
     ui->stackedWidget->setCurrentIndex(0);
-    connect(ui->btn1,SIGNAL(clicked(bool)),this,SLOT(numberClickedHandler()));
-    connect(ui->btn2,SIGNAL(clicked(bool)),this,SLOT(numberClickedHandler()));
-    connect(ui->btn3,SIGNAL(clicked(bool)),this,SLOT(numberClickedHandler()));
-    connect(ui->btn4,SIGNAL(clicked(bool)),this,SLOT(numberClickedHandler()));
-    connect(ui->btn5,SIGNAL(clicked(bool)),this,SLOT(numberClickedHandler()));
-    connect(ui->btn6,SIGNAL(clicked(bool)),this,SLOT(numberClickedHandler()));
-    connect(ui->btn7,SIGNAL(clicked(bool)),this,SLOT(numberClickedHandler()));
-    connect(ui->btn8,SIGNAL(clicked(bool)),this,SLOT(numberClickedHandler()));
-    connect(ui->btn9,SIGNAL(clicked(bool)),this,SLOT(numberClickedHandler()));
-    connect(ui->btn0,SIGNAL(clicked(bool)),this,SLOT(numberClickedHandler()));
-    connect(ui->btnback, SIGNAL(clicked(bool)), this, SLOT(backspacehandler()));
+    QList<QPushButton*> numberButtons ={
+    ui->btn1, ui->btn2, ui->btn3, ui->btn4, ui->btn5,
+    ui->btn6, ui->btn7, ui->btn8, ui->btn9, ui->btn0
+    };
+    qDebug() << "Number of buttons in the list: " << numberButtons.size();
+
+    foreach (QPushButton* näppäin, numberButtons) {
+        connect(näppäin, SIGNAL(clicked(bool)), this, SLOT(numberClickedHandler()));
+        näppäin->setStyleSheet(
+            "QPushButton:disabled {"
+            "   background-color: rgba(255, 0, 0, 128);"
+            "   color: rgba(255, 255, 255, 255);"
+            "}"
+        );
+        näppäin->setStyleSheet(
+            "QPushButton:enabled {"
+            "   background-color: rgb(42, 55, 67);;"
+            "   color: rgb(255, 255, 255);"
+            "}"
+        );
+    }
+
+    //connect(ui->btnback, SIGNAL(clicked(bool)), this, SLOT(backspacehandler()));
     connect(ui->siirto, &QPushButton::clicked, this, &automat::opentransactionWindow);
     connect(ui->talletus, &QPushButton::clicked, this, &automat::opentransactionWindow);
     connect(ui->nosto, &QPushButton::clicked, this, &automat::opentransactionWindow);
     connect(transactionWindow, &transaction::closetransactionWindow, this, &automat::show);
+    connect(ui->btnenter,SIGNAL(clicked(bool)),this,SLOT(on_nextPageButton_clicked()));
+    connect(ui->btnback,SIGNAL(clicked(bool)),this,SLOT(on_previousPageButton_clicked()));
+    ui->btnback->setStyleSheet( "QPushButton:disabled {"
+                                "   background-color:  rgba(255, 0, 0, 128);"   // Väri, kun näppäin on disabloitu
+                                "   color: rgba(255, 255, 255, 255);;"
+                                "}");
+    ui->btnenter->setStyleSheet( "QPushButton:disabled {"
+                                 "   background-color: gray;"   // Väri, kun näppäin on disabloitu
+                                 "   color: gray;"
+                                 "}");
+    ui->btnback->setStyleSheet( "QPushButton:enabled {"
+                                "   background-color:  rgb(42, 55, 67);"   // Väri, kun näppäin on enabled
+                                "   color: rgb(255, 255, 255);;"
+                                "}");
+    ui->btnenter->setStyleSheet( "QPushButton:enabled {"
+                                 "   background-color: rgb(42, 55, 67);"   // Väri, kun näppäin on enabled
+                                 "   color: rgb(255, 255, 255)"
+                                 "}");
+
 }
+
 
 automat::~automat()
 {
     delete ui;
+
 }
 
 void automat::setCard_id(const QString &newCardID)
@@ -114,8 +149,13 @@ void automat::saldoSlot(QNetworkReply *reply)
 
 void automat::on_tilitapahtumat_clicked()
 {
-    //qDebug() <<"accountID: " << accountID;
-    QString site_url="http://localhost:3000/transactions/last_five_transactions/"+QString::number(accountID);
+    qDebug() <<"accountID: " << accountID;
+    int offset = (currentPage - 1) * itemsPerPage;
+    qDebug() << "offest" << offset;
+    qDebug() << "items" << itemsPerPage;
+
+
+    QString site_url = "http://localhost:3000/transactions/transfers/" + QString::number(accountID) + "/" + QString::number(itemsPerPage) + "/" + QString::number(offset);
     QNetworkRequest request((site_url));
     request.setRawHeader(QByteArray("Authorization"),(token));
 
@@ -123,9 +163,12 @@ void automat::on_tilitapahtumat_clicked()
     connect(getManager, SIGNAL(finished (QNetworkReply*)), this, SLOT(tilitapahtumatSlot(QNetworkReply*)));
 
     reply = getManager->get(request);
+    ui->btnback->setDisabled(false);
+    ui->btnenter->setDisabled(false);
 
     ui->stackedWidget->setCurrentIndex(5);
 }
+
 void automat::tilitapahtumatSlot(QNetworkReply *reply)
 {
     response_data = reply->readAll();
@@ -154,17 +197,40 @@ void automat::tilitapahtumatSlot(QNetworkReply *reply)
                                            "\rTilitapahtuman tyyppi: " + transactionType + "\r";
 
 
-         /*  qDebug() << "Tapahtuman ID: " << transactionId;
+           qDebug() << "Tapahtuman ID: " << transactionId;
                       qDebug() << "Käyttäjältä " << fromAccountId << " käyttäjälle " << toAccountId;
                       qDebug() << "Määrä: " << amount;
                      qDebug() << "Päivämäärä: " << dateTime;
                       qDebug() << "Selite: " << description;
                       qDebug() << "Tilitapahtuman tyyppi: " << transactionType;
-*/
+
                  ui->tekstiAkkuna->setText(tTapahtumat);
        }
     reply->deleteLater();
     getManager->deleteLater();
+
+}
+void automat::handleNextPage()
+{
+    currentPage++;
+    on_tilitapahtumat_clicked();
+}
+
+void automat::handlePreviousPage()
+{
+    if (currentPage > 1) {
+        currentPage--;
+        on_tilitapahtumat_clicked();
+    }
+}
+void automat::on_nextPageButton_clicked()
+{
+    handleNextPage();
+}
+
+void automat::on_previousPageButton_clicked()
+{
+    handlePreviousPage();
 }
 void automat::on_logout_clicked()
 {
@@ -186,6 +252,8 @@ void automat::on_btncancel_clicked()
 {
     ui->stackedWidget->setCurrentIndex(0);
     ui->tekstiAkkuna->clear();
+    ui->btnback->setDisabled(true);
+    ui->btnenter->setDisabled(true);
 }
 void automat::setToken(const QByteArray &newToken)
 {
@@ -243,22 +311,40 @@ void automat::updateGreetingLabel(QNetworkReply *reply) {
 void automat::on_Tili1_clicked()
 {
     accountID=ekaTili;
-    ui->Tili2->setDisabled(true);
-    ui->Tili2->hide();
+    //ui->Tili2->setDisabled(true);
+    ui->Tili2->show();
     ui->Tili1->hide();
+    ui->tekstiAkkuna->setText("Tili1 Valittu");
     qDebug()<<"tili1 accountID"<<accountID;
 }
 void automat::on_Tili2_clicked()
 {
     accountID=tokaTili;
-    ui->Tili1->setDisabled(true);
+   // ui->Tili1->setDisabled(true);
     ui->Tili2->hide();
-    ui->Tili1->hide();
+    ui->Tili1->show();
+    ui->tekstiAkkuna->setText("Tili2 Valittu");
     qDebug()<<"tili2 accountID"<<accountID;
 
 }
+void automat::napittoimiitaiei()
+{
+    ui->btnback->setDisabled(true);
+    ui->btnenter->setDisabled(true);
+    ui->btn0->setDisabled(true);
+    ui->btn1->setDisabled(true);
+    ui->btn2->setDisabled(true);
+    ui->btn3->setDisabled(true);
+    ui->btn4->setDisabled(true);
+    ui->btn5->setDisabled(true);
+    ui->btn6->setDisabled(true);
+    ui->btn7->setDisabled(true);
+    ui->btn8->setDisabled(true);
+    ui->btn9->setDisabled(true);
 
 
+ ui->btn0->setDisabled(true);
+}
 void automat::numberClickedHandler()
 {
   QPushButton * button = qobject_cast<QPushButton*>(sender());

@@ -38,10 +38,18 @@ public:
     void setEkaTili(const int &newEkaTili);
     void setTokaTili(const int &newTokaTili);
     void setSoloTili(const int &newSoloTili);
+    int currentPage = 1;
+    int itemsPerPage = 5;
+    int totalTransactions = 0;
+    void handleNextPage();
+    void handlePreviousPage();
 
+
+    void napittoimiitaiei();
 public slots:
      void opentransactionWindow();
-
+     void on_nextPageButton_clicked();
+     void on_previousPageButton_clicked();
 private slots:
     void on_siirto_clicked();
     void on_talletus_clicked();
@@ -54,13 +62,11 @@ private slots:
     void on_btncancel_clicked();
     void tilitapahtumatSlot (QNetworkReply *reply);
     void saldoSlot (QNetworkReply *reply);
-
     void numberClickedHandler();
     void backspacehandler();
-
     void on_Tili1_clicked();
-
     void on_Tili2_clicked();
+
 
 signals:
     void logOutSignal();
