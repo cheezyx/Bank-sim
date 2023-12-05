@@ -27,7 +27,7 @@ BEGIN
             SET p_message = 'Luottoraja ylitetty';
             ROLLBACK;
         ELSEIF v_account_type = 'debit' AND v_balance < p_amount THEN
-            SET p_message = 'Riittämättömät varat';
+            SET p_message = 'Tilillä ei katetta';
             ROLLBACK;
         ELSE
             -- Vähennä summa tililtä
