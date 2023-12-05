@@ -91,7 +91,8 @@ void automat::saldoSlot(QNetworkReply *reply)
     QJsonArray accountsArray = json_doc.array();
 
     QString saldoInfo;
-    foreach (const QJsonValue &value, accountsArray) {
+    foreach (const QJsonValue &value, accountsArray){
+
         QJsonObject account = value.toObject();
         int accountId = account["account_id"].toInt();
         QString balance = account["balance"].toString();
@@ -135,7 +136,7 @@ void automat::tilitapahtumatSlot(QNetworkReply *reply)
        QString tTapahtumat;
        QString transaction_id;
 
-       foreach (const QJsonValue &value, json_array) {
+       foreach (const QJsonValue &value, json_array){
            QJsonObject json_obj = value.toObject();
            int transactionId = json_obj["transaction_id"].toInt();
             int fromAccountId = json_obj["from_account_id"].toInt();
@@ -291,12 +292,13 @@ void automat::on_talletus_clicked()
 {
     this->hide();
     transactionWindow->show();
+    transactionWindow->waitforUser();
 }
 void automat::on_nosto_clicked()
 {
     this->hide();
     transactionWindow->show();
-    transactionWindow->nostoWait();
+    transactionWindow->waitforUser();
 }
 
 void automat::opentransactionWindow()
