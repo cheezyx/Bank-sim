@@ -26,8 +26,6 @@ public:
 
     void showAccounts();
 
-
-
 private slots:
     void on_btnLogin_clicked();
     void loginSlot (QNetworkReply *reply);

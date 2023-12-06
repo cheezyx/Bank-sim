@@ -74,8 +74,8 @@
   }
   .automat-box .logout-button {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 15px;
+    right: 15px;
     background-color: #ff4d4d; /* Punainen taustaväri */
     color: white; /* Valkoinen tekstiväri */
   }
@@ -90,3 +90,17 @@
     background-color: #e0e0e0;
     border-radius: 10px; /* Pyöristetyt kulmat */
 }
+
+.transactions-header {
+  display: flex;
+  justify-content: center; /* Keskitä otsikko */
+  align-items: center;
+}
+
+.transactions-navigation {
+  position: absolute;
+  right: 15px;
+  display: flex;
+  align-items: center;
+}
+

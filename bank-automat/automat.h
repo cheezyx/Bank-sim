@@ -8,9 +8,6 @@
 #include <QTimer>
 #include "transaction.h"
 
-
-
-
 namespace Ui {
 class automat;
 }
@@ -33,17 +30,31 @@ public:
     void fetchAndDisplayUserName();
     void nollaa();
     void updateGreetingLabel(QNetworkReply *reply);
-    void setAccountID(const QString &newAccountID);
-    QString accountID;
-    QString ekaTili;
-    QString tokaTili;
-    QString soloTili;
-    void setEkaTili(const QString &newEkaTili);
-    void setTokaTili(const QString &newTokaTili);
-    void setSoloTili(const QString &newSoloTili);
+    void setAccountID(const int &newAccountID);
+    int accountID;
+    int ekaTili;
+    int tokaTili;
+    int soloTili;
+    void setEkaTili(const int &newEkaTili);
+    void setTokaTili(const int &newTokaTili);
+    void setSoloTili(const int &newSoloTili);
+    int currentPage = 1;
+    int itemsPerPage = 5;
+
+    int laskettuMaxPage;
+    QString maxPage = 0;
+    void handleNextPage();
+    void handlePreviousPage();
+
+    void disablointi();
+    void napittoimiitaiei();
+    void tapahtumienMaara();
 
 public slots:
      void opentransactionWindow();
+     void on_nextPageButton_clicked();
+     void on_previousPageButton_clicked();
+     void tapahtumaMaaraSLot(QNetworkReply *reply);
 
 private slots:
     void on_siirto_clicked();
@@ -57,17 +68,16 @@ private slots:
     void on_btncancel_clicked();
     void tilitapahtumatSlot (QNetworkReply *reply);
     void saldoSlot (QNetworkReply *reply);
-
     void numberClickedHandler();
     void backspacehandler();
-
     void on_Tili1_clicked();
-
     void on_Tili2_clicked();
+
 
 signals:
     void logOutSignal();
     void siirtoSignal();
+    void nostoSignal();
 
 
 private:

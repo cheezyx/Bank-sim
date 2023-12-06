@@ -20,6 +20,10 @@ function AutomatPage() {
     const [showTransactions, setShowTransactions] = useState(false);
     const [toAccountId, setToAccountId] = useState('');
     const [showTransferForm, setShowTransferForm] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 5;
+    const [maxPage, setMaxPage] = useState(0);
+
 
 
 
@@ -57,20 +61,54 @@ function AutomatPage() {
 
     const fetchTransactions = () => {
         if (selectedAccount) {
-            fetch(`http://localhost:3000/transactions/all_transfers/${selectedAccount.account_id}`, {
+            const offset = (currentPage - 1) * itemsPerPage;
+            fetch(`http://localhost:3000/transactions/transfers/${selectedAccount.account_id}/${itemsPerPage}/${offset}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             })
                 .then(response => response.json())
                 .then(data => {
-                    // Kääntää saadun datan järjestyksen ja ottaa viisi viimeisintä alkiota
-                    const latestTransactions = data.slice().reverse().slice(0, 5);
-                    setTransactions(latestTransactions); // Tallentaa viisi viimeisintä tilitapahtumaa
+                    setTransactions(data);
                 })
                 .catch(error => console.error('Error:', error));
         }
     };
+
+    useEffect(() => {
+        if (selectedAccount) {
+            // Hae tilitapahtumien kokonaismäärä
+            fetch(`http://localhost:3000/transactions/transaction_count/${selectedAccount.account_id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const totalTransactions = data;
+                    const calculatedMaxPage = Math.ceil(totalTransactions / itemsPerPage);
+                    setMaxPage(calculatedMaxPage); // Päivitä maksimisivumäärä
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    }, [selectedAccount, token]);
+
+    const handleNextPage = () => {
+        if (currentPage < maxPage) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
+    const handlePreviousPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
+
+
+    useEffect(() => {
+        fetchTransactions();
+    }, [currentPage]);
 
 
     const fetchAccountDetails = () => {
@@ -253,12 +291,15 @@ function AutomatPage() {
                             onChange={(e) => setTransactionAmount(e.target.value)}
                             placeholder="Määrä"
                         />
-                        <input
-                            type="text"
-                            value={transactionDescription}
-                            onChange={(e) => setTransactionDescription(e.target.value)}
-                            placeholder="Kuvaus"
-                        />
+                        {/* Näytä Kuvaus-kenttä vain siirtojen yhteydessä */}
+                        {transactionType === 'transfer' && (
+                            <input
+                                type="text"
+                                value={transactionDescription}
+                                onChange={(e) => setTransactionDescription(e.target.value)}
+                                placeholder="Kuvaus"
+                            />
+                        )}
                         <button onClick={handleTransaction}>Vahvista</button>
                         <button onClick={() => setShowTransactionForm(false)}>Peruuta</button>
                     </div>
@@ -292,19 +333,41 @@ function AutomatPage() {
 
                 {showTransactions && (
                     <div>
-                        <h2>Tilitapahtumat</h2>
+                        <div className="transactions-header">
+                            <h2>Tilitapahtumat</h2>
+                            <div className="transactions-navigation">
+                                <button onClick={handlePreviousPage}>
+                                    &lt; {/* Vasemmalle osoittava nuoli */}
+                                </button>
+                                <button onClick={handleNextPage}>
+                                    &gt; {/* Oikealle osoittava nuoli */}
+                                </button>
+                            </div>
+                        </div>
                         {transactions.map((transaction, index) => (
                             <div key={index} className="transaction-detail">
-                                <p><strong>Tilitapahtuma:</strong> {transaction.transaction_type}</p>
-                                {transaction.transaction_type !== 'withdraw' && transaction.transaction_type !== 'deposit' && (
+                                <p>
+                                    <strong>
+                                        {transaction.transaction_type === 'transfer' && 'Siirto'}
+                                        {transaction.transaction_type === 'withdraw' && 'Nosto'}
+                                        {transaction.transaction_type === 'deposit' && 'Talletus'}
+                                    </strong>
+                                </p>
+                                {transaction.transaction_type === 'transfer' && (
                                     <>
                                         <p><strong>Tililtä:</strong> {transaction.from_account_id}</p>
                                         <p><strong>Tilille:</strong> {transaction.to_account_id}</p>
+                                        <p><strong>Määrä:</strong> {transaction.amount}</p>
+                                        <p><strong>Aika:</strong> {formatDate(transaction.date_time)}</p>
+                                        <p><strong>Kuvaus:</strong> {transaction.description}</p>
                                     </>
                                 )}
-                                <p><strong>Määrä:</strong> {transaction.amount}</p>
-                                <p><strong>Kuvaus:</strong> {transaction.description}</p>
-                                <p><strong>Aika:</strong> {formatDate(transaction.date_time)}</p>
+                                {transaction.transaction_type !== 'transfer' && (
+                                    <>
+                                        <p><strong>Määrä:</strong> {transaction.amount}</p>
+                                        <p><strong>Aika:</strong> {formatDate(transaction.date_time)}</p>
+                                    </>
+                                )}
                             </div>
                         ))}
                     </div>
