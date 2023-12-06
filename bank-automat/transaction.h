@@ -2,6 +2,10 @@
 #define TRANSACTION_H
 
 #include <QDialog>
+#include <QtWidgets>
+#include <QtNetwork>
+#include <QJsonDocument>
+#include <QJsonObject>
 
 namespace Ui {
 class transaction;
@@ -17,13 +21,19 @@ public:
 public slots:
     void onbtncancelClicked();
 private slots:
-
+    void onTransferButtonClicked();
+    void onNetworkReply(QNetworkReply *reply);
 signals:
     void opentransactionWindow();
     void closetransactionWindow();
 
 private:
     Ui::transaction *ui;
+    QTextEdit *toAccountTextEdit;
+    QTextEdit *amountTextEdit;
+    QPushButton *transferButton;
+    QNetworkAccessManager *networkManager;
+    void sendTransferRequest();
 };
 
 #endif // TRANSACTION_H
