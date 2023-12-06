@@ -334,9 +334,9 @@ background-color: rgb(229, 75, 60);</string>
    <property name="geometry">
     <rect>
      <x>70</x>
-     <y>60</y>
+     <y>20</y>
      <width>111</width>
-     <height>41</height>
+     <height>81</height>
     </rect>
    </property>
    <property name="font">
@@ -396,7 +396,7 @@ background-color: rgb(22, 28, 33);</string>
 background-color: rgb(42, 55, 67);</string>
    </property>
    <property name="text">
-    <string>-&gt;</string>
+    <string> Enter</string>
    </property>
   </widget>
   <widget class="QStackedWidget" name="stackedWidget">

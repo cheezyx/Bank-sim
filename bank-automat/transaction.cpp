@@ -6,8 +6,6 @@ transaction::transaction(QWidget *parent)
     , ui(new Ui::transaction)
 {
     ui->setupUi(this);
-<<<<<<< HEAD
-=======
 
     connect(ui->btn1,SIGNAL(clicked(bool)),this,SLOT(numberClickedHandler()));
     connect(ui->btn2,SIGNAL(clicked(bool)),this,SLOT(numberClickedHandler()));
@@ -22,17 +20,10 @@ transaction::transaction(QWidget *parent)
     connect(ui->btnback, SIGNAL(clicked(bool)), this, SLOT(backspacehandler()));
     connect(ui->btncancel, &QPushButton::clicked, this, &transaction::onbtncancelClicked);
     connect(ui->btnTalletus, SIGNAL(clicked(bool)), this, SLOT(on_talletus_clicked()));
->>>>>>> main
-
-    // Assuming you have these elements in your form (if not, add them)
-    toAccountTextEdit = ui->tekstiAkkuna;
-    amountTextEdit = ui->tekstiAkkuna;
-    transferButton = ui->btnenter;
-
-    // Rest of your setup...
-    networkManager = new QNetworkAccessManager(this);
-    connect(transferButton, &QPushButton::clicked, this, &transaction::onTransferButtonClicked);
-    connect(networkManager, &QNetworkAccessManager::finished, this, &transaction::onNetworkReply);
+    connect(ui->siirto, SIGNAL(clicked(bool)), this, SLOT(SiirtoClicked()));
+    connect(ui->btnenter, SIGNAL(clicked()), this, SLOT(vastaanottaja()));
+    connect(ui->btnenter, SIGNAL(clicked()), this, SLOT(SiirtoSummaSlot()));
+    connect(ui->siirto_2, SIGNAL(clicked()), this, SLOT(hyvaksySiirto()));
 }
 
 
@@ -68,50 +59,50 @@ void transaction::nostoFUNKTIO(float _amount)
 {
     //qDebug()<<accountID;
     //qDebug()<<_amount;
-        QString nst = "Nosto.";
-        QJsonObject jsonObj;
-        jsonObj.insert("account_id", accountID);
-        jsonObj.insert("amount", _amount);
-        jsonObj.insert("description", nst);
-        QString site_url="http://localhost:3000/transactions/withdraw";
-        QNetworkRequest request((site_url));
-        request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-        request.setRawHeader(QByteArray("Authorization"),(token));
-        postManager = new QNetworkAccessManager(this);
-        connect(postManager, SIGNAL(finished (QNetworkReply*)), this, SLOT(nostoSlot(QNetworkReply*)));
+    QString nst = "Nosto.";
+    QJsonObject jsonObj;
+    jsonObj.insert("account_id", accountID);
+    jsonObj.insert("amount", _amount);
+    jsonObj.insert("description", nst);
+    QString site_url="http://localhost:3000/transactions/withdraw";
+    QNetworkRequest request((site_url));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    request.setRawHeader(QByteArray("Authorization"),(token));
+    postManager = new QNetworkAccessManager(this);
+    connect(postManager, SIGNAL(finished (QNetworkReply*)), this, SLOT(nostoSlot(QNetworkReply*)));
 
-        reply = postManager->post(request, QJsonDocument(jsonObj).toJson());
+    reply = postManager->post(request, QJsonDocument(jsonObj).toJson());
 
 }
 void transaction::nostoSlot(QNetworkReply *reply)
 {
-        response_data=reply->readAll();
-        qDebug()<<response_data;
+    response_data=reply->readAll();
+    qDebug()<<response_data;
 
-        QJsonDocument jsonResponse = QJsonDocument::fromJson(response_data);
+    QJsonDocument jsonResponse = QJsonDocument::fromJson(response_data);
 
-        // Check if the response contains the expected message
-        if (jsonResponse.isObject())
+    // Check if the response contains the expected message
+    if (jsonResponse.isObject())
+    {
+        QJsonObject jsonObject = jsonResponse.object();
+        if (jsonObject.contains("message"))
+        {
+            QString message = jsonObject.value("message").toString();
+
+            // Update status label based on the message
+            if (message == "Withdrawal successful")
             {
-            QJsonObject jsonObject = jsonResponse.object();
-            if (jsonObject.contains("message"))
-                {
-                QString message = jsonObject.value("message").toString();
+                ui->statuslbl->setText("Nosto onnistui.");
 
-                // Update status label based on the message
-                if (message == "Withdrawal successful")
-                    {
-                    ui->statuslbl->setText("Nosto onnistui.");
-
-                    }
-                else
-                    {
-                    ui->statuslbl->setText("Tilillä ei ole katetta.");
-                    }
-                }
             }
-        reply->deleteLater();
-            postManager->deleteLater();
+            else
+            {
+                ui->statuslbl->setText("Tilillä ei ole katetta.");
+            }
+        }
+    }
+    reply->deleteLater();
+    postManager->deleteLater();
 }
 
 void transaction::numberClickedHandler()
@@ -195,28 +186,61 @@ void transaction::depositFinished(QNetworkReply *reply)
     }
     reply->deleteLater();
 }
-void transaction::onTransferButtonClicked() {
-    sendTransferRequest();
+
+void transaction::SiirtoClicked() {
+
+    ui->tekstiAkkuna->setText("Anna vastaanottajan tilinumero ja paina Enter");
+    ui->stackedWidget->setCurrentIndex(0);
+    disconnect(ui->btnenter, SIGNAL(clicked()), this, SLOT(vastaanottaja()));
+    connect(ui->btnenter, SIGNAL(clicked()), this, SLOT(SiirtoSummaSlot()));
 }
-void transaction::sendTransferRequest() {
-    QJsonObject json;
-    json["to_account_id"] = toAccountTextEdit->toPlainText().trimmed();
-    json["amount"] = amountTextEdit->toPlainText().trimmed().toDouble();
-    json["description"] = "Maksettu automaatista";
+void transaction::vastaanottaja() {
+    int vastTili = ui->numeroAkkuna->text().toInt();
+    toAccountID = vastTili;
 
-    QJsonDocument doc(json);
-    QByteArray data = doc.toJson();
+    // Prompt the user for the amount
+    ui->tekstiAkkuna->setText("Anna summa ja paina Enter");
+    // You might need to clear the QLineEdit or handle it accordingly
+}
+void transaction::SiirtoSummaSlot() {
+    float summa = ui->numeroAkkuna->text().toFloat();
+    SiirtoSumma = summa;
 
-    QNetworkRequest request(QUrl("http://localhost:3000/transactions/transfer"));
+    // Change UI to the confirmation page
+    ui->stackedWidget->setCurrentIndex(2); // Assuming this is the confirmation page index
+    ui->tekstiAkkuna->setText("Hyväksy siirto");
+    disconnect(ui->btnenter, SIGNAL(clicked()), this, SLOT(SiirtoSummaSlot()));
+    connect(ui->siirto_2, SIGNAL(clicked()), this, SLOT(hyvaksySiirto()));
+}
+void transaction::hyvaksySiirto() {
+    // Perform the transfer with the stored 'toAccountID' and 'SiirtoSumma'
+    QString viesti = "siirretty automaatista";
+    QJsonObject jsonObj;
+    jsonObj.insert("from_account_id", accountID); // Use 'from_account_id' for the source account
+    jsonObj.insert("to_account_id", toAccountID); // Add 'to_account_id' for the destination
+    jsonObj.insert("amount", SiirtoSumma);
+    jsonObj.insert("description", viesti);
+    QString site_url="http://localhost:3000/transactions/transfer";
+    QNetworkRequest request((site_url));
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    networkManager->post(request, data);
-}
-void transaction::onNetworkReply(QNetworkReply *reply) {
-    if (reply->error()) {
-        qDebug() << "Error:" << reply->errorString();
-        return;
-    }
+    request.setRawHeader(QByteArray("Authorization"),(token));
+    postManager = new QNetworkAccessManager(this);
+    connect(postManager, SIGNAL(finished (QNetworkReply*)), this, SLOT(siirtoSuoritettu(QNetworkReply*)));
 
-    QString response = reply->readAll();
-    qDebug() << "Response:" << response;
+    reply = postManager->post(request, QJsonDocument(jsonObj).toJson());
+
+}
+void transaction::siirtoSuoritettu(QNetworkReply *reply)
+{
+    // Handle the response from the server here
+    if (reply->error() == QNetworkReply::NoError) {
+        qDebug() << "Siirto onnistui";
+        ui->statuslbl->setText("Siirto suoritettu.");
+        // Maybe show a success message to the user
+    } else {
+        qDebug() << "Error trasfering money:" << reply->errorString();
+        ui->statuslbl->setText("Error.");
+        // Maybe show an error message to the user
+    }
+    reply->deleteLater();
 }
