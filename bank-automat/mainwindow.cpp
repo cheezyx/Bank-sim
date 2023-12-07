@@ -125,20 +125,16 @@ void MainWindow::accountSlot(QNetworkReply *reply2)
         }
     }
 
-    // Tarkistetaan, mitä tietoja saatiin ja asetetaan ne
     if (creditTiliId != -1 && debitTiliId != -1) {
-        // Molemmat tilityypit löytyivät
         objectautomat->setEkaTili(creditTiliId); // credit tili
         objectautomat->setTokaTili(debitTiliId); // debit tili
         qDebug() << "Credit tili = " << creditTiliId;
         qDebug() << "Debit tili = " << debitTiliId;
     } else if (creditTiliId != -1 || debitTiliId != -1) {
-        // Vain yksi tili löytyi
         int soloTiliId = (creditTiliId != -1) ? creditTiliId : debitTiliId;
         objectautomat->setSoloTili(soloTiliId);
         qDebug() << "Solo tili = " << soloTiliId;
     } else {
-        // Ei tilejä
         qDebug() << "Ei löytynyt linkitettyjä tilejä";
     }
 

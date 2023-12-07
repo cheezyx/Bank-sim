@@ -364,8 +364,10 @@ void automat::on_Tili1_clicked()
     accountID=ekaTili;
     //ui->Tili2->setDisabled(true);
     ui->Tili2->show();
-    ui->Tili1->hide();
-    ui->tekstiAkkuna->setText("Tili1 Valittu");
+    //ui->Tili1->hide();
+    ui->Tili1->setStyleSheet("background-color: green; color: white;");
+    ui->Tili2->setStyleSheet("background-color: red; color: white;");
+    ui->tekstiAkkuna->setText("Credit-tili valittu");
     ui->stackedWidget->setDisabled(false);
     qDebug()<<"tili1 accountID"<<accountID;
 
@@ -375,9 +377,11 @@ void automat::on_Tili2_clicked()
 {
     accountID=tokaTili;
    // ui->Tili1->setDisabled(true);
-    ui->Tili2->hide();
+    //ui->Tili2->hide();
     ui->Tili1->show();
-    ui->tekstiAkkuna->setText("Tili2 Valittu");
+    ui->Tili2->setStyleSheet("background-color: green; color: white;");
+    ui->Tili1->setStyleSheet("background-color: red; color: white;");
+    ui->tekstiAkkuna->setText("Debit-tili valittu");
     ui->stackedWidget->setDisabled(false);
 
     qDebug()<<"tili2 accountID"<<accountID;
