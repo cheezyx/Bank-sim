@@ -75,7 +75,7 @@ void MainWindow::loginSlot(QNetworkReply *reply)
 
                 this->hide();
 
-                QString site_url2 = "http://localhost:3000/card_privileges/" + cardID;
+                QString site_url2 = "http://localhost:3000/cards/accountinf/" + cardID;
                    QNetworkRequest request2(site_url2);
                    request2.setRawHeader(QByteArray("Authorization"), (token));
 
@@ -106,45 +106,42 @@ void MainWindow::logoutSlot()
 
 void MainWindow::accountSlot(QNetworkReply *reply2)
 {
-
-    response_data=reply2->readAll();
-
-    // qDebug() << "RAW DATA: " << response_data;
+    response_data = reply2->readAll();
     QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
     QJsonArray json_array = json_doc.array();
-    qDebug()<<"array: "<<json_array;
-    QList<int> accIDs;
+
+    int creditTiliId = -1;
+    int debitTiliId = -1;
+
     foreach (const QJsonValue &value, json_array) {
-            QJsonObject json_obj = value.toObject();
+        QJsonObject json_obj = value.toObject();
         int account_id = json_obj.value("account_id").toInt();
-            accIDs.append(account_id);
+        QString accountType = json_obj.value("account_type").toString();
+
+        if (accountType == "credit") {
+            creditTiliId = account_id;
+        } else if (accountType == "debit") {
+            debitTiliId = account_id;
+        }
     }
-    //qDebug()<<"accIDs: "<< accIDs;
 
-                   if (accIDs.size() >= 2) {
-                        int ekaTili = accIDs.at(0);  // ekan tilin numero
-                        int tokaTili = accIDs.at(1); // tokan tilin numero
+    // Tarkistetaan, mitä tietoja saatiin ja asetetaan ne
+    if (creditTiliId != -1 && debitTiliId != -1) {
+        // Molemmat tilityypit löytyivät
+        objectautomat->setEkaTili(creditTiliId); // credit tili
+        objectautomat->setTokaTili(debitTiliId); // debit tili
+        qDebug() << "Credit tili = " << creditTiliId;
+        qDebug() << "Debit tili = " << debitTiliId;
+    } else if (creditTiliId != -1 || debitTiliId != -1) {
+        // Vain yksi tili löytyi
+        int soloTiliId = (creditTiliId != -1) ? creditTiliId : debitTiliId;
+        objectautomat->setSoloTili(soloTiliId);
+        qDebug() << "Solo tili = " << soloTiliId;
+    } else {
+        // Ei tilejä
+        qDebug() << "Ei löytynyt linkitettyjä tilejä";
+    }
 
-                       // nyt voidaan käyttää ekan ja tokan tilin numeroa
-                       qDebug() << "Ensimmäinen numero: " << ekaTili;
-                       qDebug() << "Toinen numero: " << tokaTili;
-                       objectautomat->setTokaTili(tokaTili);
-                       objectautomat->setEkaTili(ekaTili);
-                       objectautomat->disablointi();
-
-
-                   } else {
-
-                       objectautomat->setSoloTili(accIDs.at(0));
-
-                       qDebug() << "numeroi"<<accIDs;
-                       qDebug() << "vain yksitili";
-                   }
-
-           reply2->deleteLater();
-           getManager->deleteLater();
-
-
-
+    reply2->deleteLater();
+    getManager->deleteLater();
 }
-
