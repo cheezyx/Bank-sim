@@ -227,16 +227,18 @@ void automat::tilitapahtumatSlot(QNetworkReply *reply)
             int fromAccountId = json_obj["from_account_id"].toInt();
              int toAccountId = json_obj["to_account_id"].toInt();
               QString amount = json_obj["amount"].toString();
-               QString dateTime = json_obj["date_time"].toString();
+             QString dateTime = json_obj["date_time"].toString();
+             QDateTime formattedDateTime = QDateTime::fromString(dateTime, Qt::ISODate);
+             QString formattedDateTimeString = formattedDateTime.toString("dd.MM.yyyy hh:mm");
                 QString description = json_obj["description"].toString();
                  QString transactionType = json_obj["transaction_type"].toString();
-                 tTapahtumat += "Tapahtuman ID: " + QString::number(transactionId) +
-                                           "\rKäyttäjältä " + QString::number(fromAccountId) +
-                                           " käyttäjälle " + QString::number(toAccountId) +
-                                           "\rMäärä: " + amount +
-                                           "\rPäivämäärä: " + dateTime +
-                                           "\rSelite: " + description +
-                                           "\rTilitapahtuman tyyppi: " + transactionType + "\r";
+                tTapahtumat += "Tapahtuman ID: " + QString::number(transactionId) + "\n"
+                               + "Käyttäjältä: " + QString::number(fromAccountId) + "\n"
+                               + "Käyttäjälle: " + QString::number(toAccountId) + "\n"
+                               + "Määrä: " + amount + "\n"
+                               + "Päivämäärä: " + formattedDateTimeString + "\n"
+                               + "Selite: " + description + "\n"
+                               + "Tilitapahtuman tyyppi: " + transactionType + "\n\n";
 
 /*
            qDebug() << "Tapahtuman ID: " << transactionId;
