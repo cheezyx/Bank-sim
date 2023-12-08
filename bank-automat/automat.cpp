@@ -74,6 +74,7 @@ automat::automat(QWidget *parent) :
                                  "   color: rgb(255, 255, 255)"
                                  "}");
 
+
 }
 
 
@@ -457,5 +458,11 @@ void automat::opentransactionWindow()
     transactionWindow->show();
     transactionWindow->setToken(token);
     transactionWindow->setAccountID(accountID);
+
+}
+
+void automat::valitseTiliTeksti()
+{
+ui->tekstiAkkuna->setText("Valitse käytettävä tili");
 
 }
