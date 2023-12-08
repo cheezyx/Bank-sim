@@ -294,6 +294,8 @@ void automat::on_logout_clicked()
     ui->Tili2->setDisabled(false);
     ui->Tili1->setDisabled(false);
     ui->tekstiAkkuna->clear();
+    ui->Tili1->setStyleSheet("background-color: green; color: white;");
+    ui->Tili2->setStyleSheet("background-color: green; color: white;");
     ui->stackedWidget->setCurrentWidget(0);
 
     accountID = 0;
