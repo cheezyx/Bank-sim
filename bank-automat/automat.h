@@ -50,6 +50,8 @@ public:
     void napittoimiitaiei();
     void tapahtumienMaara();
 
+    void valitseTiliTeksti();
+
 public slots:
      void opentransactionWindow();
      void on_nextPageButton_clicked();

@@ -74,6 +74,7 @@ automat::automat(QWidget *parent) :
                                  "   color: rgb(255, 255, 255)"
                                  "}");
 
+
 }
 
 
@@ -125,7 +126,7 @@ void automat::setEkaTili(const int &newEkaTili)
 
 void automat::on_saldo_clicked()
 {
-    QString site_url = "http://localhost:3000/cards/accountinf/" + cardID;
+    QString site_url = "http://localhost:3000/accounts/" + QString::number(accountID);
     QNetworkRequest request((site_url));
     request.setRawHeader(QByteArray("Authorization"), (token));
 
@@ -227,16 +228,18 @@ void automat::tilitapahtumatSlot(QNetworkReply *reply)
             int fromAccountId = json_obj["from_account_id"].toInt();
              int toAccountId = json_obj["to_account_id"].toInt();
               QString amount = json_obj["amount"].toString();
-               QString dateTime = json_obj["date_time"].toString();
+             QString dateTime = json_obj["date_time"].toString();
+             QDateTime formattedDateTime = QDateTime::fromString(dateTime, Qt::ISODate);
+             QString formattedDateTimeString = formattedDateTime.toString("dd.MM.yyyy hh:mm");
                 QString description = json_obj["description"].toString();
                  QString transactionType = json_obj["transaction_type"].toString();
-                 tTapahtumat += "Tapahtuman ID: " + QString::number(transactionId) +
-                                           "\rKäyttäjältä " + QString::number(fromAccountId) +
-                                           " käyttäjälle " + QString::number(toAccountId) +
-                                           "\rMäärä: " + amount +
-                                           "\rPäivämäärä: " + dateTime +
-                                           "\rSelite: " + description +
-                                           "\rTilitapahtuman tyyppi: " + transactionType + "\r";
+                tTapahtumat += "Tapahtuman ID: " + QString::number(transactionId) + "\n"
+                               + "Käyttäjältä: " + QString::number(fromAccountId) + "\n"
+                               + "Käyttäjälle: " + QString::number(toAccountId) + "\n"
+                               + "Määrä: " + amount + "\n"
+                               + "Päivämäärä: " + formattedDateTimeString + "\n"
+                               + "Selite: " + description + "\n"
+                               + "Tilitapahtuman tyyppi: " + transactionType + "\n\n";
 
 /*
            qDebug() << "Tapahtuman ID: " << transactionId;
@@ -292,6 +295,8 @@ void automat::on_logout_clicked()
     ui->Tili2->setDisabled(false);
     ui->Tili1->setDisabled(false);
     ui->tekstiAkkuna->clear();
+    ui->Tili1->setStyleSheet("background-color: green; color: white;");
+    ui->Tili2->setStyleSheet("background-color: green; color: white;");
     ui->stackedWidget->setCurrentWidget(0);
 
     accountID = 0;
@@ -364,8 +369,10 @@ void automat::on_Tili1_clicked()
     accountID=ekaTili;
     //ui->Tili2->setDisabled(true);
     ui->Tili2->show();
-    ui->Tili1->hide();
-    ui->tekstiAkkuna->setText("Tili1 Valittu");
+    //ui->Tili1->hide();
+    ui->Tili1->setStyleSheet("background-color: green; color: white;");
+    ui->Tili2->setStyleSheet("background-color: red; color: white;");
+    ui->tekstiAkkuna->setText("Credit-tili valittu");
     ui->stackedWidget->setDisabled(false);
     qDebug()<<"tili1 accountID"<<accountID;
 
@@ -375,9 +382,11 @@ void automat::on_Tili2_clicked()
 {
     accountID=tokaTili;
    // ui->Tili1->setDisabled(true);
-    ui->Tili2->hide();
+    //ui->Tili2->hide();
     ui->Tili1->show();
-    ui->tekstiAkkuna->setText("Tili2 Valittu");
+    ui->Tili2->setStyleSheet("background-color: green; color: white;");
+    ui->Tili1->setStyleSheet("background-color: red; color: white;");
+    ui->tekstiAkkuna->setText("Debit-tili valittu");
     ui->stackedWidget->setDisabled(false);
 
     qDebug()<<"tili2 accountID"<<accountID;
@@ -450,5 +459,11 @@ void automat::opentransactionWindow()
     transactionWindow->show();
     transactionWindow->setToken(token);
     transactionWindow->setAccountID(accountID);
+
+}
+
+void automat::valitseTiliTeksti()
+{
+ui->tekstiAkkuna->setText("Valitse käytettävä tili Credit ja Debit -painikkeilla");
 
 }
