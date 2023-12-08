@@ -463,6 +463,6 @@ void automat::opentransactionWindow()
 
 void automat::valitseTiliTeksti()
 {
-ui->tekstiAkkuna->setText("Valitse käytettävä tili");
+ui->tekstiAkkuna->setText("Valitse käytettävä tili Credit ja Debit -painikkeilla");
 
 }
