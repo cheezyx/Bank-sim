@@ -201,6 +201,7 @@ void transaction::SiirtoClicked() {
 void transaction::vastaanottaja() {
     int vastTili = ui->numeroAkkuna->text().toInt();
     toAccountID = vastTili;
+    ui->numeroAkkuna->clear();
     ui->tekstiAkkuna->setText("Anna summa ja paina Enter");
     disconnect(ui->btnenter, SIGNAL(clicked()), this, SLOT(vastaanottaja()));
     connect(ui->btnenter, SIGNAL(clicked()), this, SLOT(SiirtoSummaSlot()));
@@ -208,8 +209,7 @@ void transaction::vastaanottaja() {
 void transaction::SiirtoSummaSlot() {
     float summa = ui->numeroAkkuna->text().toFloat();
     SiirtoSumma = summa;
-
-    // Change UI to the confirmation page
+    ui->numeroAkkuna->clear();
     ui->stackedWidget->setCurrentIndex(1);
     ui->tekstiAkkuna->setText("Hyväksy siirto");
     disconnect(ui->btnenter, SIGNAL(clicked()), this, SLOT(SiirtoSummaSlot()));
