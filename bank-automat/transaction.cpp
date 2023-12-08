@@ -191,33 +191,34 @@ void transaction::SiirtoClicked() {
 
     ui->tekstiAkkuna->setText("Anna vastaanottajan tilinumero ja paina Enter");
     ui->stackedWidget->setCurrentIndex(0);
-    disconnect(ui->btnenter, SIGNAL(clicked()), this, SLOT(vastaanottaja()));
-    connect(ui->btnenter, SIGNAL(clicked()), this, SLOT(SiirtoSummaSlot()));
+    disconnect(ui->btnenter, SIGNAL(clicked()), this, SLOT(SiirtoSummaSlot()));
+    connect(ui->btnenter, SIGNAL(clicked()), this, SLOT(vastaanottaja()));
 }
+
 void transaction::vastaanottaja() {
     int vastTili = ui->numeroAkkuna->text().toInt();
     toAccountID = vastTili;
-
-    // Prompt the user for the amount
     ui->tekstiAkkuna->setText("Anna summa ja paina Enter");
-    // You might need to clear the QLineEdit or handle it accordingly
+    disconnect(ui->btnenter, SIGNAL(clicked()), this, SLOT(vastaanottaja()));
+    connect(ui->btnenter, SIGNAL(clicked()), this, SLOT(SiirtoSummaSlot()));
 }
 void transaction::SiirtoSummaSlot() {
     float summa = ui->numeroAkkuna->text().toFloat();
     SiirtoSumma = summa;
 
     // Change UI to the confirmation page
-    ui->stackedWidget->setCurrentIndex(2); // Assuming this is the confirmation page index
+    ui->stackedWidget->setCurrentIndex(1);
     ui->tekstiAkkuna->setText("Hyväksy siirto");
     disconnect(ui->btnenter, SIGNAL(clicked()), this, SLOT(SiirtoSummaSlot()));
+    disconnect(ui->siirto_2, SIGNAL(clicked()), this, SLOT(hyvaksySiirto()));
     connect(ui->siirto_2, SIGNAL(clicked()), this, SLOT(hyvaksySiirto()));
 }
 void transaction::hyvaksySiirto() {
-    // Perform the transfer with the stored 'toAccountID' and 'SiirtoSumma'
+
     QString viesti = "siirretty automaatista";
     QJsonObject jsonObj;
-    jsonObj.insert("from_account_id", accountID); // Use 'from_account_id' for the source account
-    jsonObj.insert("to_account_id", toAccountID); // Add 'to_account_id' for the destination
+    jsonObj.insert("from_account_id", accountID);
+    jsonObj.insert("to_account_id", toAccountID);
     jsonObj.insert("amount", SiirtoSumma);
     jsonObj.insert("description", viesti);
     QString site_url="http://localhost:3000/transactions/transfer";
@@ -232,15 +233,15 @@ void transaction::hyvaksySiirto() {
 }
 void transaction::siirtoSuoritettu(QNetworkReply *reply)
 {
-    // Handle the response from the server here
+
     if (reply->error() == QNetworkReply::NoError) {
         qDebug() << "Siirto onnistui";
         ui->statuslbl->setText("Siirto suoritettu.");
-        // Maybe show a success message to the user
+
     } else {
-        qDebug() << "Error trasfering money:" << reply->errorString();
+        qDebug() << "siirto hylatty:" << reply->errorString();
         ui->statuslbl->setText("Error.");
-        // Maybe show an error message to the user
+
     }
     reply->deleteLater();
 }
