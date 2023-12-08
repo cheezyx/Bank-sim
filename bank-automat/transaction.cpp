@@ -24,6 +24,7 @@ transaction::transaction(QWidget *parent)
     connect(ui->btnenter, SIGNAL(clicked()), this, SLOT(vastaanottaja()));
     connect(ui->btnenter, SIGNAL(clicked()), this, SLOT(SiirtoSummaSlot()));
     connect(ui->siirto_2, SIGNAL(clicked()), this, SLOT(hyvaksySiirto()));
+
 }
 
 
@@ -186,7 +187,9 @@ void transaction::depositFinished(QNetworkReply *reply)
     }
     reply->deleteLater();
 }
-
+void transaction::aloitaSiirto() {
+        SiirtoClicked();
+    }
 void transaction::SiirtoClicked() {
 
     ui->tekstiAkkuna->setText("Anna vastaanottajan tilinumero ja paina Enter");

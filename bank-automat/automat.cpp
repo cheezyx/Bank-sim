@@ -435,11 +435,10 @@ void automat::backspacehandler()
 
 void automat::on_siirto_clicked()
 {
-    this->hide(); // Piilota automat-ikkuna
-    transactionWindow->show(); // Näytä transactions-ikkuna
-    //transactionWindow->SiirtoClicked();
+    this->hide();
+    transactionWindow->show();
+    transactionWindow->aloitaSiirto();
 }
-
 void automat::on_talletus_clicked()
 {
     this->hide();

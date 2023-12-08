@@ -29,7 +29,7 @@ public:
     void waitforUser();
     float SiirtoSumma;
     int toAccountID;
-
+    void aloitaSiirto();
 
 
 public slots:
@@ -46,7 +46,6 @@ private slots:
     void SiirtoClicked();
     void vastaanottaja();
     void SiirtoSummaSlot();
-
     void siirtoSuoritettu(QNetworkReply *reply);
 signals:
     void opentransactionWindow();
