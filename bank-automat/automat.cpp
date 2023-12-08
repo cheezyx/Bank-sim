@@ -428,6 +428,7 @@ void automat::on_siirto_clicked()
 {
     this->hide(); // Piilota automat-ikkuna
     transactionWindow->show(); // Näytä transactions-ikkuna
+    //transactionWindow->SiirtoClicked();
 }
 
 void automat::on_talletus_clicked()
