@@ -720,7 +720,7 @@ background-color: rgb(22, 28, 33);</string>
 background-color: rgb(85, 170, 0);</string>
    </property>
    <property name="text">
-    <string>Tili 1</string>
+    <string>Credit</string>
    </property>
   </widget>
   <widget class="QPushButton" name="Tili2">
@@ -744,7 +744,7 @@ background-color: rgb(85, 170, 0);</string>
 background-color: rgb(85, 170, 0);</string>
    </property>
    <property name="text">
-    <string>Tili 2</string>
+    <string>Debit</string>
    </property>
   </widget>
   <widget class="QPushButton" name="btncancel">
