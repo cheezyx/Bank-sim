@@ -307,8 +307,8 @@ background-color: rgb(229, 75, 60);</string>
   <widget class="QLabel" name="statuslbl">
    <property name="geometry">
     <rect>
-     <x>100</x>
-     <y>10</y>
+     <x>130</x>
+     <y>20</y>
      <width>291</width>
      <height>31</height>
     </rect>
@@ -333,10 +333,10 @@ background-color: rgb(229, 75, 60);</string>
   <widget class="QTextEdit" name="tekstiAkkuna">
    <property name="geometry">
     <rect>
-     <x>70</x>
-     <y>60</y>
-     <width>111</width>
-     <height>41</height>
+     <x>20</x>
+     <y>20</y>
+     <width>141</width>
+     <height>81</height>
     </rect>
    </property>
    <property name="font">
@@ -357,7 +357,7 @@ background-color: rgb(22, 28, 33);</string>
   <widget class="QLineEdit" name="numeroAkkuna">
    <property name="geometry">
     <rect>
-     <x>180</x>
+     <x>160</x>
      <y>60</y>
      <width>261</width>
      <height>41</height>
@@ -396,7 +396,7 @@ background-color: rgb(22, 28, 33);</string>
 background-color: rgb(42, 55, 67);</string>
    </property>
    <property name="text">
-    <string>-&gt;</string>
+    <string> Enter</string>
    </property>
   </widget>
   <widget class="QStackedWidget" name="stackedWidget">
