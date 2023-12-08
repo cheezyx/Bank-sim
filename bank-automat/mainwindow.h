@@ -25,6 +25,8 @@ public:
     ~MainWindow();
 
     void showAccounts();
+public slots:
+
 
 private slots:
     void on_btnLogin_clicked();

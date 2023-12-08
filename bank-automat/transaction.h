@@ -27,10 +27,14 @@ public:
     void nostoFUNKTIO(float);
     float amount;
     void waitforUser();
+    float SiirtoSumma;
+    int toAccountID;
+
 
 
 public slots:
     void onbtncancelClicked();
+    void hyvaksySiirto();
 
 private slots:
     void nostoSlot(QNetworkReply *reply);
@@ -39,9 +43,11 @@ private slots:
     void on_nosto_4_clicked();
     void on_talletus_clicked();
     void depositFinished(QNetworkReply *reply);
+    void SiirtoClicked();
+    void vastaanottaja();
+    void SiirtoSummaSlot();
 
-
-
+    void siirtoSuoritettu(QNetworkReply *reply);
 signals:
     void opentransactionWindow();
     void closetransactionWindow();
