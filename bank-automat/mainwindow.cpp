@@ -128,6 +128,7 @@ void MainWindow::accountSlot(QNetworkReply *reply2)
     if (creditTiliId != -1 && debitTiliId != -1) {
         objectautomat->setEkaTili(creditTiliId); // credit tili
         objectautomat->setTokaTili(debitTiliId); // debit tili
+        objectautomat->disablointi();
         qDebug() << "Credit tili = " << creditTiliId;
         qDebug() << "Debit tili = " << debitTiliId;
     } else if (creditTiliId != -1 || debitTiliId != -1) {
