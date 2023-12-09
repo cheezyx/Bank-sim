@@ -88,10 +88,10 @@ void automat::setCard_id(const QString &newCardID)
 {
     cardID = newCardID;
 }
-void automat::showCardID()
+/*void automat::showCardID()
 {
     ui->IDLabelcard->setText(cardID);
-}
+} */
 void automat::setAccountID(const int &newAccountID)
 {
 

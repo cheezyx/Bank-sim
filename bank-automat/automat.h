@@ -22,7 +22,7 @@ public:
     explicit automat(QWidget *parent = nullptr);
     ~automat();
     void setCard_id(const QString &newCard_id);
-    void showCardID();
+    //void showCardID();
     void setToken(const QByteArray &newToken);
     QByteArray token;
     void  startLogoutTimer();
