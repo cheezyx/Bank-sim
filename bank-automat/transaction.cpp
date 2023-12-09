@@ -78,31 +78,21 @@ void transaction::nostoFUNKTIO(float _amount)
 }
 void transaction::nostoSlot(QNetworkReply *reply)
 {
-    response_data=reply->readAll();
-    qDebug()<<response_data;
+    response_data = reply->readAll();
+    qDebug() << response_data;
 
     QJsonDocument jsonResponse = QJsonDocument::fromJson(response_data);
 
-    // Check if the response contains the expected message
+    // Oletetaan, että vastaus on JSON-objekti ja sisältää viestin
     if (jsonResponse.isObject())
     {
         QJsonObject jsonObject = jsonResponse.object();
-        if (jsonObject.contains("message"))
-        {
-            QString message = jsonObject.value("message").toString();
+        QString message = jsonObject.value("message").toString();
 
-            // Update status label based on the message
-            if (message == "Withdrawal successful")
-            {
-                ui->statuslbl->setText("Nosto onnistui.");
-
-            }
-            else
-            {
-                ui->statuslbl->setText("Tilillä ei ole katetta.");
-            }
-        }
+        // Päivitä statuslbl suoraan tietokannasta tulevalla viestillä
+        ui->statuslbl->setText(message);
     }
+
     reply->deleteLater();
     postManager->deleteLater();
 }
