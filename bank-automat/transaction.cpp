@@ -24,7 +24,8 @@ transaction::transaction(QWidget *parent)
     connect(ui->btnenter, SIGNAL(clicked()), this, SLOT(vastaanottaja()));
     connect(ui->btnenter, SIGNAL(clicked()), this, SLOT(SiirtoSummaSlot()));
     connect(ui->siirto_2, SIGNAL(clicked()), this, SLOT(hyvaksySiirto()));
-
+    NollausKello = new QTimer(this);
+    connect(NollausKello, SIGNAL(timeout()), this, SLOT(aloitaKello()));
 }
 
 
@@ -240,11 +241,30 @@ void transaction::siirtoSuoritettu(QNetworkReply *reply)
     if (reply->error() == QNetworkReply::NoError) {
         qDebug() << "Siirto onnistui";
         ui->statuslbl->setText("Siirto suoritettu.");
-
+        ajastin = 5; // Start from 5 seconds
+        NollausKello->start(1000);
     } else {
         qDebug() << "siirto hylatty:" << reply->errorString();
         ui->statuslbl->setText("Error.");
 
     }
     reply->deleteLater();
+}
+void transaction::aloitaKello() {
+    if (ajastin > 0) {
+        ui->statuslbl->setText("palataan alkuun: " + QString::number(ajastin));
+        ajastin--;
+    } else {
+        NollausKello->stop();
+        ui->statuslbl->clear();
+        nollaaSiirto();
+        aloitaSiirto();
+    }
+}
+void transaction::nollaaSiirto() {
+
+    toAccountID = 0;
+    SiirtoSumma = 0.0;
+    ui->numeroAkkuna->clear();
+
 }
