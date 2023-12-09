@@ -6,7 +6,7 @@
 #include <QNetworkAccessManager>
 #include <QJsonDocument>
 #include <QCursor>
-
+#include <QTimer>
 
 namespace Ui {
 class transaction;
@@ -29,7 +29,7 @@ public:
     void waitforUser();
     float SiirtoSumma;
     int toAccountID;
-
+    void aloitaSiirto();
 
 
 public slots:
@@ -46,8 +46,8 @@ private slots:
     void SiirtoClicked();
     void vastaanottaja();
     void SiirtoSummaSlot();
-
     void siirtoSuoritettu(QNetworkReply *reply);
+    void aloitaKello();
 signals:
     void opentransactionWindow();
     void closetransactionWindow();
@@ -57,6 +57,10 @@ private:
     QNetworkAccessManager *postManager;
     QNetworkReply *reply;
     QByteArray response_data;
+    QTimer *NollausKello;
+    int ajastin;
+    void nollaaSiirto();
+
 };
 
 #endif // TRANSACTION_H
