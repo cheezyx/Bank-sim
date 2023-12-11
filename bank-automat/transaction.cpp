@@ -33,6 +33,22 @@ transaction::~transaction()
 {
     delete ui;
 }
+
+void transaction::näytäValitutToiminnot(const QString &toiminto) {
+    // Piilota kaikki painikkeet
+    ui->nosto_4->hide();
+    ui->btnTalletus->hide();
+    ui->siirto->hide();
+
+    // Näytä vain valittu toiminto
+    if (toiminto == "nosto") {
+        ui->nosto_4->show();
+    } else if (toiminto == "talletus") {
+        ui->btnTalletus->show();
+    } else if (toiminto == "siirto") {
+        ui->siirto->show();
+    }
+}
 void transaction::setAccountID(const int &newAccountID)
 {
     qDebug() << "Account received in transaction UI:" << newAccountID;
