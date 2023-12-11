@@ -1,0 +1,106 @@
+.automat-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    min-height: 100vh;
+  }
+  
+  .automat-box {
+    position: relative;
+    text-align: center;
+    border: 4px solid #ccc;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    width: 600px; /* Säädä leveyttä tarpeen mukaan */
+    background-color: white;
+  }
+  
+  .automat-box h1,
+  .automat-box h2 {
+    margin-bottom: 20px;
+  }
+  
+  .automat-box div,
+  .automat-box form {
+    margin-bottom: 10px;
+  }
+  
+  .automat-box button {
+    margin: 5px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50; /* Vihreä taustaväri */
+    color: white;
+    cursor: pointer;
+  }
+  
+  .automat-box button:hover {
+    background-color: #45a049;
+  }
+  
+  .automat-box input,
+  .automat-box select {
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: calc(100% - 22px); /* Vähennetään padding ja border */
+  }
+  
+  .transaction-form,
+  .transfer-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .transaction-detail {
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #f2f2f2;
+    border-radius: 10px;
+  }
+  
+  .transaction-detail:nth-child(even) {
+    background-color: #e6e6e6;
+  }
+  
+  .message-box {
+    color: rgb(4, 172, 60); /* Viestien väritys */
+    margin: 10px 0;
+  }
+  .automat-box .logout-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: #ff4d4d; /* Punainen taustaväri */
+    color: white; /* Valkoinen tekstiväri */
+  }
+  
+  .automat-box .logout-button:hover {
+    background-color: #ff3333; /* Tummempi punainen hover-efektille */
+  }
+
+  .account-detail {
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #e0e0e0;
+    border-radius: 10px; /* Pyöristetyt kulmat */
+}
+
+.transactions-header {
+  display: flex;
+  justify-content: center; /* Keskitä otsikko */
+  align-items: center;
+}
+
+.transactions-navigation {
+  position: absolute;
+  right: 15px;
+  display: flex;
+  align-items: center;
+}
+

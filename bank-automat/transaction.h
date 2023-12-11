@@ -30,6 +30,7 @@ public:
     float SiirtoSumma;
     int toAccountID;
     void aloitaSiirto();
+    void näytäValitutToiminnot(const QString &toiminto);
 
 
 public slots:

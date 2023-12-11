@@ -88,10 +88,10 @@ void automat::setCard_id(const QString &newCardID)
 {
     cardID = newCardID;
 }
-void automat::showCardID()
+/*void automat::showCardID()
 {
     ui->IDLabelcard->setText(cardID);
-}
+} */
 void automat::setAccountID(const int &newAccountID)
 {
 
@@ -215,46 +215,50 @@ void automat::tapahtumaMaaraSLot(QNetworkReply *reply)
 void automat::tilitapahtumatSlot(QNetworkReply *reply)
 {
     response_data = reply->readAll();
-
-   // qDebug() << "RAW DATA: " << response_data;
     QJsonDocument json_doc = QJsonDocument::fromJson(response_data);
-       QJsonArray json_array = json_doc.array();
-       QString tTapahtumat;
-       QString transaction_id;
+    QJsonArray json_array = json_doc.array();
+    QString tTapahtumat;
 
-       foreach (const QJsonValue &value, json_array){
-           QJsonObject json_obj = value.toObject();
-           int transactionId = json_obj["transaction_id"].toInt();
+    foreach (const QJsonValue &value, json_array) {
+        QJsonObject json_obj = value.toObject();
+        QString transactionType = json_obj["transaction_type"].toString();
+        QString translatedTransactionType;
+
+        if (transactionType == "deposit") {
+            translatedTransactionType = "Talletus";
+        } else if (transactionType == "withdraw") {
+            translatedTransactionType = "Nosto";
+        } else if (transactionType == "transfer") {
+            translatedTransactionType = "Siirto";
+        }
+
+        int transactionId = json_obj["transaction_id"].toInt();
+        QString amount = json_obj["amount"].toString();
+        QString dateTime = json_obj["date_time"].toString();
+        QDateTime formattedDateTime = QDateTime::fromString(dateTime, Qt::ISODate);
+        QString formattedDateTimeString = formattedDateTime.toString("dd.MM.yyyy hh:mm");
+
+        tTapahtumat += "Tapahtuman ID: " + QString::number(transactionId) + "\n"
+                       + "Määrä: " + amount + "\n"
+                       + "Aika: " + formattedDateTimeString + "\n"
+                       + "Tilitapahtuman tyyppi: " + translatedTransactionType + "\n";
+
+        if (transactionType == "transfer") {
             int fromAccountId = json_obj["from_account_id"].toInt();
-             int toAccountId = json_obj["to_account_id"].toInt();
-              QString amount = json_obj["amount"].toString();
-             QString dateTime = json_obj["date_time"].toString();
-             QDateTime formattedDateTime = QDateTime::fromString(dateTime, Qt::ISODate);
-             QString formattedDateTimeString = formattedDateTime.toString("dd.MM.yyyy hh:mm");
-                QString description = json_obj["description"].toString();
-                 QString transactionType = json_obj["transaction_type"].toString();
-                tTapahtumat += "Tapahtuman ID: " + QString::number(transactionId) + "\n"
-                               + "Käyttäjältä: " + QString::number(fromAccountId) + "\n"
-                               + "Käyttäjälle: " + QString::number(toAccountId) + "\n"
-                               + "Määrä: " + amount + "\n"
-                               + "Päivämäärä: " + formattedDateTimeString + "\n"
-                               + "Selite: " + description + "\n"
-                               + "Tilitapahtuman tyyppi: " + transactionType + "\n\n";
+            int toAccountId = json_obj["to_account_id"].toInt();
+            QString description = json_obj["description"].toString();
 
-/*
-           qDebug() << "Tapahtuman ID: " << transactionId;
-                      qDebug() << "Käyttäjältä " << fromAccountId << " käyttäjälle " << toAccountId;
-                      qDebug() << "Määrä: " << amount;
-                     qDebug() << "Päivämäärä: " << dateTime;
-                      qDebug() << "Selite: " << description;
-                      qDebug() << "Tilitapahtuman tyyppi: " << transactionType;
-*/
-                 ui->tekstiAkkuna->setText(tTapahtumat);
-       }
+            tTapahtumat += "Käyttäjältä: " + QString::number(fromAccountId) + "\n"
+                           + "Käyttäjälle: " + QString::number(toAccountId) + "\n"
+                           + "Selite: " + description + "\n\n";
+        } else {
+            tTapahtumat += "\n";
+        }
+    }
+
+    ui->tekstiAkkuna->setText(tTapahtumat);
     reply->deleteLater();
     getManager->deleteLater();
-
-
 }
 void automat::handleNextPage()
 {
@@ -436,18 +440,21 @@ void automat::backspacehandler()
 void automat::on_siirto_clicked()
 {
     this->hide();
+    transactionWindow->näytäValitutToiminnot("siirto");
     transactionWindow->show();
     transactionWindow->aloitaSiirto();
 }
 void automat::on_talletus_clicked()
 {
     this->hide();
+    transactionWindow->näytäValitutToiminnot("talletus");
     transactionWindow->show();
     transactionWindow->waitforUser();
 }
 void automat::on_nosto_clicked()
 {
     this->hide();
+    transactionWindow->näytäValitutToiminnot("nosto");
     transactionWindow->show();
     transactionWindow->waitforUser();
 }

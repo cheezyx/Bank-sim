@@ -1,0 +1,55 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  padding: 20px;
+}
+
+.login-box {
+  text-align: center;
+  /* Keskittää tekstin */
+  border: 4px solid #ccc;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  width: 300px;
+}
+
+.login-box form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.login-box label {
+  display: flex;
+  /* Asettaa label-elementit flex-konteinereiksi */
+  justify-content: space-between;
+  /* Tasaa sisällön label-elementin sisällä */
+  align-items: center;
+  /* Keskitä sisältö pystysuunnassa */
+  margin-bottom: 10px;
+  /* Lisää hieman tilaa elementtien välille */
+}
+
+.login-box input {
+  /*  flex: 0; Anna syötekentille joustavuutta venyä */
+  margin-left: 20px;
+  /* Lisää väliä tekstin ja syötekentän välille */
+  width: 190px;
+}
+
+.login-box button {
+  margin: 5px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  background-color: #4CAF50; /* Vihreä taustaväri */
+  color: white;
+  cursor: pointer;
+}
+
+.login-box button:hover {
+  background-color: #45a049;
+}
